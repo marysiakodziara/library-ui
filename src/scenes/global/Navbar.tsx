@@ -23,7 +23,7 @@ const Navbar = () => {
             alignItems="center"
             width="100%"
             height="60px"
-            sx={{ backgroundColor: shades.neutral[200] }}
+            sx={{ backgroundColor: shades.neutral[900] }}
             //sx={{ backgroundColor: 'rgba(255, 255, 255, 0.95)' }}
             color="black"
             position="fixed"
@@ -51,10 +51,13 @@ const Navbar = () => {
                     columnGap="20px"
                     zIndex="2"
                 >
-                    <IconButton sx={{color: "black"}}>
+                    <IconButton sx={{color: "white"}}>
                         <SearchOutlined />
                     </IconButton>
-                    <IconButton sx={{color: "black"}}>
+                    <IconButton
+                        sx={{color: "white"}}
+                        onClick={() => navigate("/account")}
+                    >
                         <PersonOutline />
                     </IconButton>
                     <Badge
@@ -72,11 +75,11 @@ const Navbar = () => {
                         }}>
                         <IconButton
                             onClick={() => dispatch(setIsCartOpen())}
-                            sx={{color: "black"}}>
+                            sx={{color: "white"}}>
                             <ShoppingBagOutlined />
                         </IconButton>
                     </Badge>
-                    <IconButton sx={{color: "black"}}>
+                    <IconButton sx={{color: "white"}}>
                         <MenuOutlined />
                     </IconButton>
 

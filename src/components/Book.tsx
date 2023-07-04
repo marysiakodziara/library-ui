@@ -23,7 +23,7 @@ const Book = ({item, width}: {item: Item, width: string}) => {
                 onMouseOver={() => setIsHovered(true)}
                 onMouseOut={() => setIsHovered(false)}>
                 <img
-                    src={`https://covers.openlibrary.org/b/isbn/${item.isbn}-M.jpg`}
+                    src={`https://covers.openlibrary.org/b/isbn/${item.isbn}-L.jpg`}
                     alt={item.name}
                     width="300px"
                     height="400px"

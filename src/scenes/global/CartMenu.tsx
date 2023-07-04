@@ -13,7 +13,7 @@ import {
 } from "../../state/cart/cartReducer";
 import { useNavigate } from "react-router-dom";
 
-const FlexBox = styled(Box)`
+export const FlexBox = styled(Box)`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -103,9 +103,6 @@ const CartMenu = () => {
                                                     <AddIcon/>
                                                 </IconButton>
                                             </Box>
-                                            <Typography fontWeight="bold">
-                                                ${item.attributes.price}
-                                            </Typography>
                                         </FlexBox>
                                     </Box>
                                 </FlexBox>
@@ -114,10 +111,6 @@ const CartMenu = () => {
                         ))}
                     </Box>
                     <Box m="20px 0">
-                        <FlexBox m="20px 0">
-                            <Typography fontWeight="bold">SUBTOTAL</Typography>
-                            <Typography fontWeight="bold">${totalPrice}</Typography>
-                        </FlexBox>
                         <Button
                             sx={{
                                 backgroundColor: shades.primary[400],

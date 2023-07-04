@@ -69,6 +69,14 @@ export const theme = createTheme({
             fontFamily: ["Cinzel", "sans-serif"].join(","),
             fontSize: 14,
         },
+        h5: {
+            fontFamily: ["Fauna One", "sans-serif"].join(","),
+            fontSize: 14
+        },
+        h6: {
+            fontFamily: ["Fauna One", "sans-serif"].join(","),
+            fontSize: 20
+        }
     }
 });
 

@@ -19,7 +19,7 @@ const MainCarousel = () => {
     const isNonMobile = useMediaQuery("(min-width: 600px)");
 
     return (
-        <Box marginTop="60px">
+        <Box mt="60px">
         <Carousel
             infiniteLoop={true}
             showThumbs={false}
