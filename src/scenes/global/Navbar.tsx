@@ -1,21 +1,66 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Badge, Box, IconButton } from '@mui/material';
+import {useDispatch, useSelector} from 'react-redux';
 import {
-    PersonOutline,
-    ShoppingBagOutlined,
-    MenuOutlined,
-    SearchOutlined,
-} from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import { shades } from '../../theme';
-import { setIsCartOpen } from "../../state/cart/cartReducer";
+    Badge,
+    Box,
+    Button,
+    ClickAwayListener,
+    Grow,
+    IconButton,
+    MenuItem,
+    MenuList,
+    Paper,
+    Popper
+} from '@mui/material';
+import {MenuOutlined, PersonOutline, SearchOutlined, ShoppingBagOutlined,} from '@mui/icons-material';
+import {useNavigate} from 'react-router-dom';
+import {shades} from '../../theme';
+import {setIsCartOpen} from "../../state/cart/cartReducer";
+import {useAuth0} from "@auth0/auth0-react";
+import {useEffect, useRef, useState} from "react";
 
 
 const Navbar = () => {
+    const { loginWithRedirect, logout } = useAuth0();
+    const [open, setOpen] = useState(false);
+    const { user, isAuthenticated, isLoading } = useAuth0();
+    const anchorRef = useRef<HTMLButtonElement>(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const cart = useSelector((state: any) => state.cart.cart);
 
+    useEffect(() => {
+        console.log(isAuthenticated + " + " + isLoading);
+        console.log(user?.name);
+    }, [isLoading, isAuthenticated]);
+
+    const handleToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+    };
+
+    const handleClose = (event: Event | React.SyntheticEvent) => {
+        if (
+            anchorRef.current &&
+            anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    const navigateAndClose = () => {
+        setOpen(false);
+        navigate("/account");
+    }
+
+    function handleListKeyDown(event: React.KeyboardEvent) {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            setOpen(false);
+        } else if (event.key === 'Escape') {
+            setOpen(false);
+        }
+    }
 
     return (
         <Box
@@ -55,11 +100,72 @@ const Navbar = () => {
                         <SearchOutlined />
                     </IconButton>
                     <IconButton
+                        ref={anchorRef}
                         sx={{color: "white"}}
-                        onClick={() => navigate("/account")}
+                        onClick={handleToggle}
                     >
                         <PersonOutline />
                     </IconButton>
+                    <Popper
+                        open={open}
+                        anchorEl={anchorRef.current}
+                        role={undefined}
+                        placement="bottom-start"
+                        transition
+                        disablePortal
+                    >
+                        {({ TransitionProps, placement }) => (
+                            <Grow
+                                {...TransitionProps}
+                                style={{
+                                    transformOrigin:
+                                        placement === 'bottom-start' ? 'left top' : 'left bottom',
+                                }}
+                            >
+                                <Paper>
+                                    <ClickAwayListener onClickAway={handleClose}>
+                                        <MenuList
+                                            autoFocusItem={open}
+                                            id="composition-menu"
+                                            aria-labelledby="composition-button"
+                                            onKeyDown={handleListKeyDown}
+                                            sx={{ display: "flex", flexDirection: "column" }}
+                                        >
+                                            <MenuItem onClick={navigateAndClose} sx={{ fontWeight: 'bold' }}>My account</MenuItem>
+                                            { isAuthenticated && (
+                                                <Button
+                                                    sx={{
+                                                        mr: "auto",
+                                                        ml: "auto",
+                                                        width: "80%",
+                                                        fontFamily: "inherit",
+                                                        backgroundColor: shades.primary[100],
+                                                    }}
+                                                    onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+                                                >
+                                                    Log Out
+                                                </Button>
+                                            )}
+                                            { !isAuthenticated && (
+                                                <Button
+                                                    sx={{
+                                                        mr: "auto",
+                                                        ml: "auto",
+                                                        width: "80%",
+                                                        fontFamily: "inherit",
+                                                        backgroundColor: shades.primary[100],
+                                                    }}
+                                                    onClick={() => loginWithRedirect()}
+                                                >
+                                                    Log In
+                                                </Button>
+                                            )}
+                                        </MenuList>
+                                    </ClickAwayListener>
+                                </Paper>
+                            </Grow>
+                        )}
+                    </Popper>
                     <Badge
                         badgeContent={cart.length}
                         color="secondary"
@@ -82,9 +188,7 @@ const Navbar = () => {
                     <IconButton sx={{color: "white"}}>
                         <MenuOutlined />
                     </IconButton>
-
                 </Box>
-
             </Box>
         </Box>
     );

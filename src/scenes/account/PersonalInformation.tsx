@@ -1,7 +1,10 @@
-import {Box, Typography} from "@mui/material";
+import {Box, Typography, useMediaQuery} from "@mui/material";
 import {shades} from "../../theme";
 
 const PersonalInformation = () => {
+
+    const isNonMobile = useMediaQuery('(max-width: 600px)');
+
     return (
         <Box width="100%" mb="10%" paddingLeft="3%">
             <Box>
@@ -16,6 +19,7 @@ const PersonalInformation = () => {
                 justifyContent="space-around"
                 rowGap="10%"
                 columnGap="1.33%"
+                overflow={isNonMobile ? "scroll" : "visible"}
             >
                 <Box
                     display="flex"
