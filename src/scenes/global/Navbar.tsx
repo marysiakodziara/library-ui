@@ -9,7 +9,7 @@ import {
     MenuItem,
     MenuList,
     Paper,
-    Popper
+    Popper, Typography
 } from '@mui/material';
 import {MenuOutlined, PersonOutline, SearchOutlined, ShoppingBagOutlined,} from '@mui/icons-material';
 import {useNavigate} from 'react-router-dom';
@@ -17,6 +17,7 @@ import {shades} from '../../theme';
 import {setIsCartOpen} from "../../state/cart/cartReducer";
 import {useAuth0} from "@auth0/auth0-react";
 import {useEffect, useRef, useState} from "react";
+import logo from "../../assets/logoEyes.png";
 
 
 const Navbar = () => {
@@ -86,9 +87,15 @@ const Navbar = () => {
                 <Box
                     onClick={() => navigate("/")}
                     sx={{ '&:hover': { cursor: 'pointer' } }}
-                    color={shades.secondary[500]}
+                    color={shades.neutral[500]}
+                    alignItems="center"
+                    display="flex"
                 >
-                    LIBRARY
+                    <img
+                        height="45px"
+                        src={logo}
+                        alt="Logo" />
+                    <Typography sx={{ml: "10px"}} variant="h2" fontWeight="bold">LIBRARY</Typography>
                 </Box>
                 <Box
                     display="flex"
