@@ -5,7 +5,7 @@ import {
     Button,
     ClickAwayListener,
     Grow,
-    IconButton,
+    IconButton, InputBase,
     MenuItem,
     MenuList,
     Paper,
@@ -18,6 +18,7 @@ import {setIsCartOpen} from "../../../state/cart/cartReducer";
 import {useAuth0} from "@auth0/auth0-react";
 import {useEffect, useRef, useState} from "react";
 import NavigationMenu from "./NavigationMenu";
+import SearchIcon from '@mui/icons-material/Search';
 
 
 const Navbar = () => {
@@ -149,9 +150,16 @@ const Navbar = () => {
                     columnGap="20px"
                     zIndex="2"
                 >
-                    <IconButton sx={{color: "white"}}>
-                        <SearchOutlined />
-                    </IconButton>
+                    <Box sx={{backgroundColor: shades.neutral[800]}} padding="2px 10px" borderRadius="20px">
+                        <InputBase
+                            sx={{ ml: 1, flex: 1, color: "white"}}
+                            placeholder="Search for a book"
+                            inputProps={{ 'aria-label': 'search google maps' }}
+                        />
+                        <IconButton type="button" aria-label="search">
+                            <SearchIcon sx={{color: "white"}}/>
+                        </IconButton>
+                    </Box>
                     <IconButton
                         ref={anchorRefAccount}
                         sx={{color: "white"}}
@@ -163,7 +171,8 @@ const Navbar = () => {
                         open={openAccount}
                         anchorEl={anchorRefAccount.current}
                         role={undefined}
-                        placement="bottom-start"
+                        placement="bottom"
+                        sx={{ paddingTop: "12px"}}
                         transition
                         disablePortal
                     >
