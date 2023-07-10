@@ -10,7 +10,7 @@ import Home from './scenes/home/Home';
 import BookDetails from "./scenes/itemDetails/bookDetails";
 import Checkout from "./scenes/checkout/Checkout";
 import Confirmation from "./scenes/checkout/Confirmation";
-import Navbar from "./scenes/global/Navbar";
+import Navbar from "./scenes/global/navbar/Navbar";
 import CartMenu from "./scenes/global/CartMenu";
 import Footer from "./scenes/global/Footer";
 import Account from "./scenes/account/Account";
