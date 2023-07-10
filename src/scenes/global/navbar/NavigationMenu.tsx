@@ -5,13 +5,21 @@ import {shades} from "../../../theme";
 import {useState} from "react";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import BookCategory, {mainCategories} from "./BookCategory";
+import {useNavigate} from "react-router-dom";
 
 const NavigationMenu = () => {
-    const [open, setOpen] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean[]>([false, false, false, false, false, false, false, false, false, false]);
+    const navigate = useNavigate();
 
-    const handleClick = () => {
-        setOpen(!open);
-    };
+
+    const handleClick = (index: number) => {
+        setOpen((prevOpen) => {
+            const newState = [...prevOpen];
+            newState[index] = !newState[index];
+            return newState;
+        });
+    }
 
     return (
             <Box
@@ -23,6 +31,7 @@ const NavigationMenu = () => {
                 left="0"
                 top="0"
                 overflow="auto">
+
                 <List
                     sx={{ width: '100%', maxWidth: 360, m: "0 auto" }}
                     component="nav"
@@ -36,62 +45,27 @@ const NavigationMenu = () => {
                         </ListSubheader>
                     }
                 >
-                    < ListItemButton>
-                        <ListItemText primary="Sent mail" />
-                        {open ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText primary="Starred" />
+                    {mainCategories.map((category: BookCategory, index: number) => (
+                        <>
+                            <ListItemButton onClick={() => handleClick(index)}>
+                                <ListItemText primary={category.name} />
+                                { category.subcategories.length > 0 && (
+                                    open[index] ? <ExpandLess /> : <ExpandMore />
+                                ) }
                             </ListItemButton>
-                        </List>
-                    </Collapse>
-                    <ListItemButton>
-                        <ListItemText primary="Sent mail" />
-                        {open ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText primary="Starred" />
-                            </ListItemButton>
-                        </List>
-                    </Collapse>
-                    <ListItemButton>
-                        <ListItemText primary="Sent mail" />
-                        {open ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText primary="Starred" />
-                            </ListItemButton>
-                        </List>
-                    </Collapse>
-                    <ListItemButton>
-                        <ListItemText primary="Sent mail" />
-                        {open ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText primary="Starred" />
-                            </ListItemButton>
-                        </List>
-                    </Collapse>
-                    <ListItemButton onClick={handleClick}>
-                        <ListItemText primary="Inbox" />
-                        {open ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText primary="Starred" />
-                            </ListItemButton>
-                        </List>
-                    </Collapse>
-
+                            <Collapse in={open[index]} timeout="auto" unmountOnExit>
+                                <List component="div" disablePadding>
+                                    {category.subcategories.map((subCategory: BookCategory) => (
+                                        <ListItemButton
+                                            onClick={() => navigate(`/books/${category.name}/${subCategory.name}`)}
+                                            sx={{ pl: 4 }}>
+                                            <ListItemText primary={subCategory.name} />
+                                        </ListItemButton>
+                                    ))}
+                                </List>
+                            </Collapse>
+                        </>
+                    ))}
                 </List>
             </Box>
     );

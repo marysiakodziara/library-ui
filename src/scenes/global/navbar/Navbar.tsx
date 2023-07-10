@@ -12,13 +12,12 @@ import {
     Popper, Typography
 } from '@mui/material';
 import {MenuOutlined, PersonOutline, SearchOutlined, ShoppingBagOutlined,} from '@mui/icons-material';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {shades} from '../../../theme';
 import {setIsCartOpen} from "../../../state/cart/cartReducer";
 import {useAuth0} from "@auth0/auth0-react";
 import {useEffect, useRef, useState} from "react";
 import NavigationMenu from "./NavigationMenu";
-import Fade from '@mui/material/Fade';
 
 
 const Navbar = () => {
@@ -26,6 +25,7 @@ const Navbar = () => {
     const [openAccount, setOpenAccount] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
     const { user, isAuthenticated, isLoading } = useAuth0();
+    const location = useLocation();
     const anchorRefAccount = useRef<HTMLButtonElement>(null);
     const anchorRefMenu = useRef<HTMLButtonElement>(null);
     const navigate = useNavigate();
@@ -33,9 +33,8 @@ const Navbar = () => {
     const cart = useSelector((state: any) => state.cart.cart);
 
     useEffect(() => {
-        console.log(isAuthenticated + " + " + isLoading);
-        console.log(user?.name);
-    }, [isLoading, isAuthenticated]);
+        setOpenMenu(false);
+    }, [location]);
 
     const handleOpenAccount = () => {
         setOpenAccount((prevOpen) => !prevOpen);
