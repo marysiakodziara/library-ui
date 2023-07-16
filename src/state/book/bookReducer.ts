@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from "axios";
+import {RootState} from "../../app/store";
 
 export interface Book {
     id: number;
@@ -52,5 +53,5 @@ export const bookSlice = createSlice({
     }
 });
 
-export const { setBooks } = bookSlice.actions;
+export const selectAllBooks = (state: RootState) => state.book.books;
 export default bookSlice.reducer;

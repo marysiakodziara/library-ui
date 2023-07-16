@@ -1,16 +1,16 @@
-import {Item} from "./cartReducer";
+import {Book} from "../book/bookReducer";
 
-const listOfBooks: Item[] = [
-
+const listOfBooks: Book[] = [
+/*
     {
-        id: "1",
+        id: 1,
         isbn: 9780060935467,
-        name: "To Kill a Mockingbird",
+        title: "To Kill a Mockingbird",
         author: "Harper Lee",
         image: "url",
         count: 1,
         attributes: {
-            name: "Example Book",
+            name: "Example BookView",
             description: "A great book!",
             price: 9.99,
             image: "https://example.com/book.jpg",
@@ -25,7 +25,7 @@ const listOfBooks: Item[] = [
         image: "https://example.com/another-book.jpg",
         count: 2,
         attributes: {
-            name: "Another Book",
+            name: "Another BookView",
             description: "Another great book!",
             price: 14.99,
             image: "https://example.com/another-book.jpg",
@@ -40,7 +40,7 @@ const listOfBooks: Item[] = [
         image: "https://example.com/another-book.jpg",
         count: 2,
         attributes: {
-            name: "Another Book",
+            name: "Another BookView",
             description: "Another great book!",
             price: 14.99,
             image: "https://example.com/another-book.jpg",
@@ -55,7 +55,7 @@ const listOfBooks: Item[] = [
         image: "https://example.com/another-book.jpg",
         count: 2,
         attributes: {
-            name: "Another Book",
+            name: "Another BookView",
             description: "Another great book!",
             price: 14.99,
             image: "https://example.com/another-book.jpg",
@@ -70,7 +70,7 @@ const listOfBooks: Item[] = [
         image: "https://example.com/another-book.jpg",
         count: 2,
         attributes: {
-            name: "Another Book",
+            name: "Another BookView",
             description: "Another great book!",
             price: 14.99,
             image: "https://example.com/another-book.jpg",
@@ -85,7 +85,7 @@ const listOfBooks: Item[] = [
         image: "https://example.com/another-book.jpg",
         count: 2,
         attributes: {
-            name: "Another Book",
+            name: "Another BookView",
             description: "Another great book!",
             price: 14.99,
             image: "https://example.com/another-book.jpg",
@@ -100,7 +100,7 @@ const listOfBooks: Item[] = [
         image: "https://example.com/another-book.jpg",
         count: 2,
         attributes: {
-            name: "Another Book",
+            name: "Another BookView",
             description: "Another great book!",
             price: 14.99,
             image: "https://example.com/another-book.jpg",
@@ -115,7 +115,7 @@ const listOfBooks: Item[] = [
         image: "https://example.com/another-book.jpg",
         count: 2,
         attributes: {
-            name: "Another Book",
+            name: "Another BookView",
             description: "Another great book!",
             price: 14.99,
             image: "https://example.com/another-book.jpg",
@@ -130,7 +130,7 @@ const listOfBooks: Item[] = [
         image: "https://example.com/another-book.jpg",
         count: 2,
         attributes: {
-            name: "Another Book",
+            name: "Another BookView",
             description: "Another great book!",
             price: 14.99,
             image: "https://example.com/another-book.jpg",
@@ -145,13 +145,13 @@ const listOfBooks: Item[] = [
         image: "https://example.com/another-book.jpg",
         count: 2,
         attributes: {
-            name: "Another Book",
+            name: "Another BookView",
             description: "Another great book!",
             price: 14.99,
             image: "https://example.com/another-book.jpg",
             category: "bestSellers"
         }
-    },
+    },*/
 
 ];
 

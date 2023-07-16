@@ -8,13 +8,8 @@ import { theme } from './theme';
 import { Provider } from 'react-redux';
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./state/cart/cartReducer";
-import { Auth0Provider } from '@auth0/auth0-react';
-
-const store = configureStore({
-    reducer: {
-        cart: cartReducer,
-    },
-});
+import { Auth0Provider } from '@auth0/auth0-react'
+import {store} from "./app/store";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

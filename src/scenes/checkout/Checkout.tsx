@@ -17,7 +17,8 @@ import * as yup from "yup";
 import CustomizedSteppers from "./CustomizedSteppers";
 import { shades } from "../../theme";
 import {boolean} from "yup";
-import {decreaseCount, increaseCount, Item, removeFromCart} from "../../state/cart/cartReducer";
+import {decreaseCount, increaseCount, removeFromCart} from "../../state/cart/cartReducer";
+import {Book} from "../../state/book/bookReducer";
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
@@ -190,12 +191,12 @@ const Checkout = () => {
                         </Box>
                         <Divider />
                         <Box width="90%" m="20px auto">
-                            {cart.map((item: Item) => (
-                                <Box key={`${item.attributes.name}-${item.id}`}>
+                            {cart.map((item: Book) => (
+                                <Box key={`${item.title}-${item.id}`}>
                                     <FlexBox p="15px 0">
                                         <Box flex="1 1 40%">
                                             <img
-                                                alt={item?.name}
+                                                alt={item?.title}
                                                 width="123px"
                                                 height="164px"
                                                 src={`https://covers.openlibrary.org/b/isbn/${item?.isbn}-M.jpg`}
@@ -204,7 +205,7 @@ const Checkout = () => {
                                         <Box flex="1 1 60%">
                                             <FlexBox mb="5px">
                                                 <Typography fontWeight="bold">
-                                                    {item.name}
+                                                    {item.title}
                                                 </Typography>
                                                 <IconButton onClick={() => dispatch(removeFromCart({ id: item.id}))}>
                                                     <CloseIcon/>

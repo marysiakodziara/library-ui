@@ -5,22 +5,26 @@ import FavouriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutli
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {shades} from '../../theme';
-import {addToCart, decreaseCount, increaseCount, Item} from "../../state/cart/cartReducer";
+import {addToCart, decreaseCount, increaseCount} from "../../state/cart/cartReducer";
+import {Book, selectAllBooks} from '../../state/book/bookReducer';
 import {useParams} from 'react-router-dom';
-import Book from '../../components/Book';
+import BookView from '../../components/BookView';
 import listOfBooks from "../../state/cart/listOfBooks";
+import {useAppSelector} from "../../app/hooks";
 
 const BookDetails = () => {
     const dispatch = useDispatch();
     const { itemId } = useParams();
     const [value, setValue] = useState("description");
     const [count, setCount] = useState(1);
-    const [item, setItem] = useState<Item | null>(null);
-    const [items, setItems] = useState<Item[]>([]);
+    const [item, setItem] = useState<Book | null>(null);
+    const [items, setItems] = useState<Book[]>([]);
 
     const handleChange = (event: any, newValue: SetStateAction<string>) => {
         setValue(newValue);
     }
+
+    const books = useAppSelector(selectAllBooks);
 
     async function getItem() {
         /*const item = await fetch(
@@ -29,7 +33,7 @@ const BookDetails = () => {
         );
         const itemJson = await item.json();
         setItem(itemJson.data);*/
-        itemId ? setItem(listOfBooks[parseInt(itemId) - 1]) : setItem(null);
+        itemId ? setItem(books[parseInt(itemId) - 1]) : setItem(null);
     }
 
     async function getItems() {
@@ -38,7 +42,7 @@ const BookDetails = () => {
             {method: "GET"}
         );
         const itemsJson = await items.json();
-        setItems(listOfBooks);
+        setItems(books);
     }
 
     useEffect(() => {
@@ -51,7 +55,7 @@ const BookDetails = () => {
             <Box display="flex" flexWrap="wrap" columnGap="40px">
                 <Box flex="1 1 40%" mb="40px">
                     <img
-                        alt={item?.name}
+                        alt={item?.title}
                         width="100%"
                         height="100%"
                         src={`https://covers.openlibrary.org/b/isbn/${item?.isbn}-M.jpg`}
@@ -66,11 +70,10 @@ const BookDetails = () => {
                     //TODO: make content align to the left
                     <Box alignItems="flex-start" justifyContent="flex-start">
                         <Box m="65px 0 25px 0">
-                            <Typography variant="h3">{item?.name}</Typography>
-                            <Typography>{item?.attributes?.price}</Typography>
+                            <Typography variant="h3">{item?.title}</Typography>
                             <Typography>{item?.author}</Typography>
                             <Typography sx={{ mt: "20px" }}>
-                                {item?.attributes?.description}
+                                {item?.description}
                             </Typography>
                         </Box>
                         <Box display="flex" alignItems="center" minHeight="50px">
@@ -111,7 +114,7 @@ const BookDetails = () => {
                                 <FavouriteBorderOutlinedIcon />
                                 <Typography sx={{ ml: "5px" }}>ADD TO WISHLIST</Typography>
                             </Box>
-                            <Typography>CATEGORIES: {item?.attributes?.category}</Typography>
+                            <Typography>CATEGORIES: {item?.categories}</Typography>
                         </Box>
                     </Box>
                 </Box>
@@ -124,7 +127,7 @@ const BookDetails = () => {
             </Box>
             <Box display="flex" flexWrap="wrap" gap="15px">
                 {value === "description" && (
-                    <div>{item?.attributes?.description}</div>
+                    <div>{item?.description}</div>
                     )}
                 {value === "reviews" && (
                     <div>reviews</div>
@@ -142,7 +145,7 @@ const BookDetails = () => {
                     justifyContent="space-between"
                 >
                     {items.slice(0, 4).map((item, i) => (
-                    <Book key={`${item?.name}-${i}`} item={item} width={"100%"}/>))}
+                    <BookView key={`${item?.title}-${i}`} item={item} width={"100%"}/>))}
                 </Box>
             </Box>
         </Box>

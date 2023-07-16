@@ -9,8 +9,9 @@ import {
     increaseCount,
     decreaseCount,
     removeFromCart,
-    setIsCartOpen, Item,
+    setIsCartOpen
 } from "../../state/cart/cartReducer";
+import { Book } from "../../state/book/bookReducer";
 import { useNavigate } from "react-router-dom";
 
 export const FlexBox = styled(Box)`
@@ -61,12 +62,12 @@ const CartMenu = () => {
                         </IconButton>
                     </FlexBox>
                     <Box>
-                        {cart.map((item: Item) => (
-                            <Box key={`${item.attributes.name}-${item.id}`}>
+                        {cart.map((item: Book) => (
+                            <Box key={`${item.title}-${item.id}`}>
                                 <FlexBox p="15px 0">
                                     <Box flex="1 1 40%">
                                         <img
-                                            alt={item?.name}
+                                            alt={item?.title}
                                             width="123px"
                                             height="164px"
                                             src={`https://covers.openlibrary.org/b/isbn/${item?.isbn}-M.jpg`}
@@ -75,7 +76,7 @@ const CartMenu = () => {
                                     <Box flex="1 1 60%">
                                         <FlexBox mb="5px">
                                             <Typography fontWeight="bold">
-                                                {item.name}
+                                                {item.title}
                                             </Typography>
                                             <IconButton onClick={() => dispatch(removeFromCart({ id: item.id}))}>
                                                 <CloseIcon/>

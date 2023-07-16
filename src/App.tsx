@@ -14,6 +14,8 @@ import Navbar from "./scenes/global/navbar/Navbar";
 import CartMenu from "./scenes/global/CartMenu";
 import Footer from "./scenes/global/Footer";
 import Account from "./scenes/account/Account";
+import {useAppDispatch} from "./app/hooks";
+import {fetchBooks} from "./state/book/bookReducer";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -25,6 +27,12 @@ const ScrollToTop = () => {
 }
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchBooks());
+  }, [dispatch]);
+
   return (
     <div className="app">
         <BrowserRouter>

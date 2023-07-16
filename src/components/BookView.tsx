@@ -4,17 +4,17 @@ import { Box, IconButton, Typography, useTheme, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { shades } from '../theme';
-import {addToCart, decreaseCount, increaseCount, Item} from "../state/cart/cartReducer";
+import {addToCart, decreaseCount, increaseCount} from "../state/cart/cartReducer";
+import {Book} from '../state/book/bookReducer';
 import { useNavigate } from 'react-router-dom';
 
 
-const Book = ({item, width}: {item: Item, width: string}) => {
+const BookView = ({item, width}: {item: Book, width: string}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [count, setCount] = useState(1);
     const [isHovered, setIsHovered] = useState(false);
     const {palette: {info}} = useTheme();
-    const { category, price, name} = item.attributes;
 
     return (
         <Box width={width}>
@@ -24,7 +24,7 @@ const Book = ({item, width}: {item: Item, width: string}) => {
                 onMouseOut={() => setIsHovered(false)}>
                 <img
                     src={`https://covers.openlibrary.org/b/isbn/${item.isbn}-L.jpg`}
-                    alt={item.name}
+                    alt={item.title}
                     width="300px"
                     height="400px"
                     onClick={() => navigate(`/item/${item.id}`)}
@@ -67,7 +67,7 @@ const Book = ({item, width}: {item: Item, width: string}) => {
                 </Box>
             </Box>
             <Box mt="3px">
-                <Typography fontWeight="bold" >{item.name}</Typography>
+                <Typography fontWeight="bold" >{item.title}</Typography>
                 <Typography>{item.author}</Typography>
 
             </Box>
@@ -75,4 +75,4 @@ const Book = ({item, width}: {item: Item, width: string}) => {
     )
 }
 
-export default Book;
+export default BookView;

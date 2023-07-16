@@ -1,16 +1,18 @@
 import React, { useEffect, useState, } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography, Tab, Tabs, useMediaQuery } from '@mui/material';
-import Book from '../../components/Book';
-import {Item, setItems} from '../../state/cart/cartReducer';
+import BookView from '../../components/BookView';
+import {setItems} from '../../state/cart/cartReducer';
+import {Book, selectAllBooks} from '../../state/book/bookReducer';
 import listOfBooks from "../../state/cart/listOfBooks";
+import {useAppSelector} from "../../app/hooks";
 
 
 
 const ShoppingList = () => {
     const dispatch = useDispatch();
     const [value, setValue] = useState("all");
-    const items = useSelector((state: any) => state.cart.items);
+    const items = useAppSelector(selectAllBooks);
     const isNonMobile = useMediaQuery('(min-width:600px)');
 
     const handleChange = (event: any, newValue: React.SetStateAction<string>) => {
@@ -33,13 +35,13 @@ const ShoppingList = () => {
     }, []);
 
     const topRatedItems = items.filter(
-        (item: Item) => item.attributes.category === "topRated"
+        (item: Book) => item.categories.includes("topRated")
     )
     const newArrivalsItems = items.filter(
-        (item: Item) => item.attributes.category === "newArrivals"
+        (item: Book) => item.categories.includes("newArrivals")
     )
     const bestSellersItems = items.filter(
-        (item: Item) => item.attributes.category === "bestSellers"
+        (item: Book) => item.categories.includes("bestSellers")
     )
 
     return (
@@ -74,17 +76,17 @@ const ShoppingList = () => {
                 rowGap="20px"
                 columnGap="1.33%"
             >
-                {value === "all" && items.map((item: Item) => (
-                    <Book item={item} key={`${item.name}-${item.id}`} width={"300px"} />
+                {value === "all" && items.map((item: Book) => (
+                    <BookView item={item} key={`${item.title}-${item.id}`} width={"300px"} />
                     ))}
-                {value === "neArrivals" && newArrivalsItems.map((item: Item) => (
-                    <Book item={item} key={`${item.name}-${item.id}`} width={"300px"} />
+                {value === "neArrivals" && newArrivalsItems.map((item: Book) => (
+                    <BookView item={item} key={`${item.title}-${item.id}`} width={"300px"} />
                 ))}
-                {value === "bestSellers" && bestSellersItems.map((item: Item) => (
-                    <Book item={item} key={`${item.name}-${item.id}`} width={"300px"} />
+                {value === "bestSellers" && bestSellersItems.map((item: Book) => (
+                    <BookView item={item} key={`${item.title}-${item.id}`} width={"300px"} />
                 ))}
-                {value === "topRated" && topRatedItems.map((item: Item) => (
-                    <Book item={item} key={`${item.name}-${item.id}`} width={"300px"} />
+                {value === "topRated" && topRatedItems.map((item: Book) => (
+                    <BookView item={item} key={`${item.title}-${item.id}`} width={"300px"} />
                 ))}
 
             </Box>
