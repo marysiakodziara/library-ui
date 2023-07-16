@@ -1,25 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {Book} from "../book/bookReducer";
 
-export interface Item {
-    id: string;
-    isbn: number;
-    name: string;
-    author: string;
-    image: string;
-    count: number;
-    attributes: {
-        name: string;
-        description: string;
-        price: number;
-        image: string;
-        category: string;
-    }
-}
 
 export interface CartState {
     isCartOpen: boolean;
-    cart: Item[];
-    items: Item[];
+    cart: Book[];
+    items: Book[];
 }
 
 const initialState: CartState = {
