@@ -15,7 +15,7 @@ import CartMenu from "./scenes/global/CartMenu";
 import Footer from "./scenes/global/Footer";
 import Account from "./scenes/account/Account";
 import {useAppDispatch} from "./app/hooks";
-import {fetchBooks} from "./state/book/bookReducer";
+import {fetchBooks, fetchCategories} from "./state/book/bookReducer";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -31,6 +31,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchBooks());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   return (

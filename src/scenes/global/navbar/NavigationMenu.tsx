@@ -5,13 +5,14 @@ import {shades} from "../../../theme";
 import {useState} from "react";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import BookCategory, {mainCategories} from "./BookCategory";
 import {useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {Category, selectAllCategories} from "../../../state/book/bookReducer";
 
 const NavigationMenu = () => {
     const [open, setOpen] = useState<boolean[]>([false, false, false, false, false, false, false, false, false, false]);
     const navigate = useNavigate();
-
+    const categories: Category = useAppSelector(selectAllCategories);
 
     const handleClick = (index: number) => {
         setOpen((prevOpen) => {
@@ -20,6 +21,7 @@ const NavigationMenu = () => {
             return newState;
         });
     }
+
 
     return (
             <Box
@@ -45,30 +47,53 @@ const NavigationMenu = () => {
                         </ListSubheader>
                     }
                 >
-                    {mainCategories.map((category: BookCategory, index: number) => (
+                    {Object.entries(categories).map(([mainCategory, subCategories], index) => (
                         <>
                             <ListItemButton onClick={() => handleClick(index)}>
-                                <ListItemText primary={category.name} />
-                                { category.subcategories.length > 0 && (
+                                <ListItemText primary={mainCategory} />
+                                { subCategories.length > 0 && (
                                     open[index] ? <ExpandLess /> : <ExpandMore />
                                 ) }
                             </ListItemButton>
                             <Collapse in={open[index]} timeout="auto" unmountOnExit>
                                 <List component="div" disablePadding>
-                                    {category.subcategories.map((subCategory: BookCategory) => (
+                                    {subCategories.map((subCategory: String) => (
                                         <ListItemButton
-                                            onClick={() => navigate(`/books/${category.name}/${subCategory.name}`)}
+                                            onClick={() => navigate(`/books/${mainCategory}/${subCategory}`)}
                                             sx={{ pl: 4 }}>
-                                            <ListItemText primary={subCategory.name} />
+                                            <ListItemText primary={subCategory} />
                                         </ListItemButton>
                                     ))}
                                 </List>
                             </Collapse>
                         </>
                     ))}
+
                 </List>
             </Box>
     );
 }
 
 export default NavigationMenu;
+/*
+{categories.map((category: Category, index: number) => (
+    <>
+        <ListItemButton onClick={() => handleClick(index)}>
+            <ListItemText primary={category.mainCategory} />
+            { category.subCategories.length > 0 && (
+                open[index] ? <ExpandLess /> : <ExpandMore />
+            ) }
+        </ListItemButton>
+        <Collapse in={open[index]} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+                {category.subCategories.map((subCategory: String) => (
+                    <ListItemButton
+                        onClick={() => navigate(`/books/${category.mainCategory}/${subCategory}`)}
+                        sx={{ pl: 4 }}>
+                        <ListItemText primary={subCategory} />
+                    </ListItemButton>
+                ))}
+            </List>
+        </Collapse>
+    </>
+))}*/
