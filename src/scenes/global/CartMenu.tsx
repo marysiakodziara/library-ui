@@ -9,10 +9,10 @@ import {
     increaseCount,
     decreaseCount,
     removeFromCart,
-    setIsCartOpen
+    setIsCartOpen, OrderItem, selectCart, selectIsCartOpen
 } from "../../state/cart/cartReducer";
-import { Book } from "../../state/book/bookReducer";
 import { useNavigate } from "react-router-dom";
+import {useAppSelector} from "../../app/hooks";
 
 export const FlexBox = styled(Box)`
     display: flex;
@@ -23,12 +23,9 @@ export const FlexBox = styled(Box)`
 const CartMenu = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const cart = useSelector((state: any) => state.cart.cart);
-    const isCartOpen = useSelector((state: any) => state.cart.isCartOpen);
-
-    const totalPrice = cart.reduce((total: number, item: { count: number; attributes: { price: number; }; }) => {
-        return total + item.count * item.attributes.price;
-    }, 0);
+    const cart = useAppSelector(selectCart);
+    const isCartOpen = useAppSelector(selectIsCartOpen);
+    console.log(cart);
 
     return (
         <Box
@@ -62,29 +59,29 @@ const CartMenu = () => {
                         </IconButton>
                     </FlexBox>
                     <Box>
-                        {cart.map((item: Book) => (
-                            <Box key={`${item.title}-${item.id}`}>
+                        {cart.map((item: OrderItem) => (
+                            <Box key={`${item.book.title}-${item.book.id}`}>
                                 <FlexBox p="15px 0">
                                     <Box flex="1 1 40%">
                                         <img
-                                            alt={item?.title}
+                                            alt={item.book.title}
                                             width="123px"
                                             height="164px"
-                                            src={`https://covers.openlibrary.org/b/isbn/${item?.isbn}-M.jpg`}
+                                            src={`https://covers.openlibrary.org/b/isbn/${item.book.isbn}-M.jpg`}
                                         />
                                     </Box>
                                     <Box flex="1 1 60%">
                                         <FlexBox mb="5px">
                                             <Typography fontWeight="bold">
-                                                {item.title}
+                                                {item.book.title}
                                             </Typography>
-                                            <IconButton onClick={() => dispatch(removeFromCart({ id: item.id}))}>
+                                            <IconButton onClick={() => dispatch(removeFromCart({ id: item.book.id}))}>
                                                 <CloseIcon/>
                                             </IconButton>
 
                                         </FlexBox>
                                         <Typography>
-                                            {item.author}
+                                            {item.book.author}
                                         </Typography>
                                         <FlexBox m="15px 0">
                                             <Box
@@ -93,13 +90,13 @@ const CartMenu = () => {
                                                 border={`1.5px solid ${shades.neutral[500]}`}
                                             >
                                                 <IconButton
-                                                    onClick={() => dispatch(decreaseCount({ id: item.id}))}
+                                                    onClick={() => dispatch(decreaseCount({ id: item.book.id}))}
                                                 >
                                                     <RemoveIcon/>
                                                 </IconButton>
-                                                <Typography>{item.count}</Typography>
+                                                <Typography>{item.quantity}</Typography>
                                                 <IconButton
-                                                    onClick={() => dispatch(increaseCount({ id: item.id}))}
+                                                    onClick={() => dispatch(increaseCount({ id: item.book.id}))}
                                                 >
                                                     <AddIcon/>
                                                 </IconButton>

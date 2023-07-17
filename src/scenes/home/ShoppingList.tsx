@@ -12,36 +12,21 @@ import {useAppSelector} from "../../app/hooks";
 const ShoppingList = () => {
     const dispatch = useDispatch();
     const [value, setValue] = useState("all");
-    const items = useAppSelector(selectAllBooks);
+    const books = useAppSelector(selectAllBooks);
     const isNonMobile = useMediaQuery('(min-width:600px)');
 
     const handleChange = (event: any, newValue: React.SetStateAction<string>) => {
         setValue(newValue);
     };
 
-    async function getItems() {
-        /*const items = await fetch(
-            "https://fakestoreapi.com/products/1",
-            {method: "GET"}
-        );
-
-        const itemsJson = await items.json();
-        dispatch(setItems(itemsJson.data));*/
-        dispatch(setItems(listOfBooks));
-    }
-
-    useEffect(() => {
-        getItems();
-    }, []);
-
-    const topRatedItems = items.filter(
-        (item: Book) => item.categories.includes("topRated")
+    const topRatedItems = books.filter(
+        (book: Book) => book.categories.includes("topRated")
     )
-    const newArrivalsItems = items.filter(
-        (item: Book) => item.categories.includes("newArrivals")
+    const newArrivalsItems = books.filter(
+        (book: Book) => book.categories.includes("newArrivals")
     )
-    const bestSellersItems = items.filter(
-        (item: Book) => item.categories.includes("bestSellers")
+    const bestSellersItems = books.filter(
+        (book: Book) => book.categories.includes("bestSellers")
     )
 
     return (
@@ -76,17 +61,17 @@ const ShoppingList = () => {
                 rowGap="20px"
                 columnGap="1.33%"
             >
-                {value === "all" && items.map((item: Book) => (
-                    <BookView item={item} key={`${item.title}-${item.id}`} width={"300px"} />
+                {value === "all" && books.map((book: Book) => (
+                    <BookView book={book} key={`${book.title}-${book.id}`} width={"300px"} />
                     ))}
-                {value === "neArrivals" && newArrivalsItems.map((item: Book) => (
-                    <BookView item={item} key={`${item.title}-${item.id}`} width={"300px"} />
+                {value === "neArrivals" && newArrivalsItems.map((book: Book) => (
+                    <BookView book={book} key={`${book.title}-${book.id}`} width={"300px"} />
                 ))}
-                {value === "bestSellers" && bestSellersItems.map((item: Book) => (
-                    <BookView item={item} key={`${item.title}-${item.id}`} width={"300px"} />
+                {value === "bestSellers" && bestSellersItems.map((book: Book) => (
+                    <BookView book={book} key={`${book.title}-${book.id}`} width={"300px"} />
                 ))}
-                {value === "topRated" && topRatedItems.map((item: Book) => (
-                    <BookView item={item} key={`${item.title}-${item.id}`} width={"300px"} />
+                {value === "topRated" && topRatedItems.map((book: Book) => (
+                    <BookView book={book} key={`${book.title}-${book.id}`} width={"300px"} />
                 ))}
 
             </Box>

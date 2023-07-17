@@ -1,17 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {RootState} from "../../app/store";
 import {Book} from "../book/bookReducer";
 
+export interface OrderItem {
+    quantity: number;
+    book: Book;
+}
+
+export interface Order {
+    reservationItems: OrderItem[];
+    reservationDate: string;
+    endOfReservation: string;
+}
 
 export interface CartState {
     isCartOpen: boolean;
-    cart: Book[];
-    items: Book[];
+    cart: OrderItem[];
 }
 
 const initialState: CartState = {
     isCartOpen: false,
     cart: [],
-    items: [],
 }
 
 export const cartSlice = createSlice({
@@ -19,20 +28,32 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         setItems: (state, action) => {
-            state.items = action.payload;
+            state.cart = action.payload;
         },
         addToCart: (state, action) => {
-            state.cart = [...state.cart, action.payload.item];
+            if(state.cart.some(item => item.book.id === action.payload.book.id)) {
+                const newCart = state.cart.map(item => {
+                    if (item.book.id === action.payload.book.id) {
+                        return { ...item, quantity: item.quantity + action.payload.quantity };
+                    }
+                    return item;
+                });
+                return { ...state, cart: newCart };
+            } else {
+                const newItem: OrderItem = { book: action.payload.book, quantity: action.payload.quantity };
+                state.cart.push(newItem);
+            }
+
         },
 
         removeFromCart: (state, action) => {
-            state.cart = state.cart.filter((item) => item.id !== action.payload.id);
+            state.cart = state.cart.filter((item) => item.book.id !== action.payload.id);
         },
 
         increaseCount: (state, action) => {
             const newCart = state.cart.map(item => {
-                if (item.id === action.payload.id) {
-                    return { ...item, count: item.count + 1 };
+                if (item.book.id === action.payload.id) {
+                    return { ...item, quantity: item.quantity + 1 };
                 }
                 return item;
             });
@@ -41,8 +62,8 @@ export const cartSlice = createSlice({
 
         decreaseCount: (state, action) => {
             const newCart = state.cart.map(item => {
-                if (item.id === action.payload.id && item.count > 1) {
-                    return { ...item, count: item.count - 1 };
+                if (item.book.id === action.payload.id && item.quantity > 1) {
+                    return { ...item, quantity: item.quantity - 1 };
                 }
                 return item;
             });
@@ -64,4 +85,6 @@ export const {
     setIsCartOpen,
 } = cartSlice.actions;
 
+export const selectCart = (state: RootState) => state.cart.cart;
+export const selectIsCartOpen = (state: RootState) => state.cart.isCartOpen;
 export default cartSlice.reducer;

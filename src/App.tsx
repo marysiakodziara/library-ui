@@ -4,7 +4,7 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  useLocation,
+  useLocation, useParams,
 } from 'react-router-dom';
 import Home from './scenes/home/Home';
 import BookDetails from "./scenes/itemDetails/bookDetails";
@@ -41,7 +41,7 @@ function App() {
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="item/:itemId" element={<BookDetails />} />
+            <Route path="book/:bookId" element={<BookDetails />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="checkout/success" element={<Confirmation />} />
             <Route path="account" element={<Account />} />

@@ -75,25 +75,3 @@ const NavigationMenu = () => {
 }
 
 export default NavigationMenu;
-/*
-{categories.map((category: Category, index: number) => (
-    <>
-        <ListItemButton onClick={() => handleClick(index)}>
-            <ListItemText primary={category.mainCategory} />
-            { category.subCategories.length > 0 && (
-                open[index] ? <ExpandLess /> : <ExpandMore />
-            ) }
-        </ListItemButton>
-        <Collapse in={open[index]} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-                {category.subCategories.map((subCategory: String) => (
-                    <ListItemButton
-                        onClick={() => navigate(`/books/${category.mainCategory}/${subCategory}`)}
-                        sx={{ pl: 4 }}>
-                        <ListItemText primary={subCategory} />
-                    </ListItemButton>
-                ))}
-            </List>
-        </Collapse>
-    </>
-))}*/

@@ -4,17 +4,22 @@ import { Box, IconButton, Typography, useTheme, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { shades } from '../theme';
-import {addToCart, decreaseCount, increaseCount} from "../state/cart/cartReducer";
+import {addToCart, decreaseCount, increaseCount, OrderItem} from "../state/cart/cartReducer";
 import {Book} from '../state/book/bookReducer';
 import { useNavigate } from 'react-router-dom';
 
 
-const BookView = ({item, width}: {item: Book, width: string}) => {
+const BookView = ({book, width}: {book: Book, width: string}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [count, setCount] = useState(1);
     const [isHovered, setIsHovered] = useState(false);
     const {palette: {info}} = useTheme();
+
+    const handleAddToCart = (book: Book, quantity: number) => {
+        const newItem: OrderItem = {book, quantity};
+        dispatch(addToCart(newItem));
+    }
 
     return (
         <Box width={width}>
@@ -23,11 +28,11 @@ const BookView = ({item, width}: {item: Book, width: string}) => {
                 onMouseOver={() => setIsHovered(true)}
                 onMouseOut={() => setIsHovered(false)}>
                 <img
-                    src={`https://covers.openlibrary.org/b/isbn/${item.isbn}-L.jpg`}
-                    alt={item.title}
+                    src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}
+                    alt={book.title}
                     width="300px"
                     height="400px"
-                    onClick={() => navigate(`/item/${item.id}`)}
+                    onClick={() => navigate(`/book/${book.id}`)}
                     style={{ cursor: 'pointer' }}
                 />
                 <Box
@@ -58,7 +63,7 @@ const BookView = ({item, width}: {item: Book, width: string}) => {
                             </IconButton>
                         </Box>
                         <Button
-                            onClick={() => dispatch(addToCart({item: {...item, count}}))}
+                            onClick={() => handleAddToCart(book, count)}
                             sx={{ backgroundColor: shades.primary[300], color: "white" }}
                         >
                             Add to cart
@@ -67,8 +72,8 @@ const BookView = ({item, width}: {item: Book, width: string}) => {
                 </Box>
             </Box>
             <Box mt="3px">
-                <Typography fontWeight="bold" >{item.title}</Typography>
-                <Typography>{item.author}</Typography>
+                <Typography fontWeight="bold" >{book.title}</Typography>
+                <Typography>{book.author}</Typography>
 
             </Box>
         </Box>

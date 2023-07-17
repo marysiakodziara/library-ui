@@ -17,131 +17,68 @@ import * as yup from "yup";
 import CustomizedSteppers from "./CustomizedSteppers";
 import { shades } from "../../theme";
 import {boolean} from "yup";
-import {decreaseCount, increaseCount, removeFromCart} from "../../state/cart/cartReducer";
+import {
+    CartState,
+    decreaseCount,
+    increaseCount,
+    Order,
+    OrderItem,
+    removeFromCart,
+    selectCart
+} from "../../state/cart/cartReducer";
 import {Book} from "../../state/book/bookReducer";
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { FlexBox } from "../global/CartMenu";
 import { useNavigate } from "react-router-dom";
-
-
-
-const initialValues = {
-    billingAddress: {
-        firstName: "",
-        lastName: "",
-        country: "",
-        street1: "",
-        street2: "",
-        city: "",
-        state: "",
-        zipCode: "",
-    },
-    shippingAddress: {
-        isSameAddress: true,
-        firstName: "",
-        lastName: "",
-        country: "",
-        street1: "",
-        street2: "",
-        city: "",
-        state: "",
-        zipCode: "",
-    },
-    email: "",
-    phoneNumber: "",
-}
-
-function schema() {
-    return yup.string().required("required");
-}
-
-const checkoutSchema = [
-    yup.object().shape({
-        billingAddress: yup.object().shape({
-            firstName: yup.string().required("required"),
-            lastName: yup.string().required("required"),
-            country: yup.string().required("required"),
-            street1: yup.string().required("required"),
-            street2: yup.string(),
-            city: yup.string().required("required"),
-            state: yup.string().required("required"),
-            zipCode: yup.string().required("required"),
-        }),
-        shippingAddress: yup.object().shape({
-            isSameAddress: yup.boolean(),
-            firstName: yup.string().when("isSameAddress", {
-                is: (isSameAddress: boolean) => isSameAddress,
-                then: schema,
-            }),
-            lastName: yup.string().when("isSameAddress", {
-                is: (isSameAddress: boolean) => isSameAddress,
-                then: schema,
-            }),
-            country: yup.string().when("isSameAddress", {
-                is: (isSameAddress: boolean) => isSameAddress,
-                then: schema,
-            }),
-            street1: yup.string().when("isSameAddress", {
-                is: (isSameAddress: boolean) => isSameAddress,
-                then: schema,
-            }),
-            street2: yup.string(),
-            city: yup.string().when("isSameAddress", {
-                is: (isSameAddress: boolean) => isSameAddress,
-                then: schema,
-            }),
-            state: yup.string().when("isSameAddress", {
-                is: (isSameAddress: boolean) => isSameAddress,
-                then: schema,
-            }),
-            zipCode: yup.string().when("isSameAddress", {
-                is: (isSameAddress: boolean) => isSameAddress,
-                then: schema,
-            }),
-        })
-    }),
-    yup.object().shape({
-        email: yup.string().required("required"),
-        phoneNumber: yup.string().required("required"),
-    }),
-]
+import axios, {AxiosResponse} from "axios";
+import {useAppSelector} from "../../app/hooks";
+import dayjs from 'dayjs';
 
 const Checkout = () => {
-    const cart = useSelector((state: any) => state.cart.cart);
+    const cart = useAppSelector(selectCart)
     const [activeStep, setActiveStep] = useState<number>(cart.length === 0 ? 0 : 1);
+    const [isAppointmentCreated, setIsAppointmentCreated] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isSecondStep = activeStep === 1;
     const isThirdStep = activeStep === 2;
 
-    const handleFormSubmit = async (value: any, actions: any) => {
-        setActiveStep(activeStep + 1);
+    const sendData = () => {
+        sendReservationData();
     }
 
-    async function  makePayment(values: any) {
 
-    }
-
-    /*<Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={checkoutSchema[activeStep]}
-    >
-        {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              setFieldValue
-          }) => (
-            <form onSubmit={handleSubmit}>
-            </form>
-        )}
-    </Formik>*/
+    const sendReservationData = async () => {
+        const reservationData: Order = {
+            reservationItems: cart,
+            reservationDate: dayjs().format('YYYY-MM-DD'),
+            endOfReservation:  dayjs().add(1, 'day').format('YYYY-MM-DD')
+        }
+        try {
+            const response: AxiosResponse = await axios.post(
+                `http://localhost:8080/api/v1/reservation`,
+                reservationData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            )
+            if (response.status) {
+                setIsAppointmentCreated(true);
+                setIsLoading(false);
+            } else {
+                setIsAppointmentCreated(false);
+                setIsLoading(false);
+            }
+        } catch (error) {
+            setIsAppointmentCreated(false);
+            setIsLoading(false);
+        }
+    };
 
     return (
          <Box>
@@ -191,29 +128,29 @@ const Checkout = () => {
                         </Box>
                         <Divider />
                         <Box width="90%" m="20px auto">
-                            {cart.map((item: Book) => (
-                                <Box key={`${item.title}-${item.id}`}>
+                            {cart.map((item: OrderItem) => (
+                                <Box key={`${item.book.title}-${item.book.id}`}>
                                     <FlexBox p="15px 0">
                                         <Box flex="1 1 40%">
                                             <img
-                                                alt={item?.title}
+                                                alt={item?.book.title}
                                                 width="123px"
                                                 height="164px"
-                                                src={`https://covers.openlibrary.org/b/isbn/${item?.isbn}-M.jpg`}
+                                                src={`https://covers.openlibrary.org/b/isbn/${item?.book.isbn}-M.jpg`}
                                             />
                                         </Box>
                                         <Box flex="1 1 60%">
                                             <FlexBox mb="5px">
                                                 <Typography fontWeight="bold">
-                                                    {item.title}
+                                                    {item.book.title}
                                                 </Typography>
-                                                <IconButton onClick={() => dispatch(removeFromCart({ id: item.id}))}>
+                                                <IconButton onClick={() => dispatch(removeFromCart({ id: item.book.id}))}>
                                                     <CloseIcon/>
                                                 </IconButton>
 
                                             </FlexBox>
                                             <Typography>
-                                                {item.author}
+                                                {item.book.author}
                                             </Typography>
                                             <FlexBox m="15px 0">
                                                 <Box
@@ -222,13 +159,13 @@ const Checkout = () => {
                                                     border={`1.5px solid ${shades.neutral[500]}`}
                                                 >
                                                     <IconButton
-                                                        onClick={() => dispatch(decreaseCount({ id: item.id}))}
+                                                        onClick={() => dispatch(decreaseCount({ id: item.book.id}))}
                                                     >
                                                         <RemoveIcon/>
                                                     </IconButton>
-                                                    <Typography>{item.count}</Typography>
+                                                    <Typography>{item.quantity}</Typography>
                                                     <IconButton
-                                                        onClick={() => dispatch(increaseCount({ id: item.id}))}
+                                                        onClick={() => dispatch(increaseCount({ id: item.book.id}))}
                                                     >
                                                         <AddIcon/>
                                                     </IconButton>
@@ -279,12 +216,14 @@ const Checkout = () => {
                             alignItems="center"
                             display="flex"
                         >
-                            <Button sx={{
-                                width: "50%",
-                                height: "50px",
-                                backgroundColor: `rgba(255, 135, 62,1.00)`,
-                                m: "0 auto"
-                            }}>
+                            <Button
+                                onClick={sendData}
+                                sx={{
+                                    width: "50%",
+                                    height: "50px",
+                                    backgroundColor: `rgba(255, 135, 62,1.00)`,
+                                    m: "0 auto"}}
+                            >
                                 Confirm Reservation
                             </Button>
                         </Box>
