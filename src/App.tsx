@@ -9,7 +9,6 @@ import {
 import Home from './scenes/home/Home';
 import BookDetails from "./scenes/itemDetails/bookDetails";
 import Checkout from "./scenes/checkout/Checkout";
-import Confirmation from "./scenes/checkout/Confirmation";
 import Navbar from "./scenes/global/navbar/Navbar";
 import CartMenu from "./scenes/global/CartMenu";
 import Footer from "./scenes/global/Footer";
@@ -43,7 +42,6 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="book/:bookId" element={<BookDetails />} />
             <Route path="checkout" element={<Checkout />} />
-            <Route path="checkout/success" element={<Confirmation />} />
             <Route path="account" element={<Account />} />
           </Routes>
           <CartMenu/>

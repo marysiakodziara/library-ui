@@ -1,50 +1,42 @@
-import { useSelector, useDispatch } from "react-redux";
-import {
-    Box,
-    Button,
-    Stepper,
-    Step,
-    StepLabel,
-    StepConnector,
-    StepIcon,
-    Typography,
-    IconButton,
-    Divider
-} from "@mui/material";
-import { Formik } from "formik";
-import { useState } from "react";
-import * as yup from "yup";
+import {useDispatch} from "react-redux";
+import {Box, Button, Divider, IconButton, Typography} from "@mui/material";
+import {useEffect, useState} from "react";
 import CustomizedSteppers from "./CustomizedSteppers";
-import { shades } from "../../theme";
-import {boolean} from "yup";
+import {shades} from "../../theme";
 import {
-    CartState,
     decreaseCount,
     increaseCount,
-    Order,
     OrderItem,
     removeFromCart,
-    selectCart
+    selectCart,
+    setCartEmpty
 } from "../../state/cart/cartReducer";
-import {Book} from "../../state/book/bookReducer";
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import { FlexBox } from "../global/CartMenu";
-import { useNavigate } from "react-router-dom";
-import axios, {AxiosResponse} from "axios";
+import {FlexBox} from "../global/CartMenu";
 import {useAppSelector} from "../../app/hooks";
-import dayjs from 'dayjs';
+import ZeroStep from "./ZeroStep";
+import SecondStep from "./SecondStep";
 
 const Checkout = () => {
-    const cart = useAppSelector(selectCart)
+    const cart: OrderItem[] = useAppSelector(selectCart)
     const [activeStep, setActiveStep] = useState<number>(cart.length === 0 ? 0 : 1);
     const [isAppointmentCreated, setIsAppointmentCreated] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const isSecondStep = activeStep === 1;
-    const isThirdStep = activeStep === 2;
+    const isZeroStep = activeStep === 0;
+    const isFirstStep = activeStep === 1;
+    const isSecondStep = activeStep === 2;
+
+    useEffect(() => {
+        if (isAppointmentCreated) {
+            setActiveStep(2)
+        } else if (cart.length === 0 && !isAppointmentCreated) {
+            setActiveStep(0)
+        }
+
+    }, [isLoaded, cart.length]);
 
     const sendData = () => {
         sendReservationData();
@@ -52,10 +44,10 @@ const Checkout = () => {
 
 
     const sendReservationData = async () => {
-        const reservationData: Order = {
+        /*const reservationData: Order = {
             reservationItems: cart,
             reservationDate: dayjs().format('YYYY-MM-DD'),
-            endOfReservation:  dayjs().add(1, 'day').format('YYYY-MM-DD')
+            endOfReservation:  dayjs().add(1, 'day').format('YYYY-MM-DD');
         }
         try {
             const response: AxiosResponse = await axios.post(
@@ -69,15 +61,17 @@ const Checkout = () => {
             )
             if (response.status) {
                 setIsAppointmentCreated(true);
-                setIsLoading(false);
             } else {
                 setIsAppointmentCreated(false);
-                setIsLoading(false);
             }
+            setIsLoaded(true);
         } catch (error) {
             setIsAppointmentCreated(false);
-            setIsLoading(false);
-        }
+            setIsLoaded(true);
+        }*/
+        dispatch(setCartEmpty())
+        setIsAppointmentCreated(true);
+        setActiveStep(2);
     };
 
     return (
@@ -85,35 +79,10 @@ const Checkout = () => {
                 <Box width="80%" mt="100px" ml="auto" mr="auto" mb="40px">
                     <CustomizedSteppers activeStep={activeStep} />
                 </Box>
-             {cart.length === 0 && (
-                 <Box
-                     width="80%"
-                     height="300px"
-                     m="0 auto"
-                     sx={{ backgroundColor: shades.neutral[200] }}
-                 >
-                     <Box display="flex">
-                         <Typography
-                             sx={{ m: "50px auto" }}
-                             variant="h2">
-                             Your cart is empty
-                         </Typography>
-                     </Box>
-                     <Box display="flex" >
-                         <Typography
-                             sx={{
-                                 m: "0 auto",
-                                 color: `rgba(195,73,0,1.00)`,
-                                 ":hover": {cursor: "pointer"}
-                             }}
-                             onClick={() => navigate("/")}
-                         >
-                             Go to the main page
-                         </Typography>
-                     </Box>
-                 </Box>
+             {isZeroStep && (
+                 <ZeroStep />
              )}
-             {(isSecondStep && cart.length !== 0) && (
+             {isFirstStep && (
                  <Box
                      width="80%"
                      margin="auto"
@@ -182,6 +151,11 @@ const Checkout = () => {
                         sx={{ backgroundColor: shades.neutral[200] }}
                         padding="2% 2%"
                     >
+                        {isLoaded && !isAppointmentCreated && (
+                            <Box sx={{background: 'red'}} width="100%">
+                                <Typography>Something went wrong</Typography>
+                            </Box>
+                        )}
                          <Box height="300px">
                              <Box
                                  sx={{ mt: "20px"}}
@@ -229,6 +203,9 @@ const Checkout = () => {
                         </Box>
                     </Box>
                  </Box>)}
+                {isSecondStep && (
+                    <SecondStep />
+                )}
          </Box>
 
     );

@@ -72,6 +72,9 @@ export const cartSlice = createSlice({
 
         setIsCartOpen: (state) => {
             state.isCartOpen = !state.isCartOpen;
+        },
+        setCartEmpty: (state) => {
+            state.cart = [];
         }
     }
 });
@@ -83,6 +86,7 @@ export const {
     increaseCount,
     decreaseCount,
     setIsCartOpen,
+    setCartEmpty
 } = cartSlice.actions;
 
 export const selectCart = (state: RootState) => state.cart.cart;
