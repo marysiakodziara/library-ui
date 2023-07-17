@@ -13,7 +13,7 @@ export const shades = {
         900: "#000000",
     },
     secondary: {
-        100: "#f7ccd2",
+        100: "#FEF8F9",
         200: "#ef99a4",
         300: "#e66677",
         400: "#de3349",

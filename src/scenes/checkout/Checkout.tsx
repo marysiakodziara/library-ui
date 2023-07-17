@@ -38,6 +38,10 @@ const Checkout = () => {
 
     }, [isLoaded, cart.length]);
 
+    useEffect(() => {
+        setIsLoaded(false)
+    }, [cart]);
+
     const sendData = () => {
         sendReservationData();
     }
@@ -69,9 +73,9 @@ const Checkout = () => {
             setIsAppointmentCreated(false);
             setIsLoaded(true);
         }*/
-        dispatch(setCartEmpty())
-        setIsAppointmentCreated(true);
-        setActiveStep(2);
+        //dispatch(setCartEmpty())
+        setIsLoaded(true);
+        //setActiveStep(2);
     };
 
     return (
@@ -152,55 +156,76 @@ const Checkout = () => {
                         padding="2% 2%"
                     >
                         {isLoaded && !isAppointmentCreated && (
-                            <Box sx={{background: 'red'}} width="100%">
-                                <Typography>Something went wrong</Typography>
+                            <Box width="100%" height="100%">
+                                <Typography
+                                    width="100%"
+                                    textAlign="center"
+                                    sx={{color: 'red', fontSize: '15px', pt: '20px', pb: '20px'}}
+                                    fontWeight="bold"
+                                >
+                                    Reservation Was Rejected
+                                </Typography>
+                                <Divider/>
+                                <Typography
+                                    width="100%"
+                                    sx={{pt: '20px', pb: '20px'}}
+                                    textAlign="center"
+                                    fontWeight="bold"
+                                >
+                                    The books you have chosen <br/>
+                                    are not available at the moment. <br/>
+                                    Try placing new order.
+                                </Typography>
                             </Box>
                         )}
-                         <Box height="300px">
-                             <Box
-                                 sx={{ mt: "20px"}}
-                                 width="100%"
-                                 display="flex"
-                                 justifyContent="space-between"
-                             >
-                                 <Typography variant="h3">Reservation Till</Typography>
-                                 <Typography>Tomorrow</Typography>
+                        {!isLoaded && (
+                            <>
+                             <Box height="300px">
+                                 <Box
+                                     sx={{ mt: "20px"}}
+                                     width="100%"
+                                     display="flex"
+                                     justifyContent="space-between"
+                                 >
+                                     <Typography variant="h3">Reservation Till</Typography>
+                                     <Typography>Tomorrow</Typography>
+                                 </Box>
+                                 <Box
+                                     sx={{ mt: "20px"}}
+                                     width="100%"
+                                     display="flex"
+                                     justifyContent="space-between">
+                                     <Typography variant="h3">Number of books</Typography>
+                                     <Typography>{cart.length}</Typography>
+                                 </Box>
+                                 <Box
+                                     sx={{ mt: "100px"}}
+                                     width="100%"
+                                     display="flex"
+                                     justifyContent="space-between">
+                                     <div>
+                                         This order ensures that the books will be reserved for you in the library.
+                                         To confirm the reservation, please click the button below.
+                                     </div>
+                                 </Box>
                              </Box>
-                             <Box
-                                 sx={{ mt: "20px"}}
-                                 width="100%"
-                                 display="flex"
-                                 justifyContent="space-between">
-                                 <Typography variant="h3">Number of books</Typography>
-                                 <Typography>{cart.length}</Typography>
-                             </Box>
-                             <Box
-                                 sx={{ mt: "100px"}}
-                                 width="100%"
-                                 display="flex"
-                                 justifyContent="space-between">
-                                 <div>
-                                     This order ensures that the books will be reserved for you in the library.
-                                     To confirm the reservation, please click the button below.
-                                 </div>
-                             </Box>
-                         </Box>
-                        <Box
-                            width="100%"
-                            alignItems="center"
-                            display="flex"
-                        >
-                            <Button
-                                onClick={sendData}
-                                sx={{
-                                    width: "50%",
-                                    height: "50px",
-                                    backgroundColor: `rgba(255, 135, 62,1.00)`,
-                                    m: "0 auto"}}
+                            <Box
+                                width="100%"
+                                alignItems="center"
+                                display="flex"
                             >
-                                Confirm Reservation
-                            </Button>
-                        </Box>
+                                <Button
+                                    onClick={sendData}
+                                    sx={{
+                                        width: "50%",
+                                        height: "50px",
+                                        backgroundColor: `rgba(255, 135, 62,1.00)`,
+                                        m: "0 auto"}}
+                                >
+                                    Confirm Reservation
+                                </Button>
+                            </Box>
+                            </>)}
                     </Box>
                  </Box>)}
                 {isSecondStep && (
