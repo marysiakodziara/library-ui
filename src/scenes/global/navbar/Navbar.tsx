@@ -25,7 +25,7 @@ const Navbar = () => {
     const { loginWithRedirect, logout } = useAuth0();
     const [openAccount, setOpenAccount] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { isAuthenticated } = useAuth0();
     const location = useLocation();
     const anchorRefAccount = useRef<HTMLButtonElement>(null);
     const anchorRefMenu = useRef<HTMLButtonElement>(null);

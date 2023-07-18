@@ -33,7 +33,7 @@ const SecondStep = () => {
                     sx={{fontWeight: 'bold', fontSize: '13px'}}
                     onClick={() => navigate("/")}
                 >
-                    Reservation Details
+                    Your Reservations
                     <KeyboardArrowRightIcon sx={{fontSize: '20px'}}/>
                 </Button>
             </Box>

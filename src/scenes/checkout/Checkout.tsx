@@ -5,7 +5,7 @@ import CustomizedSteppers from "./CustomizedSteppers";
 import {shades} from "../../theme";
 import {
     decreaseCount,
-    increaseCount,
+    increaseCount, Order,
     OrderItem,
     removeFromCart,
     selectCart,
@@ -18,12 +18,17 @@ import {FlexBox} from "../global/CartMenu";
 import {useAppSelector} from "../../app/hooks";
 import ZeroStep from "./ZeroStep";
 import SecondStep from "./SecondStep";
+import dayjs from "dayjs";
+import axios, {AxiosResponse} from "axios";
+import {useAuth0} from "@auth0/auth0-react";
 
 const Checkout = () => {
     const cart: OrderItem[] = useAppSelector(selectCart)
     const [activeStep, setActiveStep] = useState<number>(cart.length === 0 ? 0 : 1);
     const [isAppointmentCreated, setIsAppointmentCreated] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const { isAuthenticated } = useAuth0();
+    const { loginWithRedirect } = useAuth0();
     const dispatch = useDispatch();
     const isZeroStep = activeStep === 0;
     const isFirstStep = activeStep === 1;
@@ -43,15 +48,19 @@ const Checkout = () => {
     }, [cart]);
 
     const sendData = () => {
-        sendReservationData();
+        if (isAuthenticated) {
+            sendReservationData();
+        } else {
+            loginWithRedirect();
+        }
     }
 
 
     const sendReservationData = async () => {
-        /*const reservationData: Order = {
+        const reservationData: Order = {
             reservationItems: cart,
             reservationDate: dayjs().format('YYYY-MM-DD'),
-            endOfReservation:  dayjs().add(1, 'day').format('YYYY-MM-DD');
+            endOfReservation:  dayjs().add(1, 'day').format('YYYY-MM-DD'),
         }
         try {
             const response: AxiosResponse = await axios.post(
@@ -72,10 +81,7 @@ const Checkout = () => {
         } catch (error) {
             setIsAppointmentCreated(false);
             setIsLoaded(true);
-        }*/
-        //dispatch(setCartEmpty())
-        setIsLoaded(true);
-        //setActiveStep(2);
+        }
     };
 
     return (
