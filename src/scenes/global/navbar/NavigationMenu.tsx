@@ -22,6 +22,11 @@ const NavigationMenu = () => {
         });
     }
 
+    const handleNavigate = (categories: string[]) => {
+        const categoriesString = categories.join(",").toLowerCase();
+        navigate(`/${categoriesString}/0`);
+    }
+
 
     return (
             <Box
@@ -49,17 +54,19 @@ const NavigationMenu = () => {
                 >
                     {Object.entries(categories).map(([mainCategory, subCategories], index) => (
                         <>
-                            <ListItemButton onClick={() => handleClick(index)}>
-                                <ListItemText primary={mainCategory} />
+                            <ListItemButton>
+                                <ListItemText primary={mainCategory} onClick={() => handleNavigate(subCategories)}/>
                                 { subCategories.length > 0 && (
-                                    open[index] ? <ExpandLess /> : <ExpandMore />
+                                    open[index] ?
+                                        <ExpandLess onClick={() => handleClick(index)} /> :
+                                        <ExpandMore onClick={() => handleClick(index)}/>
                                 ) }
                             </ListItemButton>
                             <Collapse in={open[index]} timeout="auto" unmountOnExit>
                                 <List component="div" disablePadding>
                                     {subCategories.map((subCategory: String) => (
                                         <ListItemButton
-                                            onClick={() => navigate(`/books/${mainCategory}/${subCategory}`)}
+                                            onClick={() => navigate(`/${subCategory}/0`)}
                                             sx={{ pl: 4 }}>
                                             <ListItemText primary={subCategory} />
                                         </ListItemButton>
