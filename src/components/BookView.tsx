@@ -30,8 +30,8 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
                 <img
                     src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}
                     alt={book.title}
-                    width="300px"
-                    height="400px"
+                    width="250px"
+                    height="350px"
                     onClick={() => navigate(`/book/${book.id}`)}
                     style={{ cursor: 'pointer' }}
                 />

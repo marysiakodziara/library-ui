@@ -25,6 +25,7 @@ const Navbar = () => {
     const { loginWithRedirect, logout } = useAuth0();
     const [openAccount, setOpenAccount] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
+    const [search, setSearch] = useState("");
     const { isAuthenticated } = useAuth0();
     const location = useLocation();
     const anchorRefAccount = useRef<HTMLButtonElement>(null);
@@ -88,6 +89,12 @@ const Navbar = () => {
 
     const handleOpenMenu = () => {
         setOpenMenu((prevOpen) => !prevOpen);
+    }
+
+    const handleSearch = () => {
+        if (search !== "") {
+            navigate(`/search/${search}/0`);
+        }
     }
 
     return (
@@ -155,8 +162,12 @@ const Navbar = () => {
                             sx={{ ml: 1, flex: 1, color: "white"}}
                             placeholder="Search for a book"
                             inputProps={{ 'aria-label': 'search google maps' }}
+                            onChange={(e) => setSearch(e.target.value)}
                         />
-                        <IconButton type="button" aria-label="search">
+                        <IconButton
+                            type="button"
+                            aria-label="search"
+                            onClick={() => handleSearch()}>
                             <SearchIcon sx={{color: "white"}}/>
                         </IconButton>
                     </Box>

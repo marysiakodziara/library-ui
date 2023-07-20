@@ -1,26 +1,54 @@
-import { SetStateAction, useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {Box, IconButton, Typography, Button, Tabs, Tab} from '@mui/material';
+import React, {SetStateAction, useEffect, useState} from 'react';
+import {Box, Button, IconButton, Tab, Tabs, Typography} from '@mui/material';
 import FavouriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {shades} from '../../theme';
-import {addToCart, decreaseCount, increaseCount, OrderItem} from "../../state/cart/cartReducer";
-import {Book, selectAllBooks} from '../../state/book/bookReducer';
+import {addToCart, OrderItem} from "../../state/cart/cartReducer";
+import {Book, fetchBooksForIndividualView, selectAllBooks, selectStatus} from '../../state/book/bookReducer';
 import {useParams} from 'react-router-dom';
 import BookView from '../../components/BookView';
-import listOfBooks from "../../state/cart/listOfBooks";
-import {useAppSelector} from "../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import ErrorPage from "../global/ErrorPage";
 
 const BookDetails = () => {
     const { bookId } = useParams();
-    const id = bookId ? bookId : "";
-    const dispatch = useDispatch();
+    const id: number = bookId ? parseInt(bookId) : 0;
+    const dispatch = useAppDispatch();
     const [value, setValue] = useState("description");
     const [count, setCount] = useState(1);
     const books = useAppSelector(selectAllBooks);
-    const book = books[parseInt(id) - 1];
+    const [book, setBook] = useState<Book>();
+    const [description, setDescription] = useState<string>("");
+    const status = useAppSelector(selectStatus);
+    console.log(!!(!book))
+    console.log(!!(status === 'fulfilled' && book))
+    async function fetchData() {
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${book?.isbn}&key=AIzaSyB-sMlG38pY-OxgIMCwxNU9SUQzF9m6jZ4`);
+        const data = await response.json();
+        setDescription(data.items[0].volumeInfo.description);
+    }
+
+    useEffect(() => {
+        const handleFetchData = async () => {
+            await fetchData();
+        };
+
+        if (book) {
+            handleFetchData();
+        }
+    }, [book]);
+
+
+    useEffect(() => {
+        dispatch(fetchBooksForIndividualView({id}));
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (books !== undefined) {
+            setBook(books?.find(book => book.id === id));
+        }
+    }, [books, id]);
 
     const handleChange = (event: any, newValue: SetStateAction<string>) => {
         setValue(newValue);
@@ -33,7 +61,7 @@ const BookDetails = () => {
 
     return (
         <Box width="80%" m="80px auto">
-            { book && (
+            { book && description &&  (
                 <>
                     <Box display="flex" flexWrap="wrap" columnGap="40px">
                         <Box flex="1 1 40%" mb="40px">
@@ -56,7 +84,7 @@ const BookDetails = () => {
                                     <Typography variant="h3">{book?.title}</Typography>
                                     <Typography>{book?.author}</Typography>
                                     <Typography sx={{ mt: "20px" }}>
-                                        {book?.description}
+                                        {description}
                                     </Typography>
                                 </Box>
                                 <Box display="flex" alignItems="center" minHeight="50px">
@@ -110,7 +138,7 @@ const BookDetails = () => {
                     </Box>
                     <Box display="flex" flexWrap="wrap" gap="15px">
                 {value === "description" && (
-                    <div>{book?.description}</div>
+                    <div>{description}</div>
                     )}
                 {value === "reviews" && (
                     <div>reviews</div>
@@ -127,13 +155,13 @@ const BookDetails = () => {
                     columnGap="1.33%"
                     justifyContent="space-between"
                     >
-                {books.slice(0, 4).map((book, i) => (
-                    <BookView key={`${book?.title}-${i}`} book={book} width={"100%"}/>))}
+                {books.slice(1, 5).map((book, i) => (
+                    <BookView key={`${book?.title}-${i}`} book={book} width={"250px"}/>))}
                     </Box>
                     </Box>
                 </>
             )}
-            { !book && (
+            { books.length === 0 && status === 'fulfilled' && (
                 <ErrorPage/>
             )}
         </Box>
