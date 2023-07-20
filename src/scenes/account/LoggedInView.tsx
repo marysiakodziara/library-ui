@@ -3,10 +3,28 @@ import {shades} from "../../theme";
 import PersonalInformation from "./PersonalInformation";
 import BorrowingHistory from "./BorrowingHistory";
 import ReservationHistory from "./ReservationHistory";
-import {useState} from "react";
+import {FC, useEffect, useState} from "react";
+import {useLocation} from "react-router-dom";
 
-const LoggedInView = () => {
-    const [subCategory, setSubCategory] = useState<string>('personalInformation');
+const LoggedInView: FC<{category: string}> = (props) => {
+    const [subCategory, setSubCategory] = useState<string>('');
+    const location = useLocation();
+
+    useEffect(() => {
+        switch (props.category) {
+            case 'borrowingHistory':
+                setSubCategory('borrowingHistory');
+                break;
+            case 'reservationHistory':
+                setSubCategory('reservationHistory');
+                break;
+            default:
+                setSubCategory('personalInformation');
+                break;
+        }
+    }, []);
+
+
 
     return (
         <Box mt="100px" width="80%" mr="auto" ml="auto">

@@ -36,6 +36,7 @@ const Checkout = () => {
 
     useEffect(() => {
         if (isAppointmentCreated) {
+            dispatch(setCartEmpty());
             setActiveStep(2)
         } else if (cart.length === 0 && !isAppointmentCreated) {
             setActiveStep(0)

@@ -3,9 +3,12 @@ import LoggedInView from "./LoggedInView";
 import LoggedOutView from "./LoggedOutView";
 import {Box, CircularProgress} from "@mui/material";
 import { shades } from "../../theme";
+import {useParams} from "react-router-dom";
 
 const Account = () => {
     const { isAuthenticated, isLoading } = useAuth0();
+    const { tab } = useParams();
+    const subCategory: string = tab !== undefined ? tab : "";
 
     if (isLoading) {
         return (
@@ -25,7 +28,7 @@ const Account = () => {
     return (
         <>
         { isAuthenticated && (
-           < LoggedInView/>
+           < LoggedInView category={subCategory}/>
         )}
         { !isAuthenticated && (
             <LoggedOutView />

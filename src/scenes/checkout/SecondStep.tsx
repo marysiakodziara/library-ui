@@ -31,7 +31,7 @@ const SecondStep = () => {
                     Go To Main Page</Button>
                 <Button
                     sx={{fontWeight: 'bold', fontSize: '13px'}}
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate("/account/reservationHistory")}
                 >
                     Your Reservations
                     <KeyboardArrowRightIcon sx={{fontSize: '20px'}}/>

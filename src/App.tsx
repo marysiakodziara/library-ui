@@ -43,6 +43,7 @@ function App() {
             <Route path="book/:bookId" element={<BookDetails />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="account" element={<Account />} />
+            <Route path="account/:tab" element={<Account />} />
             <Route path="search/:phrase/:page" element={<BookFilter />} />
             <Route path=":categories/:page" element={<BookFilter />} />
           </Routes>
