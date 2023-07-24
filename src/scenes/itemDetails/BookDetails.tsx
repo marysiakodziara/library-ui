@@ -24,7 +24,7 @@ const BookDetails = () => {
     console.log(!!(!book))
     console.log(!!(status === 'fulfilled' && book))
     async function fetchData() {
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${book?.isbn}&key=AIzaSyB-sMlG38pY-OxgIMCwxNU9SUQzF9m6jZ4`);
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${book?.isbn}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}`);
         const data = await response.json();
         setDescription(data.items[0].volumeInfo.description);
     }
