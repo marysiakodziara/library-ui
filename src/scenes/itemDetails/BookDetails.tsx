@@ -1,15 +1,17 @@
 import React, {SetStateAction, useEffect, useState} from 'react';
-import {Box, Button, IconButton, Tab, Tabs, Typography} from '@mui/material';
+import {Box, Button, CircularProgress, IconButton, Tab, Tabs, Typography} from '@mui/material';
 import FavouriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {shades} from '../../theme';
 import {addToCart, OrderItem} from "../../state/cart/cartReducer";
-import {Book, fetchBooksForIndividualView, selectAllBooks, selectStatus} from '../../state/book/bookReducer';
-import {useParams} from 'react-router-dom';
+import {Book, fetchRandomBooks, selectAllBooks, selectStatus} from '../../state/book/bookReducer';
+import {useLocation, useParams} from 'react-router-dom';
 import BookView from '../../components/BookView';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import ErrorPage from "../global/ErrorPage";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import axios from "axios";
 
 const BookDetails = () => {
     const { bookId } = useParams();
@@ -18,11 +20,35 @@ const BookDetails = () => {
     const [value, setValue] = useState("description");
     const [count, setCount] = useState(1);
     const books = useAppSelector(selectAllBooks);
-    const [book, setBook] = useState<Book>();
+    const [book, setBook] = useState<Book | null>();
     const [description, setDescription] = useState<string>("");
-    const status = useAppSelector(selectStatus);
-    console.log(!!(!book))
-    console.log(!!(status === 'fulfilled' && book))
+    const location = useLocation();
+
+
+    const [loading, setLoading] = useState(true);
+
+    async function fetchBook() {
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/book/id?id=${id}`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    setBook(data);
+                    setLoading(false);
+                } else {
+                    setBook(null);
+                    setLoading(false);
+                }
+            } else {
+                setBook(null);
+                setLoading(false);
+            }
+        } catch (error) {
+            setBook(null);
+            setLoading(false);
+        }
+    }
+
     async function fetchData() {
         const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${book?.isbn}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}`);
         const data = await response.json();
@@ -37,18 +63,19 @@ const BookDetails = () => {
         if (book) {
             handleFetchData();
         }
-    }, [book]);
+    },[book] );
+
+    useEffect(() => {
+        setDescription("");
+        setBook(null);
+        setLoading(true);
+    }, [location]);
 
 
     useEffect(() => {
-        dispatch(fetchBooksForIndividualView({id}));
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (books !== undefined) {
-            setBook(books?.find(book => book.id === id));
-        }
-    }, [books, id]);
+        fetchBook();
+        dispatch(fetchRandomBooks())
+    }, [dispatch, location]);
 
     const handleChange = (event: any, newValue: SetStateAction<string>) => {
         setValue(newValue);
@@ -59,9 +86,11 @@ const BookDetails = () => {
         dispatch(addToCart(newItem));
     }
 
+    const filteredBooks = books?.filter(book => book.id !== id);
+
     return (
         <Box width="80%" m="80px auto">
-            { book && description &&  (
+            { !loading && book && description &&  (
                 <>
                     <Box display="flex" flexWrap="wrap" columnGap="40px">
                         <Box flex="1 1 40%" mb="40px">
@@ -155,14 +184,23 @@ const BookDetails = () => {
                     columnGap="1.33%"
                     justifyContent="space-between"
                     >
-                {books.slice(1, 5).map((book, i) => (
+                {filteredBooks.slice(0, 4).map((book, i) => (
                     <BookView key={`${book?.title}-${i}`} book={book} width={"250px"}/>))}
                     </Box>
                     </Box>
                 </>
             )}
-            { books.length === 0 && status === 'fulfilled' && (
+            { !loading && book === null && (
                 <ErrorPage/>
+            )}
+            { loading && (
+                <CircularProgress
+                    size={200}
+                    sx={{
+                        size: 400,
+                        color: shades.neutral[500],
+                        m: "auto auto",
+                    }}/>
             )}
         </Box>
     );

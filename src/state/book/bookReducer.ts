@@ -57,10 +57,11 @@ export const fetchBooksByPhrase = createAsyncThunk('books/fetchBooksByPhrase', a
     console.log("called FILTER endpoint");
     return (await axios.get(`http://localhost:8080/api/v1/book/filter?phrase=${phrase}&page=${page}`)).data;
 });
-
-export const fetchBooksForIndividualView = createAsyncThunk('books/fetchBooksForIndividualView', async ({ id }: { id: number }) => {
-    return (await axios.get(`http://localhost:8080/api/v1/book/id?id=${id}`)).data;
+export const fetchRandomBooks = createAsyncThunk('books/fetchRandomBooks', async () => {
+    console.log("called RANDOM endpoint");
+    return (await axios.get(`http://localhost:8080/api/v1/book/random`)).data;
 });
+
 
 export const bookSlice = createSlice({
     name: 'book',
@@ -109,14 +110,14 @@ export const bookSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.error.message;
             })
-            .addCase(fetchBooksForIndividualView.pending, (state) => {
+            .addCase(fetchRandomBooks.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(fetchBooksForIndividualView.fulfilled, (state, action) => {
+            .addCase(fetchRandomBooks.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 state.bookPage = action.payload;
             })
-            .addCase(fetchBooksForIndividualView.rejected, (state, action) => {
+            .addCase(fetchRandomBooks.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             });

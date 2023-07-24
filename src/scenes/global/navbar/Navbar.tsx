@@ -78,15 +78,6 @@ const Navbar = () => {
         }
     }
 
-    function handleListKeyDownMenu(event: React.KeyboardEvent) {
-        if (event.key === 'Tab') {
-            event.preventDefault();
-            setOpenMenu(false);
-        } else if (event.key === 'Escape') {
-            setOpenMenu(false);
-        }
-    }
-
     const handleOpenMenu = () => {
         setOpenMenu((prevOpen) => !prevOpen);
     }
