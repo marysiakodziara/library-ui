@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Box, IconButton, Typography, useTheme, Button } from '@mui/material';
+import {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {Box, Button, IconButton, Typography, useTheme} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { shades } from '../theme';
-import {addToCart, decreaseCount, increaseCount, OrderItem} from "../state/cart/cartReducer";
+import {shades} from '../theme';
+import {addToCart, OrderItem} from "../state/cart/cartReducer";
 import {Book} from '../state/book/bookReducer';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 
 const BookView = ({book, width}: {book: Book, width: string}) => {
@@ -43,32 +43,50 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
                     width="100%"
                     padding="0 5%"
                 >
-                    <Box width="100%" display="flex" justifyContent="space-between">
-                        <Box
-                            display="flex"
-                            alignItems="center"
-                            sx={{backgroundColor: shades.neutral[100]}}
-                            borderRadius="3px"
-                        >
-                            <IconButton
-                                onClick={() => setCount(Math.max(count - 1, 1))}
+                    { book.numberOfAvailableBooks !== 0 && (
+                        <Box width="100%" display="flex" justifyContent="space-between">
+                            <Box
+                                display="flex"
+                                alignItems="center"
+                                sx={{backgroundColor: shades.neutral[100]}}
+                                borderRadius="3px"
                             >
-                                <RemoveIcon/>
-                            </IconButton>
-                            <Typography color={shades.primary[300]}>{count}</Typography>
-                            <IconButton
-                                onClick={() => setCount(count + 1)}
+                                <IconButton
+                                    onClick={() => setCount(Math.max(count - 1, 1))}
+                                >
+                                    <RemoveIcon/>
+                                </IconButton>
+                                <Typography color={shades.primary[300]}>{count}</Typography>
+                                <IconButton
+                                    onClick={() => setCount(count + 1)}
+                                    disabled={count >= book.numberOfAvailableBooks}
+                                >
+                                    <AddIcon/>
+                                </IconButton>
+                            </Box>
+                            <Button
+                                onClick={() => handleAddToCart(book, count)}
+                                sx={{ backgroundColor: shades.primary[300], color: "white" }}
                             >
-                                <AddIcon/>
-                            </IconButton>
+                                Add to cart
+                            </Button>
                         </Box>
-                        <Button
-                            onClick={() => handleAddToCart(book, count)}
-                            sx={{ backgroundColor: shades.primary[300], color: "white" }}
+                    )}
+                    { book.numberOfAvailableBooks === 0 && (
+                        <Box
+                            height="50px"
+                            width="100%"
+                            display="flex"
+                            sx={{backgroundColor: `rgba(210, 215, 211, 0.9)`}}
                         >
-                            Add to cart
-                        </Button>
-                    </Box>
+                                <Typography
+                                    sx={{m: 'auto auto'}}
+                                    fontSize="15px"
+                                >No copies available</Typography>
+                        </Box>
+                    )}
+
+
                 </Box>
             </Box>
             <Box mt="3px">

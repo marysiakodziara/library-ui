@@ -11,6 +11,7 @@ export interface Book {
     description: string;
     categories: string[];
     count: number;
+    numberOfAvailableBooks: number;
 }
 
 export interface BookPage {
