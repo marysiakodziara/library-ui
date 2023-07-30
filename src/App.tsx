@@ -1,11 +1,5 @@
-import React from 'react';
-import { useEffect } from 'react';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation, useParams,
-} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {BrowserRouter, Route, Routes, useLocation,} from 'react-router-dom';
 import Home from './scenes/home/Home';
 import BookDetails from "./scenes/itemDetails/BookDetails";
 import Checkout from "./scenes/checkout/Checkout";
@@ -14,8 +8,10 @@ import CartMenu from "./scenes/global/CartMenu";
 import Footer from "./scenes/global/Footer";
 import Account from "./scenes/account/Account";
 import {useAppDispatch} from "./app/hooks";
-import {fetchBooks, fetchCategories} from "./state/book/bookReducer";
+import {fetchCategories} from "./state/book/bookReducer";
 import BookFilter from "./scenes/bookFilter/BookFilter";
+import {useAuth0} from "@auth0/auth0-react";
+import {loginUser} from "./state/security/securityReducer";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -27,11 +23,22 @@ const ScrollToTop = () => {
 }
 
 function App() {
+  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const dispatch = useAppDispatch();
 
-    useEffect(() => {
-      dispatch(fetchCategories());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (isAuthenticated) {
+        const token = await getAccessTokenSilently();
+        dispatch(loginUser(token));
+      }
+    };
+    fetchToken();
+  }, [isAuthenticated, getAccessTokenSilently, dispatch]);
 
   return (
     <div className="app">

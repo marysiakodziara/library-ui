@@ -21,11 +21,12 @@ import SecondStep from "./SecondStep";
 import dayjs from "dayjs";
 import axios, {AxiosResponse} from "axios";
 import {useAuth0} from "@auth0/auth0-react";
+import {selectLoggedUser} from "../../state/security/securityReducer";
 
 const Checkout = () => {
     const cart: OrderItem[] = useAppSelector(selectCart)
     const [activeStep, setActiveStep] = useState<number>(cart.length === 0 ? 0 : 1);
-    const [isAppointmentCreated, setIsAppointmentCreated] = useState(false);
+    const [isReservationCreated, setIsReservationCreated] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const { isAuthenticated } = useAuth0();
     const { loginWithRedirect } = useAuth0();
@@ -33,12 +34,13 @@ const Checkout = () => {
     const isZeroStep = activeStep === 0;
     const isFirstStep = activeStep === 1;
     const isSecondStep = activeStep === 2;
+    const token = useAppSelector(selectLoggedUser);
 
     useEffect(() => {
-        if (isAppointmentCreated) {
+        if (isReservationCreated) {
             dispatch(setCartEmpty());
             setActiveStep(2)
-        } else if (cart.length === 0 && !isAppointmentCreated) {
+        } else if (cart.length === 0 && !isReservationCreated) {
             setActiveStep(0)
         }
 
@@ -56,6 +58,11 @@ const Checkout = () => {
         }
     }
 
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+    };
+
 
     const sendReservationData = async () => {
         const reservationData: Order = {
@@ -66,21 +73,18 @@ const Checkout = () => {
         try {
             const response: AxiosResponse = await axios.post(
                 `http://localhost:8080/api/v1/reservation`,
-                reservationData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                reservationData, {
+                    headers: headers
                 }
             )
             if (response.status) {
-                setIsAppointmentCreated(true);
+                setIsReservationCreated(true);
             } else {
-                setIsAppointmentCreated(false);
+                setIsReservationCreated(false);
             }
             setIsLoaded(true);
         } catch (error) {
-            setIsAppointmentCreated(false);
+            setIsReservationCreated(false);
             setIsLoaded(true);
         }
     };
@@ -162,7 +166,7 @@ const Checkout = () => {
                         sx={{ backgroundColor: shades.neutral[200] }}
                         padding="2% 2%"
                     >
-                        {isLoaded && !isAppointmentCreated && (
+                        {isLoaded && !isReservationCreated && (
                             <Box width="100%" height="100%">
                                 <Typography
                                     width="100%"
