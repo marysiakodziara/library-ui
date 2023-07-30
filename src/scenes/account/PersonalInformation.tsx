@@ -1,8 +1,8 @@
 import {Box, Typography, useMediaQuery} from "@mui/material";
 import {shades} from "../../theme";
+import {User} from "./LoggedInView";
 
-const PersonalInformation = () => {
-
+const PersonalInformation = (user: User) => {
     const isNonMobile = useMediaQuery('(max-width: 600px)');
 
     return (
@@ -31,7 +31,7 @@ const PersonalInformation = () => {
                 }}>
                     <Box width="80%" height="80%" m="10% auto">
                         <Typography variant="h6" fontWeight="bold">Name</Typography>
-                        <Typography mt="20px">Marysia Antoniak</Typography>
+                        <Typography mt="20px">{user?.firstName} {user?.lastName}</Typography>
                     </Box>
                 </Box>
                 <Box
@@ -43,7 +43,7 @@ const PersonalInformation = () => {
                     }}>
                     <Box width="80%" height="80%" m="10% auto">
                         <Typography variant="h6" fontWeight="bold">Address</Typography>
-                        <Typography mt="20px">22-300 Krasnystaw, st Kickiego 28</Typography>
+                        <Typography mt="20px">{user?.address}</Typography>
                     </Box>
                 </Box>
                 <Box
@@ -55,7 +55,7 @@ const PersonalInformation = () => {
                     }}>
                     <Box width="80%" height="80%" m="10% auto">
                         <Typography variant="h6" fontWeight="bold">Phone Number</Typography>
-                        <Typography mt="20px">602-345-678</Typography>
+                        <Typography mt="20px">{user?.phoneNumber}</Typography>
                     </Box>
                 </Box>
                 <Box
@@ -91,7 +91,7 @@ const PersonalInformation = () => {
                     }}>
                     <Box width="80%" height="80%" m="10% auto">
                         <Typography variant="h6" fontWeight="bold">Email</Typography>
-                        <Typography mt="20px">marysiaantoniak01@gmail.com</Typography>
+                        <Typography mt="20px">{user?.emailAddress}</Typography>
                     </Box>
                 </Box>
             </Box>
