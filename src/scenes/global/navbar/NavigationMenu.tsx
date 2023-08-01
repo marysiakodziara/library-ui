@@ -6,7 +6,7 @@ import {useState} from "react";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {useAppSelector} from "../../../app/hooks";
 import {Category, selectAllCategories} from "../../../state/book/bookReducer";
 
 const NavigationMenu = () => {

@@ -6,7 +6,7 @@ const Footer = () => {
     const { palette: { info }} = useTheme();
 
     return (
-        <Box mt="70px" p="40px 0" sx={{backgroundColor: info.light}}>
+        <Box p="40px 0" sx={{backgroundColor: info.light}}>
             <Box
                 width="80%"
                 margin="auto"

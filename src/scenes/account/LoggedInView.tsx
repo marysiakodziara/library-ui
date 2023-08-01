@@ -1,4 +1,4 @@
-import {Avatar, Box, Button, Divider, makeStyles, Tab, Tabs, Typography} from "@mui/material";
+import {Avatar, Box, Button, Divider, Typography} from "@mui/material";
 import {shades} from "../../theme";
 import PersonalInformation from "./PersonalInformation";
 import BorrowingHistory from "./BorrowingHistory";
@@ -64,8 +64,13 @@ const LoggedInView: FC<{category: string}> = (props) => {
         }
     }, []);
 
+    const handleSubCategoryChange = (subCategory: string) => {
+        setSubCategory(subCategory);
+        window.history.pushState(null, '', `${location.pathname}?tab=${subCategory}`);
+    }
+
     return (
-        <Box mt="100px" width="80%" mr="auto" ml="auto">
+        <Box mt="80px" width="80%" mr="auto" ml="auto">
             <Box
                 width="100%"
                 display="flex"
@@ -104,7 +109,7 @@ const LoggedInView: FC<{category: string}> = (props) => {
                         sx={{
                             '&:hover': { cursor: 'pointer' },
                             color: subCategory === 'personalInformation' ? `rgb(255, 135, 62)` : "black"}}
-                        onClick={() => setSubCategory('personalInformation')}
+                        onClick={() => handleSubCategoryChange('personalInformation')}
                     >
                         Personal information</Typography>
                     <Typography
@@ -113,7 +118,7 @@ const LoggedInView: FC<{category: string}> = (props) => {
                         sx={{
                             '&:hover': { cursor: 'pointer' },
                             color: subCategory === 'borrowingHistory' ? `rgb(255, 135, 62)` : "black"}}
-                        onClick={() => setSubCategory('borrowingHistory')}
+                        onClick={() => handleSubCategoryChange('borrowingHistory')}
                     >
                         Borrowing history</Typography>
                     <Typography
@@ -122,7 +127,7 @@ const LoggedInView: FC<{category: string}> = (props) => {
                         sx={{
                             '&:hover': { cursor: 'pointer' },
                             color: subCategory === 'reservationHistory' ? `rgb(255, 135, 62)` : "black"}}
-                        onClick={() => setSubCategory('reservationHistory')}
+                        onClick={() => handleSubCategoryChange('reservationHistory')}
                     >
                         Reservation history</Typography>
                 </Box>

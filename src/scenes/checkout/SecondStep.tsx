@@ -4,10 +4,17 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import {useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../app/hooks";
+import {fetchReservationHistory} from "../../state/account/accountReducer";
 
 
 const SecondStep = () => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const handeNavigate = (location: string) => {
+        dispatch(fetchReservationHistory())
+        navigate(location);
+    }
 
     return (
         <Box
@@ -25,13 +32,14 @@ const SecondStep = () => {
             <Box width="80%" display="flex" justifyContent='space-between' sx={{m: "40px auto"}}>
                 <Button
                     sx={{fontWeight: 'bold', fontSize: '13px'}}
-                    onClick={() => navigate("/")}
+                    onClick={() => handeNavigate("/")}
                 >
                     <KeyboardArrowLeftIcon sx={{fontSize: '20px'}}/>
-                    Go To Main Page</Button>
+                    Go To Main Page
+                </Button>
                 <Button
                     sx={{fontWeight: 'bold', fontSize: '13px'}}
-                    onClick={() => navigate("/account/reservationHistory")}
+                    onClick={() => handeNavigate("/account?tab=reservationHistory")}
                 >
                     Your Reservations
                     <KeyboardArrowRightIcon sx={{fontSize: '20px'}}/>

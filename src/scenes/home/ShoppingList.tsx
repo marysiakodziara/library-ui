@@ -1,14 +1,9 @@
-import React, { useEffect, useState, } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {Box, Typography, Tab, Tabs, useMediaQuery, CircularProgress} from '@mui/material';
+import React, {useEffect, useState,} from 'react';
+import {Box, CircularProgress, Tab, Tabs, Typography, useMediaQuery} from '@mui/material';
 import BookView from '../../components/BookView';
-import {setItems} from '../../state/cart/cartReducer';
-import {Book, fetchBooks, fetchCategories, selectAllBooks, selectStatus} from '../../state/book/bookReducer';
-import listOfBooks from "../../state/cart/listOfBooks";
+import {Book, fetchBooks, selectAllBooks} from '../../state/book/bookReducer';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {shades} from "../../theme";
-
-
 
 const ShoppingList = () => {
     const dispatch = useAppDispatch();

@@ -19,6 +19,9 @@ import {useAuth0} from "@auth0/auth0-react";
 import {useEffect, useRef, useState} from "react";
 import NavigationMenu from "./NavigationMenu";
 import SearchIcon from '@mui/icons-material/Search';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import {selectRole} from "../../../state/security/securityReducer";
+import {useAppSelector} from "../../../app/hooks";
 
 
 const Navbar = () => {
@@ -33,6 +36,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const cart = useSelector((state: any) => state.cart.cart);
+    const userRole = useAppSelector(selectRole);
 
     useEffect(() => {
         setOpenMenu(false);
@@ -230,6 +234,13 @@ const Navbar = () => {
                             </Grow>
                         )}
                     </Popper>
+                    { userRole === "MANAGER" && (
+                        <IconButton
+                            onClick={() => navigate("/admin")}
+                            sx={{color: "white"}}>
+                            <BusinessCenterIcon />
+                        </IconButton>
+                    )}
                     <Badge
                         badgeContent={cart.length}
                         color="secondary"
