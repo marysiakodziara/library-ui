@@ -1,15 +1,12 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Check from '@mui/icons-material/Check';
-import SettingsIcon from '@mui/icons-material/Settings';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import VideoLabelIcon from '@mui/icons-material/VideoLabel';
-import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { StepIconProps } from '@mui/material/StepIcon';
+import StepConnector, {stepConnectorClasses} from '@mui/material/StepConnector';
+import {StepIconProps} from '@mui/material/StepIcon';
 
 const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -71,10 +68,8 @@ function QontoStepIcon(props: StepIconProps) {
     );
 }
 
-const steps = ['Choose Books','Summary', 'Done'];
-
-export default function CustomizedSteppers(props: { activeStep: number; }) {
-    const { activeStep } = props;
+export default function CustomizedSteppers(props: { activeStep: number; steps: string[]; }) {
+    const { activeStep, steps } = props;
     return (
         <Stack sx={{ width: '100%' }} spacing={4}>
             <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>

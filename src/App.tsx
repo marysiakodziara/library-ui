@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter, Route, Routes, useLocation,} from 'react-router-dom';
 import Home from './scenes/home/Home';
 import BookDetails from "./scenes/itemDetails/BookDetails";
@@ -26,8 +26,6 @@ const ScrollToTop = () => {
 function App() {
   const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const dispatch = useAppDispatch();
-  const path = window.location.pathname;
-  console.log(path);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -59,9 +57,7 @@ function App() {
             <Route path="/admin" element={<ManagerDashboard />} />
           </Routes>
           <CartMenu/>
-          {path !== "/admin" && (
-              <Footer/>
-          )}
+          <Footer/>
         </BrowserRouter>
     </div>
   );

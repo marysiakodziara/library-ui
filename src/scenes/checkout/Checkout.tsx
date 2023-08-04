@@ -1,7 +1,7 @@
 import {useDispatch} from "react-redux";
 import {Box, Button, Divider, IconButton, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
-import CustomizedSteppers from "./CustomizedSteppers";
+import CustomizedSteppers from "../global/CustomizedSteppers";
 import {shades} from "../../theme";
 import {
     decreaseCount,
@@ -35,6 +35,7 @@ const Checkout = () => {
     const isFirstStep = activeStep === 1;
     const isSecondStep = activeStep === 2;
     const token = useAppSelector(selectLoggedUser);
+    const steps = ['Choose Books','Summary', 'Done'];
 
     useEffect(() => {
         if (isReservationCreated) {
@@ -92,7 +93,7 @@ const Checkout = () => {
     return (
          <Box>
                 <Box width="80%" mt="100px" ml="auto" mr="auto" mb="40px">
-                    <CustomizedSteppers activeStep={activeStep} />
+                    <CustomizedSteppers activeStep={activeStep} steps={steps} />
                 </Box>
              {isZeroStep && (
                  <ZeroStep />
