@@ -14,6 +14,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import {initializeSecurity, loginUser} from "./state/security/securityReducer";
 import ManagerDashboard from "./scenes/managerDashboard/ManagerDashboard";
 import PrivateRoutes from "./scenes/global/PrivateRoutes";
+import {setItems} from "./state/cart/cartReducer";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -25,8 +26,13 @@ const ScrollToTop = () => {
 }
 
 function App() {
-  const { user, isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const dispatch = useAppDispatch();
+
+
+  useEffect(() => {
+    dispatch(setItems());
+  }, []);
 
   useEffect(() => {
     dispatch(fetchCategories());

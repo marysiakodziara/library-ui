@@ -28,8 +28,9 @@ export const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        setItems: (state, action) => {
-            state.cart = action.payload;
+        setItems: (state) => {
+            const newCart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+            return { ...state, cart: newCart };
         },
         addToCart: (state, action) => {
             if(state.cart.some(item => item.book.id === action.payload.book.id)) {
@@ -39,16 +40,19 @@ export const cartSlice = createSlice({
                     }
                     return item;
                 });
+                sessionStorage.setItem('cart', JSON.stringify(newCart));
                 return { ...state, cart: newCart };
             } else {
                 const newItem: OrderItem = { book: action.payload.book, quantity: action.payload.quantity };
                 state.cart.push(newItem);
+                sessionStorage.setItem('cart', JSON.stringify(state.cart));
             }
 
         },
 
         removeFromCart: (state, action) => {
             state.cart = state.cart.filter((item) => item.book.id !== action.payload.id);
+            sessionStorage.setItem('cart', JSON.stringify(state.cart));
         },
 
         increaseCount: (state, action) => {
@@ -58,6 +62,7 @@ export const cartSlice = createSlice({
                 }
                 return item;
             });
+            sessionStorage.setItem('cart', JSON.stringify(newCart));
             return { ...state, cart: newCart };
         },
 
@@ -68,6 +73,7 @@ export const cartSlice = createSlice({
                 }
                 return item;
             });
+            sessionStorage.setItem('cart', JSON.stringify(newCart));
             return { ...state, cart: newCart };
         },
 
