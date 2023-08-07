@@ -1,17 +1,19 @@
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
     Badge,
     Box,
     Button,
     ClickAwayListener,
     Grow,
-    IconButton, InputBase,
+    IconButton,
+    InputBase,
     MenuItem,
     MenuList,
     Paper,
-    Popper, Typography
+    Popper,
+    Typography
 } from '@mui/material';
-import {MenuOutlined, PersonOutline, SearchOutlined, ShoppingBagOutlined,} from '@mui/icons-material';
+import {MenuOutlined, PersonOutline, ShoppingBagOutlined,} from '@mui/icons-material';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {shades} from '../../../theme';
 import {setIsCartOpen} from "../../../state/cart/cartReducer";
@@ -20,8 +22,8 @@ import {useEffect, useRef, useState} from "react";
 import NavigationMenu from "./NavigationMenu";
 import SearchIcon from '@mui/icons-material/Search';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import {selectRole} from "../../../state/security/securityReducer";
-import {useAppSelector} from "../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {selectRole, logoutUser} from "../../../state/security/securityReducer";
 
 
 const Navbar = () => {
@@ -34,7 +36,7 @@ const Navbar = () => {
     const anchorRefAccount = useRef<HTMLButtonElement>(null);
     const anchorRefMenu = useRef<HTMLButtonElement>(null);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const cart = useSelector((state: any) => state.cart.cart);
     const userRole = useAppSelector(selectRole);
 
@@ -209,7 +211,10 @@ const Navbar = () => {
                                                         fontFamily: "inherit",
                                                         backgroundColor: shades.primary[100],
                                                     }}
-                                                    onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+                                                    onClick={() => {
+                                                        logout({ logoutParams: { returnTo: window.location.origin } })
+                                                        dispatch(logoutUser());
+                                                    }}
                                                 >
                                                     Log Out
                                                 </Button>
@@ -234,7 +239,7 @@ const Navbar = () => {
                             </Grow>
                         )}
                     </Popper>
-                    { userRole === "MANAGER" && (
+                    { userRole === "manager" && (
                         <IconButton
                             onClick={() => navigate("/admin")}
                             sx={{color: "white"}}>

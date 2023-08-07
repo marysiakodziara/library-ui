@@ -32,7 +32,7 @@ import SecondStep from "./SecondStep";
 import dayjs from "dayjs";
 import axios, {AxiosResponse} from "axios";
 import {useAuth0} from "@auth0/auth0-react";
-import {selectLoggedUser, selectRole} from "../../state/security/securityReducer";
+import {selectLoggedUser} from "../../state/security/securityReducer";
 import SearchIcon from "@mui/icons-material/Search";
 import {User} from "../account/LoggedInView";
 
@@ -43,7 +43,7 @@ const Checkout = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isUserRequestSend, setIsUserRequestSend] = useState(false);
     const [userEmail, setUserEmail] = useState<string>('');
-    const [user, setUser] = useState<User | null>(null);
+    const [userObject, setUserObject] = useState<User | null>(null);
     const [userFetched, setUserFetched] = useState<boolean>(false);
     const [checked, setChecked] = useState<boolean>(false);
     const [ userFirstName, setUserFirstName ] = useState<string>('');
@@ -54,7 +54,7 @@ const Checkout = () => {
     const [ firstNameError, setFirstNameError ] = useState<boolean>(false);
     const [ lastNameError, setLastNameError ] = useState<boolean>(false);
     const [ isUserCreated, setIsUserCreated ] = useState<boolean>(false);
-    const { isAuthenticated } = useAuth0();
+    const { isAuthenticated, user } = useAuth0();
     const { loginWithRedirect } = useAuth0();
     const dispatch = useDispatch();
     const isZeroStep = activeStep === 0;
@@ -62,10 +62,10 @@ const Checkout = () => {
     const isSecondStep = activeStep === 2;
     const token = useAppSelector(selectLoggedUser);
     const steps = ['Choose Books','Summary', 'Done'];
-    const userRole = useAppSelector(selectRole);
+    const userRole = user?.nickname
 
     useEffect(() => {
-        console.log(user == null)
+        console.log(userObject == null)
         if (isReservationCreated) {
             dispatch(setCartEmpty());
             setActiveStep(2)
@@ -76,7 +76,7 @@ const Checkout = () => {
     }, [isLoaded, cart.length]);
 
     useEffect(() => {
-        console.log(user == null)
+        console.log(userObject == null)
         setIsLoaded(false)
     }, [cart]);
 
@@ -196,10 +196,10 @@ const Checkout = () => {
         }).then((response: AxiosResponse) => {
             const user: User = response.data;
             if (user?.emailAddress != null) {
-                setUser(user);
+                setUserObject(user);
                 setUserFetched(true);
             } else {
-                setUser(null);
+                setUserObject(null);
                 setUserFetched(true);
             }
         }).catch((error) => {
@@ -213,7 +213,7 @@ const Checkout = () => {
 
     const handleCheckedBox = () => {
         setChecked(!checked);
-        setUser(null);
+        setUserObject(null);
         setUserFetched(false);
         setUserEmail('');
         setUserFirstName('');
@@ -381,8 +381,8 @@ const Checkout = () => {
                                                  <>
                                                      <TextField
                                                          sx={{width: "100%"}}
-                                                         error={userFetched && user == null}
-                                                         helperText={(userFetched && user == null) ? "There is no user with given email" : ""}
+                                                         error={userFetched && userObject == null}
+                                                         helperText={(userFetched && userObject == null) ? "There is no user with given email" : ""}
                                                          label={"Client email"}
                                                          onChange={(e) => {
                                                              setUserFetched(false);
@@ -400,7 +400,7 @@ const Checkout = () => {
                                                              ),
                                                          }}
                                                      />
-                                                     { userFetched && user != null && (
+                                                     { userFetched && userObject != null && (
                                                          <Box
                                                          mt="20px"
                                                          display="grid"
@@ -409,10 +409,10 @@ const Checkout = () => {
                                                          justifyContent="space-around"
                                                          rowGap="20px"
                                                          >
-                                                         <Typography variant="h5">Firstname: {user.firstName}</Typography>
-                                                         <Typography variant="h5">Lastname: {user.lastName}</Typography>
-                                                         <Typography variant="h5">Email Address: {user.emailAddress}</Typography>
-                                                         <Typography variant="h5">Phone Number: {user.phoneNumber}</Typography>
+                                                         <Typography variant="h5">Firstname: {userObject.firstName}</Typography>
+                                                         <Typography variant="h5">Lastname: {userObject.lastName}</Typography>
+                                                         <Typography variant="h5">Email Address: {userObject.emailAddress}</Typography>
+                                                         <Typography variant="h5">Phone Number: {userObject.phoneNumber}</Typography>
                                                          </Box>
                                                      )}
                                                  </>

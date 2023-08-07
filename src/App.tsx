@@ -11,8 +11,9 @@ import {useAppDispatch} from "./app/hooks";
 import {fetchCategories} from "./state/book/bookReducer";
 import BookFilter from "./scenes/bookFilter/BookFilter";
 import {useAuth0} from "@auth0/auth0-react";
-import {fetchRole, loginUser} from "./state/security/securityReducer";
+import {initializeSecurity, loginUser} from "./state/security/securityReducer";
 import ManagerDashboard from "./scenes/managerDashboard/ManagerDashboard";
+import PrivateRoutes from "./scenes/global/PrivateRoutes";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -24,7 +25,7 @@ const ScrollToTop = () => {
 }
 
 function App() {
-  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { user, isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -32,11 +33,13 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
+    dispatch(initializeSecurity());
     const fetchToken = async () => {
       if (isAuthenticated) {
         const token = await getAccessTokenSilently();
-        dispatch(loginUser(token));
-        dispatch(fetchRole())
+        const role = user?.nickname;
+
+        dispatch(loginUser({token, role}));
       }
     };
     fetchToken();
@@ -54,7 +57,9 @@ function App() {
             <Route path="account" element={<Account />} />
             <Route path="search/:phrase/:page" element={<BookFilter />} />
             <Route path=":categories/:page" element={<BookFilter />} />
-            <Route path="/admin" element={<ManagerDashboard />} />
+            <Route element={<PrivateRoutes/>}>
+              <Route path="/admin" element={<ManagerDashboard />} />
+            </Route>
           </Routes>
           <CartMenu/>
           <Footer/>
