@@ -14,7 +14,7 @@ const Footer = () => {
                 <></>
             )}
             { path !== "/admin" && (
-                <Box p="40px 0" sx={{backgroundColor: info.light}}>
+                <Box p="40px 0" mt="70px" sx={{backgroundColor: info.light}}>
                     <Box
                         width="80%"
                         margin="auto"

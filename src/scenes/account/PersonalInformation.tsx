@@ -42,18 +42,6 @@ const PersonalInformation = (user: User) => {
                         borderRadius: "20px",
                     }}>
                     <Box width="80%" height="80%" m="10% auto">
-                        <Typography variant="h6" fontWeight="bold">Address</Typography>
-                        <Typography mt="20px">{user?.address}</Typography>
-                    </Box>
-                </Box>
-                <Box
-                    width="100%"
-                    height="170px"
-                    sx={{
-                        backgroundColor: shades.neutral[300],
-                        borderRadius: "20px",
-                    }}>
-                    <Box width="80%" height="80%" m="10% auto">
                         <Typography variant="h6" fontWeight="bold">Phone Number</Typography>
                         <Typography mt="20px">{user?.phoneNumber}</Typography>
                     </Box>

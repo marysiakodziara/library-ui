@@ -11,6 +11,7 @@ export interface Order {
     reservationItems: OrderItem[];
     reservationDate: string;
     endOfReservation: string;
+    borrowed: boolean;
 }
 
 export interface CartState {

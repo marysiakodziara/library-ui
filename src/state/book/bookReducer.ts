@@ -8,7 +8,6 @@ export interface Book {
     title: string;
     author: string;
     numberOfBooks: number;
-    description: string;
     categories: string[];
     count: number;
     numberOfAvailableBooks: number;

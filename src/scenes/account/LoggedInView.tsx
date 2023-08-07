@@ -14,7 +14,6 @@ export interface User {
     lastName: string;
     emailAddress: string;
     phoneNumber: string;
-    address: string;
 }
 
 const LoggedInView: FC<{category: string}> = (props) => {
@@ -25,7 +24,6 @@ const LoggedInView: FC<{category: string}> = (props) => {
         lastName: '',
         emailAddress: '',
         phoneNumber: '',
-        address: '',
     });
     const token = useAppSelector(selectLoggedUser);
 
@@ -132,7 +130,7 @@ const LoggedInView: FC<{category: string}> = (props) => {
                         Reservation history</Typography>
                 </Box>
                 {subCategory === 'personalInformation' && (
-                    <PersonalInformation  address={user.address} emailAddress={user.emailAddress} firstName={user.firstName} lastName={user.lastName} phoneNumber={user.phoneNumber}/>
+                    <PersonalInformation emailAddress={user.emailAddress} firstName={user.firstName} lastName={user.lastName} phoneNumber={user.phoneNumber}/>
                 )}
                 {subCategory === 'borrowingHistory' && (
                     <BorrowingHistory />

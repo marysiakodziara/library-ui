@@ -6,6 +6,7 @@ import {shades} from "../../theme";
 import {SyntheticEvent, useState} from "react";
 import AddBook from "./AddBook";
 import {styled} from "@mui/material/styles";
+import OrdersList from "./OrdersList";
 
 export const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -14,6 +15,12 @@ export const Item = styled(Paper)(({ theme }) => ({
     minHeight: 0,
     lineHeight: '60px',
 }));
+
+export enum OrdersType {
+    BORROWED = "BORROWED",
+    RESERVED = "RESERVED",
+    OVERDUE = "OVERDUE",
+}
 
 const ManagerDashboard = () => {
     const userRole = useAppSelector(selectRole);
@@ -51,12 +58,20 @@ const ManagerDashboard = () => {
                                 <Tab label="Borrowed Books" sx={{alignItems: "start"}}/>
                                 <Tab label="Overdue Books"  sx={{alignItems: "start"}}/>
                                 <Tab label="Book Reservations" sx={{alignItems: "start"}}/>
-                                <Tab label="Manage Clients" sx={{alignItems: "start"}}/>
                             </Tabs>
                         </Item>
                         <Box width="80%">
                             { value === 0 && (
                                 <AddBook />)}
+                            { value === 1 && (
+                                <OrdersList ordersType={OrdersType.BORROWED}/>
+                            )}
+                            { value === 2 && (
+                                <OrdersList ordersType={OrdersType.OVERDUE}/>
+                            )}
+                            { value === 3 && (
+                                <OrdersList ordersType={OrdersType.RESERVED}/>
+                            )}
                         </Box>
                     </Box>
                 </Box>

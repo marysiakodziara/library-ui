@@ -39,7 +39,6 @@ const emptyBook: Book = {
     categories: [],
     count: 0,
     numberOfAvailableBooks: 0,
-    description: "",
 }
 
 const AddBook = () => {
@@ -195,7 +194,7 @@ const AddBook = () => {
                 setBookError(true);
                 setBookErrorMessage("Something went wrong, try again later!");
             }
-        });
+        })
     }
 
     return (
