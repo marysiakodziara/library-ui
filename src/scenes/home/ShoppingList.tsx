@@ -1,7 +1,12 @@
 import React, {useEffect, useState,} from 'react';
 import {Box, CircularProgress, Tab, Tabs, Typography, useMediaQuery} from '@mui/material';
 import BookView from '../../components/BookView';
-import {Book, fetchBooks, selectAllBooks} from '../../state/book/bookReducer';
+import {
+    Book,
+    fetchHomePageBooksAll, fetchHomePageBooksBestsellers,
+    fetchHomePageBooksNewArrivals, HomePageBooks,
+    selectAllHomePageBooks
+} from '../../state/book/bookReducer';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {shades} from "../../theme";
 
@@ -10,11 +15,15 @@ const ShoppingList = () => {
     const [value, setValue] = useState("all");
     const isNonMobile = useMediaQuery('(min-width:600px)');
     const [called, setCalled] = useState<boolean>(false);
-
-    const books = useAppSelector(selectAllBooks);
+    const homePageBooks: HomePageBooks = useAppSelector(selectAllHomePageBooks);
+    const allBooks = homePageBooks.all;
+    const newArrivalsItems = homePageBooks.newArrivals;
+    const bestSellersItems = homePageBooks.bestsellers;
 
     useEffect(() => {
-        dispatch(fetchBooks());
+        dispatch(fetchHomePageBooksAll());
+        dispatch(fetchHomePageBooksNewArrivals());
+        dispatch(fetchHomePageBooksBestsellers());
         setCalled(true);
     }, []);
 
@@ -22,19 +31,9 @@ const ShoppingList = () => {
         setValue(newValue);
     };
 
-    const topRatedItems = books?.filter(
-        (book: Book) => book.categories.includes("topRated")
-    )
-    const newArrivalsItems = books?.filter(
-        (book: Book) => book.categories.includes("newArrivals")
-    )
-    const bestSellersItems = books?.filter(
-        (book: Book) => book.categories.includes("bestSellers")
-    )
-
     return (
         <Box width="80%" margin="20px auto">
-            { !called && (
+            { (!called || allBooks.length == 0) && (
                 <CircularProgress
                     size={200}
                     sx={{
@@ -65,7 +64,6 @@ const ShoppingList = () => {
                         <Tab label="ALL" value="all"/>
                         <Tab label="NEW ARRIVALS" value="newArrivals"/>
                         <Tab label="BEST SELLERS" value="bestSellers"/>
-                        <Tab label="TOP RATED" value="topRated"/>
                     </Tabs>
                     <Box
                         margin="0 auto"
@@ -75,19 +73,15 @@ const ShoppingList = () => {
                         rowGap="20px"
                         columnGap="1.33%"
                     >
-                        {value === "all" && books?.map((book: Book) => (
+                        {value === "all" && allBooks?.map((book: Book) => (
                             <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
                         ))}
-                        {value === "neArrivals" && newArrivalsItems?.map((book: Book) => (
+                        {value === "newArrivals" && newArrivalsItems?.map((book: Book) => (
                             <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
                         ))}
                         {value === "bestSellers" && bestSellersItems?.map((book: Book) => (
                             <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
                         ))}
-                        {value === "topRated" && topRatedItems?.map((book: Book) => (
-                            <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
-                        ))}
-
                     </Box>
                 </>
             )}
