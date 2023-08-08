@@ -1,13 +1,13 @@
 import {Avatar, Box, Button, Divider, Typography} from "@mui/material";
 import {shades} from "../../theme";
 import PersonalInformation from "./PersonalInformation";
-import BorrowingHistory from "./BorrowingHistory";
-import ReservationHistory from "./ReservationHistory";
 import {FC, useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
 import {useAppSelector} from "../../app/hooks";
 import {selectLoggedUser} from "../../state/security/securityReducer";
 import axios from "axios";
+import OrdersHistory from "./OrdersHistory";
+import {OrdersType} from "../managerDashboard/ManagerDashboard";
 
 export interface User {
     firstName: string;
@@ -118,7 +118,7 @@ const LoggedInView: FC<{category: string}> = (props) => {
                             color: subCategory === 'borrowingHistory' ? `rgb(255, 135, 62)` : "black"}}
                         onClick={() => handleSubCategoryChange('borrowingHistory')}
                     >
-                        Borrowing history</Typography>
+                        Borrowed Books</Typography>
                     <Typography
                         mt="20px"
                         variant="h5"
@@ -127,17 +127,19 @@ const LoggedInView: FC<{category: string}> = (props) => {
                             color: subCategory === 'reservationHistory' ? `rgb(255, 135, 62)` : "black"}}
                         onClick={() => handleSubCategoryChange('reservationHistory')}
                     >
-                        Reservation history</Typography>
+                        Reservations</Typography>
                 </Box>
-                {subCategory === 'personalInformation' && (
-                    <PersonalInformation emailAddress={user.emailAddress} firstName={user.firstName} lastName={user.lastName} phoneNumber={user.phoneNumber}/>
-                )}
-                {subCategory === 'borrowingHistory' && (
-                    <BorrowingHistory />
-                )}
-                {subCategory === 'reservationHistory' && (
-                    <ReservationHistory />
-                )}
+                <Box width="100%" height="500px">
+                    {subCategory === 'personalInformation' && (
+                        <PersonalInformation emailAddress={user.emailAddress} firstName={user.firstName} lastName={user.lastName} phoneNumber={user.phoneNumber}/>
+                    )}
+                    {subCategory === 'borrowingHistory' && (
+                        <OrdersHistory ordersType={OrdersType.BORROWED}/>
+                    )}
+                    {subCategory === 'reservationHistory' && (
+                        <OrdersHistory ordersType={OrdersType.RESERVED}/>
+                    )}
+                </Box>
             </Box>
         </Box>
     );

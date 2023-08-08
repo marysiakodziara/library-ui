@@ -10,6 +10,12 @@ export interface OrderHistoryItem {
     returned: boolean,
 }
 
+export interface BorrowedOrderHistoryItem extends OrderHistoryItem {
+    id: number,
+    reservationDate: string,
+    endOfReservation: string,
+}
+
 export interface OrderHistory {
     id: string,
     reservationItems: OrderHistoryItem[],
@@ -20,7 +26,7 @@ export interface OrderHistory {
 }
 
 export interface OrderHistoryPage {
-    content: OrderHistory[],
+    content: OrderHistory[] | BorrowedOrderHistoryItem[]
     totalPages: number,
 }
 
@@ -62,7 +68,7 @@ export const fetchBorrowingHistory = createAsyncThunk('account/fetchBorrowingHis
         Authorization: `Bearer ${token}`,
     };
     console.log("called BORROWING endpoint");
-    return (await axios.get(`http://localhost:8080/api/v1/reservation/client?borrowed=true`, {headers})).data;
+    return (await axios.get(`http://localhost:8080/api/v1/reservation/borrowedItems/forClient`, {headers})).data;
 });
 export const fetchReservationHistory = createAsyncThunk('account/fetchReservationHistory', async (arg, {getState}) => {
     const token = selectLoggedUser(getState() as RootState)

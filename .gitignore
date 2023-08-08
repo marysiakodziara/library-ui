@@ -23,3 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .env
+./src/assets/scratches
+# local jpg files
+

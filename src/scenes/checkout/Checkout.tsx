@@ -1,22 +1,12 @@
 import {useDispatch} from "react-redux";
-import {
-    Alert,
-    Box,
-    Button,
-    Divider,
-    FormHelperText,
-    IconButton,
-    InputAdornment,
-    Switch,
-    TextField,
-    Typography
-} from "@mui/material";
+import {Alert, Box, Button, Divider, IconButton, InputAdornment, Switch, TextField, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import CustomizedSteppers from "../global/CustomizedSteppers";
 import {shades} from "../../theme";
 import {
     decreaseCount,
-    increaseCount, Order,
+    increaseCount,
+    Order,
     OrderItem,
     removeFromCart,
     selectCart,
@@ -32,7 +22,7 @@ import SecondStep from "./SecondStep";
 import dayjs from "dayjs";
 import axios, {AxiosResponse} from "axios";
 import {useAuth0} from "@auth0/auth0-react";
-import {selectLoggedUser} from "../../state/security/securityReducer";
+import {selectLoggedUser, selectRole} from "../../state/security/securityReducer";
 import SearchIcon from "@mui/icons-material/Search";
 import {User} from "../account/LoggedInView";
 
@@ -54,7 +44,7 @@ const Checkout = () => {
     const [ firstNameError, setFirstNameError ] = useState<boolean>(false);
     const [ lastNameError, setLastNameError ] = useState<boolean>(false);
     const [ isUserCreated, setIsUserCreated ] = useState<boolean>(false);
-    const { isAuthenticated, user } = useAuth0();
+    const { isAuthenticated } = useAuth0();
     const { loginWithRedirect } = useAuth0();
     const dispatch = useDispatch();
     const isZeroStep = activeStep === 0;
@@ -62,7 +52,7 @@ const Checkout = () => {
     const isSecondStep = activeStep === 2;
     const token = useAppSelector(selectLoggedUser);
     const steps = ['Choose Books','Summary', 'Done'];
-    const userRole = user?.nickname
+    const userRole = useAppSelector(selectRole);
 
     useEffect(() => {
         console.log(userObject == null)
@@ -82,7 +72,7 @@ const Checkout = () => {
 
     const sendData = () => {
         if (isAuthenticated) {
-            if (userRole === 'MANAGER') {
+            if (userRole === 'manager') {
                 sendReservationAndUserData();
             } else {
                 sendReservationData();
@@ -326,7 +316,7 @@ const Checkout = () => {
                         {!isLoaded && (
                             <>
                              <Box height="300px">
-                                 {userRole !== "MANAGER" && (
+                                 {userRole !== "manager" && (
                                      <>
                                          <Box
                                              sx={{ mt: "20px"}}
@@ -357,7 +347,7 @@ const Checkout = () => {
                                          </Box>
                                      </>
                                  )}
-                                 { userRole === "MANAGER" && (
+                                 { userRole === "manager" && (
                                      <Box justifyContent="center">
                                          <Box width="100%" display="flex" height="50px" m="0 auto"   >
                                              <Box display="flex" alignItems="center" justifyContent="space-around" m="0 auto">
@@ -512,7 +502,7 @@ const Checkout = () => {
                                             backgroundColor: `rgba(255, 135, 62,1.00)`,
                                             m: "0 auto"}}
                                     >
-                                        { userRole === "MANAGER" ? "Confirm Order" : "Confirm Reservation"}
+                                        { userRole === "manager" ? "Confirm Order" : "Confirm Reservation"}
                                     </Button>
                                 )}
                             </Box>
