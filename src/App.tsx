@@ -15,6 +15,7 @@ import {initializeSecurity, loginUser} from "./state/security/securityReducer";
 import ManagerDashboard from "./scenes/managerDashboard/ManagerDashboard";
 import PrivateRoutes from "./scenes/global/PrivateRoutes";
 import {setItems} from "./state/cart/cartReducer";
+import BookClub from "./scenes/bookClub/BookClub";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -63,6 +64,7 @@ function App() {
             <Route path="account" element={<Account />} />
             <Route path="search/:phrase/:page" element={<BookFilter />} />
             <Route path=":categories/:page" element={<BookFilter />} />
+            <Route path="book-club" element={<BookClub />} />
             <Route element={<PrivateRoutes/>}>
               <Route path="/admin" element={<ManagerDashboard />} />
             </Route>
