@@ -1,11 +1,9 @@
 import {Box, Paper, Tab, Tabs} from "@mui/material";
-import ErrorPage from "../global/ErrorPage";
 import {shades} from "../../theme";
 import {SyntheticEvent, useState} from "react";
 import AddBook from "./AddBook";
 import {styled} from "@mui/material/styles";
 import OrdersList from "./OrdersList";
-import {useAuth0} from "@auth0/auth0-react";
 
 export const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,

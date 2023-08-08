@@ -25,7 +25,6 @@ const CartMenu = () => {
     const dispatch = useDispatch();
     const cart = useAppSelector(selectCart);
     const isCartOpen = useAppSelector(selectIsCartOpen);
-    console.log(cart);
 
     return (
         <Box

@@ -45,7 +45,7 @@ const ShoppingList = () => {
             { called && (
                 <>
                     <Typography variant="h3" textAlign="center">
-                        Our Featured <b>Products</b>
+                        Our Featured <b>Books</b>
                     </Typography>
                     <Tabs
                         textColor="primary"

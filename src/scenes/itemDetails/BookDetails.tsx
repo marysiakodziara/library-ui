@@ -133,7 +133,7 @@ const BookDetails = () => {
                                             <Tabs value={value} onChange={handleChange}>
                                                 <Tab label="DESCRIPTION" value="description" />
                                                 <Tab label="DETAILS" value="details" />
-                                                <Tab label="RELATED PRODUCTS" value="related_products" />
+                                                <Tab label="RELATED BOOKS" value="related_products" />
                                             </Tabs>
                                         </Box>
                                         <Box minHeight="200px" display="flex" flexWrap="wrap" gap="15px">

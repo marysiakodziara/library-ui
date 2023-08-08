@@ -60,7 +60,7 @@ export const fetchHomePageBooksNewArrivals = createAsyncThunk('books/fetchHomePa
 });
 
 export const fetchHomePageBooksBestsellers = createAsyncThunk('books/fetchHomePageBooksBestsellers', async () => {
-    return (await axios.get(`http://localhost:8080/api/v1/book/inCategory?categories=BEST_SELLER&15&size=12`)).data;
+    return (await axios.get(`http://localhost:8080/api/v1/book/inCategory?categories=BEST_SELLER&size=12`)).data;
 });
 
 export const fetchCategories = createAsyncThunk('books/fetchCategories', async () => {
@@ -68,7 +68,7 @@ export const fetchCategories = createAsyncThunk('books/fetchCategories', async (
 });
 
 export const fetchBooksByCategories = createAsyncThunk('books/fetchBooksByCategories', async ({ categories, page }: { categories: string[]; page: number }) => {
-    return (await axios.get(`http://localhost:8080/api/v1/book/inCategory?categories=${categories}&15page=${page}`)).data;
+    return (await axios.get(`http://localhost:8080/api/v1/book/inCategory?categories=${categories}&page=${page}`)).data;
 });
 
 export const fetchBooksByPhrase = createAsyncThunk('books/fetchBooksByPhrase', async ({ phrase, page }: { phrase: string; page: number }) => {
@@ -138,6 +138,7 @@ export const bookSlice = createSlice({
 });
 
 export const selectAllBooks = (state: RootState) => state.book.bookPage.content;
+export const selectAllBooksTotalPages = (state: RootState) => state.book.bookPage.totalPages;
 export const selectAllHomePageBooks = (state: RootState) => state.book.homePageBooks
 export const selectAllCategories = (state: RootState) => state.book.categories;
 export const selectStatus = (state: RootState) => state.book.status;
