@@ -1,8 +1,10 @@
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 
 const LoggedOutView = () => {
     return (
-        <Box mt="100px">Log In to see your Account</Box>
+        <Box width="100%" p="160px 0" display="flex" justifyContent="center" alignItems="center">
+            <Typography textAlign="center" variant="h3">Log in to check Your account details</Typography>
+        </Box>
     );
 }
 

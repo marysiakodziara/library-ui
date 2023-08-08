@@ -199,13 +199,6 @@ const BookDetails = () => {
                                             >No copies available</Typography>
                                         </Box>
                                     )}
-
-                                    <Box>
-                                        <Box m="20px 0 5px 0" display="flex">
-                                            <FavouriteBorderOutlinedIcon />
-                                            <Typography sx={{ ml: "5px" }}>ADD TO WISHLIST</Typography>
-                                        </Box>
-                                    </Box>
                                 </Box>
                             </Box>
                         </Box>
