@@ -18,7 +18,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {shades} from '../../../theme';
 import {setIsCartOpen} from "../../../state/cart/cartReducer";
 import {useAuth0} from "@auth0/auth0-react";
-import {useEffect, useRef, useState} from "react";
+import {SyntheticEvent, useEffect, useRef, useState, KeyboardEvent} from "react";
 import NavigationMenu from "./NavigationMenu";
 import SearchIcon from '@mui/icons-material/Search';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
@@ -48,7 +48,7 @@ const Navbar = () => {
         setOpenAccount((prevOpen) => !prevOpen);
     };
 
-    const handleCloseAccount = (event: Event | React.SyntheticEvent) => {
+    const handleCloseAccount = (event: Event | SyntheticEvent) => {
         if (
             anchorRefAccount.current &&
             anchorRefAccount.current.contains(event.target as HTMLElement)
@@ -59,7 +59,7 @@ const Navbar = () => {
         setOpenAccount(false);
     };
 
-    const handleCloseMenu = (event: Event | React.SyntheticEvent) => {
+    const handleCloseMenu = (event: Event | SyntheticEvent) => {
         if (
             anchorRefAccount.current &&
             anchorRefAccount.current.contains(event.target as HTMLElement)
@@ -75,7 +75,7 @@ const Navbar = () => {
         navigate("/account");
     }
 
-    function handleListKeyDown(event: React.KeyboardEvent) {
+    function handleListKeyDown(event: KeyboardEvent) {
         if (event.key === 'Tab') {
             event.preventDefault();
             setOpenAccount(false);
@@ -228,7 +228,7 @@ const Navbar = () => {
                                                         fontFamily: "inherit",
                                                         backgroundColor: shades.primary[100],
                                                     }}
-                                                    onClick={() => loginWithRedirect()}
+                                                    onClick={() => loginWithRedirect({ appState: { returnTo: window.location.pathname } })}
                                                 >
                                                     Log In
                                                 </Button>

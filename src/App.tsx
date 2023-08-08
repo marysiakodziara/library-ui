@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {BrowserRouter, Route, Routes, useLocation,} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {Route, Routes, useLocation,} from 'react-router-dom';
 import Home from './scenes/home/Home';
 import BookDetails from "./scenes/itemDetails/BookDetails";
 import Checkout from "./scenes/checkout/Checkout";
@@ -30,7 +30,6 @@ function App() {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const dispatch = useAppDispatch();
 
-
   useEffect(() => {
     dispatch(setItems());
   }, []);
@@ -54,7 +53,6 @@ function App() {
 
   return (
     <div className="app">
-        <BrowserRouter>
           <Navbar />
           <ScrollToTop />
           <Routes>
@@ -71,7 +69,6 @@ function App() {
           </Routes>
           <CartMenu/>
           <Footer/>
-        </BrowserRouter>
     </div>
   );
 }

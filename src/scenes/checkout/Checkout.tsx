@@ -28,7 +28,9 @@ import {User} from "../account/LoggedInView";
 
 const Checkout = () => {
     const cart: OrderItem[] = useAppSelector(selectCart)
-    const [activeStep, setActiveStep] = useState<number>(cart.length === 0 ? 0 : 1);
+    const isCartInMemory = sessionStorage.getItem('cart') !== null;
+    console.log(sessionStorage.getItem('cart') !== null)
+    const [activeStep, setActiveStep] = useState<number>(cart.length === 0 ? isCartInMemory ? 1 : 0 : 1);
     const [isReservationCreated, setIsReservationCreated] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isUserRequestSend, setIsUserRequestSend] = useState(false);
@@ -59,7 +61,7 @@ const Checkout = () => {
         if (isReservationCreated) {
             dispatch(setCartEmpty());
             setActiveStep(2)
-        } else if (cart.length === 0 && !isReservationCreated) {
+        } else if ((cart.length === 0 && !isCartInMemory) && !isReservationCreated) {
             setActiveStep(0)
         }
 
@@ -78,7 +80,7 @@ const Checkout = () => {
                 sendReservationData();
             }
         } else {
-            loginWithRedirect();
+            loginWithRedirect({ appState: { returnTo: window.location.pathname } });
         }
     }
 
