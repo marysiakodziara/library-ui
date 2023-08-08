@@ -29,7 +29,6 @@ import {User} from "../account/LoggedInView";
 const Checkout = () => {
     const cart: OrderItem[] = useAppSelector(selectCart)
     const isCartInMemory = sessionStorage.getItem('cart') !== null;
-    console.log(sessionStorage.getItem('cart') !== null)
     const [activeStep, setActiveStep] = useState<number>(cart.length === 0 ? isCartInMemory ? 1 : 0 : 1);
     const [isReservationCreated, setIsReservationCreated] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -57,7 +56,6 @@ const Checkout = () => {
     const userRole = useAppSelector(selectRole);
 
     useEffect(() => {
-        console.log(userObject == null)
         if (isReservationCreated) {
             dispatch(setCartEmpty());
             setActiveStep(2)
@@ -68,7 +66,6 @@ const Checkout = () => {
     }, [isLoaded, cart.length]);
 
     useEffect(() => {
-        console.log(userObject == null)
         setIsLoaded(false)
     }, [cart]);
 
@@ -147,36 +144,45 @@ const Checkout = () => {
             }
             setIsLoaded(true);
         } catch (error) {
-            console.log(error)
             setIsReservationCreated(false);
             setIsLoaded(true);
         }
     }
 
+    const checkUserDetails = () => {
+        setEmailError(userEmail === '');
+        setFirstNameError(userFirstName === '');
+        setLastNameError(userLastName === '');
+        setPhoneError(userPhoneNumber === '');
+        return userEmail !== '' && userFirstName !== '' && userLastName !== '' && userPhoneNumber !== '';
+    }
+
     const createNewUser = async () => {
-        setIsUserRequestSend(true);
-        const clientDto: User = {
-            firstName: userFirstName,
-            lastName: userLastName,
-            emailAddress: userEmail,
-            phoneNumber: userPhoneNumber,
-        }
-        try {
-            const response: AxiosResponse = await axios.post(
-                `http://localhost:8080/api/v1/client`,
-                clientDto, {
-                    headers: headers
-                }
-            )
-            if (response.status) {
-                setIsUserCreated(true);
-            } else {
-                setIsUserCreated(false);
+        const isUserDetailsCorrect = checkUserDetails();
+        if (isUserDetailsCorrect) {
+            setIsUserRequestSend(true);
+            const clientDto: User = {
+                firstName: userFirstName,
+                lastName: userLastName,
+                emailAddress: userEmail,
+                phoneNumber: userPhoneNumber,
             }
-        } catch (error) {
-            console.log(error)
-            setIsUserCreated(false);
-            setEmailError(true);
+            try {
+                const response: AxiosResponse = await axios.post(
+                    `http://localhost:8080/api/v1/client`,
+                    clientDto, {
+                        headers: headers
+                    }
+                )
+                if (response.status) {
+                    setIsUserCreated(true);
+                } else {
+                    setIsUserCreated(false);
+                }
+            } catch (error) {
+                setIsUserCreated(false);
+                setEmailError(true);
+            }
         }
     }
 
@@ -288,7 +294,7 @@ const Checkout = () => {
                     </Box>
                     <Box
                         width="30%"
-                        height="450px"
+                        height="500px"
                         sx={{ backgroundColor: shades.neutral[200] }}
                         padding="2% 2%"
                     >
@@ -317,7 +323,8 @@ const Checkout = () => {
                         )}
                         {!isLoaded && (
                             <>
-                             <Box height="300px">
+                             <Box height="350px"
+                             >
                                  {userRole !== "manager" && (
                                      <>
                                          <Box
@@ -364,13 +371,12 @@ const Checkout = () => {
                                              display="flex"
                                              justifyContent="center"
                                              width="300px"
-                                             height="80%"
                                              pt="6%"
                                              pl="20px"
                                              pr="20px"
                                              m="0 auto">
                                              { !checked && (
-                                                 <>
+                                                 <Box width="100%">
                                                      <TextField
                                                          sx={{width: "100%"}}
                                                          error={userFetched && userObject == null}
@@ -407,7 +413,7 @@ const Checkout = () => {
                                                          <Typography variant="h5">Phone Number: {userObject.phoneNumber}</Typography>
                                                          </Box>
                                                      )}
-                                                 </>
+                                                 </Box>
                                              )}
                                             { checked && (
                                                 <Box>
@@ -497,6 +503,7 @@ const Checkout = () => {
                                 )}
                                 { (!checked || (checked && isUserCreated)) && (
                                     <Button
+                                        disabled={userRole === "manager" && !userFetched}
                                         onClick={sendData}
                                         sx={{
                                             width: "50%",
