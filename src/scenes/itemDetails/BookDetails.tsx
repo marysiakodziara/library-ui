@@ -1,5 +1,5 @@
 import React, {SetStateAction, useEffect, useRef, useState} from 'react';
-import {Box, Button, CircularProgress, Divider, IconButton, Tab, Tabs, Typography} from '@mui/material';
+import {Box, Button, CircularProgress, Divider, IconButton, Skeleton, Tab, Tabs, Typography} from '@mui/material';
 import FavouriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -10,6 +10,7 @@ import {useLocation, useParams} from 'react-router-dom';
 import BookView from '../../components/BookView';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import ErrorPage from "../global/ErrorPage";
+import BookDetailsSkeleton from "./BookDetailsSkeleton";
 
 interface ProductDetails {
     author: string;
@@ -31,6 +32,7 @@ const BookDetails = () => {
     const [productDetails, setProductDetails] = useState<ProductDetails | null>(null);
     const location = useLocation();
     const relatedProductsRef = useRef<HTMLDivElement>(null);
+    const [isBookReturned, setIsBookReturned] = useState(true);
 
 
     const [loading, setLoading] = useState(true);
@@ -38,21 +40,13 @@ const BookDetails = () => {
     async function fetchBook() {
         try {
             const response = await fetch(`http://localhost:8080/api/v1/book/id?id=${id}`);
-            if (response.ok) {
-                const data = await response.json();
-                if (data) {
-                    setBook(data);
-                    setLoading(false);
-                } else {
-                    setBook(null);
-                    setLoading(false);
-                }
-            } else {
-                setBook(null);
-                setLoading(false);
-            }
+            const data = response.ok ? await response.json() : null;
+            setBook(data);
+            setIsBookReturned(data !== null)
+            setLoading(false);
         } catch (error) {
             setBook(null);
+            setIsBookReturned(false)
             setLoading(false);
         }
     }
@@ -111,7 +105,7 @@ const BookDetails = () => {
 
     return (
         <Box width="100%" m="100px auto">
-            { !loading && book && description &&  (
+            { !loading && book && description && isBookReturned &&  (
                 <Box >
                     <Box sx={{backgroundColor: shades.neutral[100]}} p="20px 5%" >
                         <Box width="90%" display="flex" flexWrap="wrap" columnGap="70px" m="auto auto">
@@ -223,17 +217,11 @@ const BookDetails = () => {
                     </Box>
                 </Box>
             )}
-            { !loading && book === null && (
-                <ErrorPage/>
+            { !(!loading && book && description) && isBookReturned && (
+                <BookDetailsSkeleton />
             )}
-            { loading && (
-                <CircularProgress
-                    size={200}
-                    sx={{
-                        size: 400,
-                        color: shades.neutral[500],
-                        m: "auto auto",
-                    }}/>
+            { !isBookReturned && (
+                <ErrorPage />
             )}
         </Box>
     );

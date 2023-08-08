@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {Box, Button, IconButton, Typography, useTheme} from '@mui/material';
+import {Box, Button, IconButton, Skeleton, Typography, useTheme} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {shades} from '../theme';
@@ -15,10 +15,16 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
     const [count, setCount] = useState(1);
     const [isHovered, setIsHovered] = useState(false);
     const {palette: {info}} = useTheme();
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
 
     const handleAddToCart = (book: Book, quantity: number) => {
         const newItem: OrderItem = {book, quantity};
         dispatch(addToCart(newItem));
+    }
+
+    const handleImageLoad = () => {
+        setIsLoading(false);
     }
 
     return (
@@ -27,6 +33,9 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
                 position="relative"
                 onMouseOver={() => setIsHovered(true)}
                 onMouseOut={() => setIsHovered(false)}>
+                { isLoading && (
+                    <Skeleton variant="rectangular" width="250px" height="350px" />
+                )}
                 <img
                     src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}
                     alt={book.title}
@@ -34,6 +43,7 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
                     height="350px"
                     onClick={() => navigate(`/book/${book.id}`)}
                     style={{ cursor: 'pointer' }}
+                    onLoad={handleImageLoad}
                 />
                 <Box
                     display={isHovered ? 'blocked' : 'none'}

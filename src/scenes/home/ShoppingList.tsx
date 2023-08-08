@@ -1,5 +1,5 @@
 import React, {useEffect, useState,} from 'react';
-import {Box, CircularProgress, Tab, Tabs, Typography, useMediaQuery} from '@mui/material';
+import {Box, CircularProgress, Skeleton, Tab, Tabs, Typography, useMediaQuery} from '@mui/material';
 import BookView from '../../components/BookView';
 import {
     Book,
@@ -33,59 +33,61 @@ const ShoppingList = () => {
 
     return (
         <Box width="80%" margin="20px auto">
+            <Typography variant="h3" textAlign="center">
+                Our Featured <b>Books</b>
+            </Typography>
+            <Tabs
+                textColor="primary"
+                indicatorColor="primary"
+                value={value}
+                onChange={handleChange}
+                centered
+                TabIndicatorProps={{sx: {display: isNonMobile ? "block" : "none"}}}
+                sx={{
+                    m: "25px",
+                    "&.MuiTabs-flexContainer": {
+                        flexWrap: "wrap",
+                    }
+                }}
+            >
+                <Tab label="ALL" value="all"/>
+                <Tab label="NEW ARRIVALS" value="newArrivals"/>
+                <Tab label="BEST SELLERS" value="bestSellers"/>
+            </Tabs>
             { (!called || allBooks.length == 0) && (
-                <CircularProgress
-                    size={200}
-                    sx={{
-                        size: 400,
-                        color: shades.neutral[500],
-                        m: "auto auto",
-                    }}/>
-            )}
+                <Box
+                    height="350px"
+                    margin="0 auto"
+                    display="grid"
+                    gridTemplateColumns="repeat(4, 250px)"
+                    justifyContent="space-around"
+                    columnGap="1.33%"
+                >
+                    {Array(4).fill(0).map((_, index) => (
+                        <Skeleton key={index} variant="rectangular" height="100%"/>
+                    ))}
+                </Box>
+                )}
             { called && (
-                <>
-                    <Typography variant="h3" textAlign="center">
-                        Our Featured <b>Books</b>
-                    </Typography>
-                    <Tabs
-                        textColor="primary"
-                        indicatorColor="primary"
-                        value={value}
-                        onChange={handleChange}
-                        centered
-                        TabIndicatorProps={{sx: {display: isNonMobile ? "block" : "none"}}}
-                        sx={{
-                            m: "25px",
-                            "&.MuiTabs-flexContainer": {
-                                flexWrap: "wrap",
-                            }
-                        }}
-                    >
-                        <Tab label="ALL" value="all"/>
-                        <Tab label="NEW ARRIVALS" value="newArrivals"/>
-                        <Tab label="BEST SELLERS" value="bestSellers"/>
-                    </Tabs>
-                    <Box
-                        margin="0 auto"
-                        display="grid"
-                        gridTemplateColumns="repeat(auto-fill, 250px)"
-                        justifyContent="space-around"
-                        rowGap="20px"
-                        columnGap="1.33%"
-                    >
-                        {value === "all" && allBooks?.map((book: Book) => (
-                            <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
+                <Box
+                    margin="0 auto"
+                    display="grid"
+                    gridTemplateColumns="repeat(auto-fill, 250px)"
+                    justifyContent="space-around"
+                    rowGap="20px"
+                    columnGap="1.33%"
+                >
+                    {value === "all" && allBooks?.map((book: Book) => (
+                        <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
+                    ))}
+                    {value === "newArrivals" && newArrivalsItems?.map((book: Book) => (
+                        <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
                         ))}
-                        {value === "newArrivals" && newArrivalsItems?.map((book: Book) => (
-                            <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
+                    {value === "bestSellers" && bestSellersItems?.map((book: Book) => (
+                        <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
                         ))}
-                        {value === "bestSellers" && bestSellersItems?.map((book: Book) => (
-                            <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
-                        ))}
-                    </Box>
-                </>
+                </Box>
             )}
-
         </Box>
     )
 }
