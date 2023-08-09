@@ -26,18 +26,17 @@ const Footer = () => {
                     >
                         <Box width="clamp(20%, 30%, 40%)">
                             <Typography
-                                variant="h4"
+                                variant="h3"
                                 fontWeight="bold"
                                 mb="30px"
                                 color={shades.secondary[500]}
                             >
-                                ECOMMERCE
+                                Library
                             </Typography>
                             <div>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Curabitur finibus in quam sed iaculis.
-                                Integer tincidunt tempus risus at luctus.
-                                Proin et tellus id augue sollicitudin porta.
+                                Discover a wide selection of books at our e-Library,
+                                where you can find the perfect read for you and your family.
+                                Join our community and get easy access to reserving and borrowing books.
                             </div>
                         </Box>
                         <Box>
@@ -45,7 +44,7 @@ const Footer = () => {
                                 About Us
                             </Typography>
                             <Typography mb="30px">Careers</Typography>
-                            <Typography mb="30px">Our Stores</Typography>
+                            <Typography mb="30px">Our Store</Typography>
                             <Typography mb="30px">Terms & Conditions</Typography>
                             <Typography mb="30px">Privacy Policy</Typography>
                         </Box>
@@ -54,9 +53,9 @@ const Footer = () => {
                                 Customer Care
                             </Typography>
                             <Typography mb="30px">Help Center</Typography>
-                            <Typography mb="30px">Track Your Order</Typography>
-                            <Typography mb="30px">Corporate & Bulk Purchasing</Typography>
-                            <Typography mb="30px">Returns & Refunds</Typography>
+                            <Typography mb="30px">Track Your Reservations</Typography>
+                            <Typography mb="30px">Options for Schools</Typography>
+                            <Typography mb="30px">How to Make a Reservation</Typography>
                         </Box>
                         <Box width="clamp(20%, 25%, 30%)">
                             <Typography variant="h4" fontWeight="bold" mb="30px">
