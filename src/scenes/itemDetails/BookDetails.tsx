@@ -105,7 +105,7 @@ const BookDetails = () => {
 
     return (
         <Box width="100%" m="100px auto">
-            { !loading && book && description && isBookReturned &&  (
+            { !loading && book && isBookReturned &&  (
                 <Box >
                     <Box sx={{backgroundColor: shades.neutral[100]}} p="20px 5%" >
                         <Box width="90%" display="flex" flexWrap="wrap" columnGap="70px" m="auto auto">
@@ -217,7 +217,7 @@ const BookDetails = () => {
                     </Box>
                 </Box>
             )}
-            { !(!loading && book && description) && isBookReturned && (
+            { !(!loading && book) && isBookReturned && (
                 <BookDetailsSkeleton />
             )}
             { !isBookReturned && (

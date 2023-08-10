@@ -47,6 +47,7 @@ const Checkout = () => {
     const [ isUserCreated, setIsUserCreated ] = useState<boolean>(false);
     const { isAuthenticated } = useAuth0();
     const { loginWithRedirect } = useAuth0();
+    const endOfReservationTitle = dayjs().day() >= 5 ? "Monday" : "Tomorrow";
     const dispatch = useDispatch();
     const isZeroStep = activeStep === 0;
     const isFirstStep = activeStep === 1;
@@ -79,6 +80,7 @@ const Checkout = () => {
         } else {
             loginWithRedirect({ appState: { returnTo: window.location.pathname } });
         }
+        sessionStorage.removeItem('cart');
     }
 
     const headers = {
@@ -87,13 +89,19 @@ const Checkout = () => {
     };
 
 
-    const sendReservationData = async () => {
-        const reservationData: Order = {
-            borrowed: false,
-            reservationItems: cart,
-            reservationDate: dayjs().format('YYYY-MM-DD'),
-            endOfReservation:  dayjs().add(1, 'day').format('YYYY-MM-DD'),
-        }
+        const sendReservationData = async () => {
+            let endOfReservation = dayjs().add(1, 'day').format('YYYY-MM-DD');
+
+            if (dayjs().day() >= 5) {
+                const daysToAdd = 8 - dayjs().day();
+                endOfReservation = dayjs().add(daysToAdd, 'day').format('YYYY-MM-DD');
+            }
+            const reservationData: Order = {
+                borrowed: false,
+                reservationItems: cart,
+                reservationDate: dayjs().format('YYYY-MM-DD'),
+                endOfReservation:  endOfReservation
+            }
         try {
             const response: AxiosResponse = await axios.post(
                 `http://localhost:8080/api/v1/reservation`,
@@ -334,7 +342,7 @@ const Checkout = () => {
                                              justifyContent="space-between"
                                          >
                                              <Typography variant="h3">Reservation Till</Typography>
-                                             <Typography>Tomorrow</Typography>
+                                             <Typography>{endOfReservationTitle}</Typography>
                                          </Box>
                                          <Box
                                              sx={{ mt: "20px"}}

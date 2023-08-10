@@ -61,10 +61,11 @@ const OrdersHistory = (props: {ordersType: OrdersType}) => {
     const token = useAppSelector(selectLoggedUser);
     const [orders, setOrders] = useState<OrderHistory[] | BorrowedOrderHistoryItem[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [reloadComponent, setReloadComponent] = useState<boolean>(false);
 
     useEffect(() => {
         ordersType === OrdersType.RESERVED ? handleReservationHistory() : handleBorrowedHistory();
-    }, [token, reservationStatus, borrowedStatus]);
+    }, [token, reservationStatus, borrowedStatus, reloadComponent]);
 
     const handleReservationHistory = () => {
         if (reservationStatus === 'fulfilled') {
@@ -126,6 +127,7 @@ const OrdersHistory = (props: {ordersType: OrdersType}) => {
             }
         )
         dispatch(fetchReservationHistory());
+        setReloadComponent(!reloadComponent);
     }
 
     return (
