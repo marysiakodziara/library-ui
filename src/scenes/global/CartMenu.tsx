@@ -13,6 +13,7 @@ import {
 } from "../../state/cart/cartReducer";
 import { useNavigate } from "react-router-dom";
 import {useAppSelector} from "../../app/hooks";
+import {ROUTES} from "../../routes/routes";
 
 export const FlexBox = styled(Box)`
     display: flex;
@@ -118,7 +119,7 @@ const CartMenu = () => {
                                 m: "20px 0",
                                 }}
                             onClick={() => {
-                                navigate("/checkout");
+                                navigate(ROUTES.CHECKOUT);
                                 dispatch(setIsCartOpen());
                             }}
                         >

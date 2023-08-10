@@ -8,6 +8,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import {useNavigate} from "react-router-dom";
 import {useAppSelector} from "../../../app/hooks";
 import {Category, selectAllCategories} from "../../../state/book/bookReducer";
+import {ROUTES} from "../../../routes/routes";
 
 const NavigationMenu = () => {
     const [open, setOpen] = useState<boolean[]>([false, false, false, false, false, false, false, false, false, false]);
@@ -24,7 +25,8 @@ const NavigationMenu = () => {
 
     const handleNavigate = (categories: string[]) => {
         const categoriesString = categories.join(",").toLowerCase();
-        navigate(`/${categoriesString}/0`);
+        const path = ROUTES.CATEGORIES.replace(':categories', categoriesString).replace(':page', '0');
+        navigate(path);
     }
 
 
@@ -66,7 +68,10 @@ const NavigationMenu = () => {
                                 <List component="div" disablePadding>
                                     {subCategories.map((subCategory: String) => (
                                         <ListItemButton
-                                            onClick={() => navigate(`/${subCategory}/0`)}
+                                            onClick={() => {
+                                                const path = ROUTES.CATEGORIES.replace(':categories', subCategory.toLowerCase()).replace(':page', '0');
+                                                navigate(path)
+                                            }}
                                             sx={{ pl: 4 }}>
                                             <ListItemText primary={subCategory} />
                                         </ListItemButton>

@@ -24,6 +24,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {selectRole, logoutUser} from "../../../state/security/securityReducer";
+import {ROUTES} from "../../../routes/routes";
 
 
 const Navbar = () => {
@@ -72,7 +73,7 @@ const Navbar = () => {
 
     const navigateAndClose = () => {
         setOpenAccount(false);
-        navigate("/account");
+        navigate(ROUTES.ACCOUNT);
     }
 
     function handleListKeyDown(event: KeyboardEvent) {
@@ -90,7 +91,8 @@ const Navbar = () => {
 
     const handleSearch = () => {
         if (search !== "") {
-            navigate(`/search/${search}/0`);
+            const path = ROUTES.SEARCH.replace(":search", search).replace(":page", "0");
+            navigate(path);
         }
     }
 
@@ -122,7 +124,7 @@ const Navbar = () => {
                         <MenuOutlined />
                     </IconButton>
                     <Box
-                        onClick={() => navigate("/")}
+                        onClick={() => navigate(ROUTES.HOME)}
                         sx={{ '&:hover': { cursor: 'pointer' } }}
                         color={shades.neutral[500]}
                         alignItems="center"
@@ -241,7 +243,7 @@ const Navbar = () => {
                     </Popper>
                     { userRole === "manager" && (
                         <IconButton
-                            onClick={() => navigate("/admin")}
+                            onClick={() => navigate(ROUTES.ADMIN)}
                             sx={{color: "white"}}>
                             <BusinessCenterIcon />
                         </IconButton>

@@ -1,6 +1,7 @@
 import {shades} from "../../theme";
 import {Box, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {ROUTES} from "../../routes/routes";
 
 const ZeroStep = () => {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const ZeroStep = () => {
                         color: `rgba(195,73,0,1.00)`,
                         ":hover": {cursor: "pointer"}
                     }}
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate(ROUTES.HOME)}
                 >
                     Go to the main page
                 </Typography>

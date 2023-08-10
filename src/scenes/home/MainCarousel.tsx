@@ -6,6 +6,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {shades} from "../../theme";
+import {ROUTES} from "../../routes/routes";
 
 const importAll = (r: __WebpackModuleApi.RequireContext) =>
     r.keys().reduce((acc: any, item: any) => {
@@ -81,7 +82,7 @@ const MainCarousel = () => {
                     />
                     { !loading && (
                         <Box
-                            onClick={() => navigate("/book-club")}
+                            onClick={() => navigate(ROUTES.BOOK_CLUB)}
                             color="white"
                             padding="20px"
                             borderRadius="1px"

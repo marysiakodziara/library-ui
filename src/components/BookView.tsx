@@ -7,6 +7,7 @@ import {shades} from '../theme';
 import {addToCart, OrderItem} from "../state/cart/cartReducer";
 import {Book} from '../state/book/bookReducer';
 import {useNavigate} from 'react-router-dom';
+import {ROUTES} from "../routes/routes";
 
 
 const BookView = ({book, width}: {book: Book, width: string}) => {
@@ -41,7 +42,10 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
                     alt={book.title}
                     width="250px"
                     height="350px"
-                    onClick={() => navigate(`/book/${book.id}`)}
+                    onClick={() => {
+                        const path = (ROUTES.BOOK).replace(':bookId', book.id.toString());
+                        navigate(path);
+                    }}
                     style={{ cursor: 'pointer' }}
                     onLoad={handleImageLoad}
                 />

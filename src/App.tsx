@@ -16,6 +16,7 @@ import ManagerDashboard from "./scenes/managerDashboard/ManagerDashboard";
 import PrivateRoutes from "./scenes/global/PrivateRoutes";
 import {setItems} from "./state/cart/cartReducer";
 import BookClub from "./scenes/bookClub/BookClub";
+import {ROUTES} from "./routes/routes";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -56,15 +57,15 @@ function App() {
           <Navbar />
           <ScrollToTop />
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="book/:bookId" element={<BookDetails />} />
-            <Route path="checkout" element={<Checkout />} />
-            <Route path="account" element={<Account />} />
-            <Route path="search/:phrase/:page" element={<BookFilter />} />
-            <Route path=":categories/:page" element={<BookFilter />} />
-            <Route path="book-club" element={<BookClub />} />
+            <Route path={ROUTES.HOME} element={<Home />} />
+            <Route path={ROUTES.BOOK} element={<BookDetails />} />
+            <Route path={ROUTES.CHECKOUT} element={<Checkout />} />
+            <Route path={ROUTES.ACCOUNT} element={<Account />} />
+            <Route path={ROUTES.SEARCH} element={<BookFilter />} />
+            <Route path={ROUTES.CATEGORIES} element={<BookFilter />} />
+            <Route path={ROUTES.BOOK_CLUB} element={<BookClub />} />
             <Route element={<PrivateRoutes/>}>
-              <Route path="/admin" element={<ManagerDashboard />} />
+              <Route path={ROUTES.ADMIN} element={<ManagerDashboard />} />
             </Route>
           </Routes>
           <CartMenu/>
