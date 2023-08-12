@@ -1,14 +1,15 @@
 import React, {useEffect, useState,} from 'react';
-import {Box, CircularProgress, Skeleton, Tab, Tabs, Typography, useMediaQuery} from '@mui/material';
+import {Box, Skeleton, Tab, Tabs, Typography, useMediaQuery} from '@mui/material';
 import BookView from '../../components/BookView';
 import {
     Book,
-    fetchHomePageBooksAll, fetchHomePageBooksBestsellers,
-    fetchHomePageBooksNewArrivals, HomePageBooks,
+    fetchHomePageBooksAll,
+    fetchHomePageBooksBestsellers,
+    fetchHomePageBooksNewArrivals,
+    HomePageBooks,
     selectAllHomePageBooks
 } from '../../state/book/bookReducer';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {shades} from "../../theme";
 
 const ShoppingList = () => {
     const dispatch = useAppDispatch();
@@ -59,7 +60,6 @@ const ShoppingList = () => {
                     height="350px"
                     margin="0 auto"
                     display="grid"
-                    gridTemplateColumns="repeat(4, 250px)"
                     justifyContent="space-around"
                     columnGap="1.33%"
                 >

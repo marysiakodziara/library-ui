@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {Box, Button, IconButton, Skeleton, Typography, useTheme} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -8,6 +8,7 @@ import {addToCart, OrderItem} from "../state/cart/cartReducer";
 import {Book} from '../state/book/bookReducer';
 import {useNavigate} from 'react-router-dom';
 import {ROUTES} from "../routes/routes";
+import GenericCover from "./GenericCover";
 
 
 const BookView = ({book, width}: {book: Book, width: string}) => {
@@ -17,6 +18,38 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
     const [isHovered, setIsHovered] = useState(false);
     const {palette: {info}} = useTheme();
     const [isLoading, setIsLoading] = useState(true);
+    const [image, setImage] = useState('');
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+    async function fetchData() {
+        try {
+            const apiUrl = `https://openlibrary.org/search.json?title=${encodeURIComponent(book?.title)}`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            if (data.docs && data.docs.length > 0) {
+                const bookCoverId = data.docs[0].cover_i;
+                if (bookCoverId) {
+                    const coverUrl = `https://covers.openlibrary.org/b/id/${bookCoverId}-L.jpg`;
+                    setImage(coverUrl);
+                    setIsImageLoaded(true);
+                } else {
+                    setIsImageLoaded(true);
+                }
+                setIsLoading(false);
+            } else {
+                console.log('No book data found or missing required properties.');
+                setIsImageLoaded(true);
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.error('An error occurred while fetching book data:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const handleAddToCart = (book: Book, quantity: number) => {
         const newItem: OrderItem = {book, quantity};
@@ -36,18 +69,23 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
                 { isLoading && (
                     <Skeleton variant="rectangular" width="250px" height="350px" />
                 )}
-                <img
-                    src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`}
-                    alt={book.title}
-                    width="250px"
-                    height="350px"
-                    onClick={() => {
-                        const path = ROUTES.BOOK.replace(':bookId', book.id.toString());
-                        navigate(path);
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    onLoad={handleImageLoad}
-                />
+                { isImageLoaded && image === '' && !isLoading && (
+                    <GenericCover bookId={book.id}/>
+                )}
+                { isImageLoaded && image !== '' && !isLoading && (
+                    <img
+                        src={image}
+                        alt={book.title}
+                        width="250px"
+                        height="350px"
+                        onClick={() => {
+                            const path = ROUTES.BOOK.replace(':bookId', book.id.toString());
+                            navigate(path);
+                        }}
+                        style={{ cursor: 'pointer' }}
+                        onLoad={handleImageLoad}
+                    />
+                ) }
                 { !isLoading && (
                     <Box
                         display={isHovered ? 'blocked' : 'none'}

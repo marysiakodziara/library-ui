@@ -91,7 +91,7 @@ const Navbar = () => {
 
     const handleSearch = () => {
         if (search !== "") {
-            const path = ROUTES.SEARCH.replace(":search", search).replace(":page", "0");
+            const path = ROUTES.SEARCH.replace(":phrase", search).replace(":page", "0");
             navigate(path);
         }
     }

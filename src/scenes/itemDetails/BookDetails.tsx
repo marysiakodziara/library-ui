@@ -11,6 +11,7 @@ import BookView from '../../components/BookView';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import ErrorPage from "../global/ErrorPage";
 import BookDetailsSkeleton from "./BookDetailsSkeleton";
+import GenericCover from "../../components/GenericCover";
 
 interface ProductDetails {
     author: string;
@@ -33,9 +34,9 @@ const BookDetails = () => {
     const location = useLocation();
     const relatedProductsRef = useRef<HTMLDivElement>(null);
     const [isBookReturned, setIsBookReturned] = useState(true);
-
-
+    const [image, setImage] = useState<string>("");
     const [loading, setLoading] = useState(true);
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
 
     async function fetchBook() {
         try {
@@ -52,17 +53,34 @@ const BookDetails = () => {
     }
 
     async function fetchData() {
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${book?.isbn}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}`);
-        const data = await response.json();
-        setDescription(data.items[0].volumeInfo.description);
-        setProductDetails({
-            author: book ? book.author : "",
-            publisher: data.items[0].volumeInfo.publisher,
-            publishedDate: data.items[0].volumeInfo.publishedDate,
-            pageCount: data.items[0].volumeInfo.pageCount,
-            averageRating: data.items[0].volumeInfo.averageRating
-        });
-    };
+        try {
+            const openLibraryApiUrl = `https://openlibrary.org/search.json?title=${book?.title}`;
+            const openLibraryResponse = await fetch(openLibraryApiUrl);
+            const openLibraryData = await openLibraryResponse.json();
+
+            if (openLibraryData.docs && openLibraryData.docs.length > 0) {
+                const bookCoverId = openLibraryData.docs[0].cover_i;
+                const coverUrl = `https://covers.openlibrary.org/b/id/${bookCoverId}-L.jpg`
+
+                setDescription(openLibraryData.docs[0]?.title_suggest || "");
+                setProductDetails({
+                    author: openLibraryData.docs[0]?.author_name?.[0] || "",
+                    publisher: openLibraryData.docs[0]?.publisher?.[0] || "",
+                    publishedDate: openLibraryData.docs[0]?.publish_date?.[0] || "",
+                    pageCount: openLibraryData.docs[0]?.number_of_pages || "",
+                    averageRating: openLibraryData.docs[0]?.average_rating || ""
+                });
+                coverUrl.length > 0 ? setImage(coverUrl) : setImage('');
+                setIsImageLoaded(true);
+            } else {
+                console.log('No book data found or missing required properties.');
+                setIsImageLoaded(true);
+            }
+        } catch (error) {
+            console.error('An error occurred while fetching book data:', error);
+            setIsImageLoaded(true);
+        }
+    }
 
     useEffect(() => {
         const handleFetchData = async () => {
@@ -75,6 +93,7 @@ const BookDetails = () => {
     },[book] );
 
     useEffect(() => {
+        setImage("");
         setDescription("");
         setBook(null);
         setLoading(true);
@@ -110,12 +129,20 @@ const BookDetails = () => {
                     <Box sx={{backgroundColor: shades.neutral[100]}} p="20px 5%" >
                         <Box width="90%" display="flex" flexWrap="wrap" columnGap="70px" m="auto auto">
                             <Box flex="1 1 25%" m="auto auto">
-                                <img
-                                    alt={book?.title}
-                                    width="90%"
-                                    src={`https://covers.openlibrary.org/b/isbn/${book?.isbn}-L.jpg`}
-                                    style={{objectFit: "contain"}}
-                                />
+                                { isImageLoaded && image !== '' && (
+                                    <img
+                                        alt={book?.title}
+                                        width="90%"
+                                        src={image}
+                                        style={{objectFit: "contain"}}
+                                    />
+                                )}
+                                { isImageLoaded && image === '' && (
+                                    <GenericCover bookId={book?.id} />
+                                )}
+                                { !isImageLoaded && (
+                                    <Skeleton variant="rectangular" width="90%" height="400px" />
+                                )}
                             </Box>
                             <Divider orientation="vertical" flexItem/>
                             <Box flex="1 1 50%" >

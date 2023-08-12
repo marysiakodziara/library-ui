@@ -1,16 +1,19 @@
-import {Box, CircularProgress, Divider, Pagination, Paper, Typography} from "@mui/material";
+import {Box, CircularProgress, Divider, Pagination, Paper, Skeleton, Typography} from "@mui/material";
+import { useRef } from 'react';
+import clsx from 'clsx';
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {
     Book,
     fetchBooksByCategories,
     fetchBooksByPhrase,
-    selectAllBooks, selectAllBooksTotalPages,
-    selectStatus
+    selectAllBooks,
+    selectAllBooksTotalPages
 } from "../../state/book/bookReducer";
 import React, {useEffect, useState} from "react";
 import {shades} from "../../theme";
 import BookView from "../../components/BookView";
+import {ROUTES} from "../../routes/routes";
 
 const BookFilter = () => {
     const { phrase, categories, page } = useParams();
@@ -38,7 +41,9 @@ const BookFilter = () => {
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         if (value !== defaultPage) {
-            const path = phraseChecked !== "" ? `/search/${phraseChecked}/${value - 1}` : `${categoriesChecked}/${value -1}`;
+            const page: string = (value - 1).toString();
+            const path = phraseChecked !== "" ? ROUTES.SEARCH.replace(':phrase', phraseChecked).replace(':page', page)
+                : ROUTES.CATEGORIES.replace(':categories', categoriesChecked).replace(':page', page);
             navigate(path);
         }
     }
@@ -102,13 +107,18 @@ const BookFilter = () => {
                 </>
             )}
             { !called && (
-                <CircularProgress
-                    size={200}
-                    sx={{
-                        size: 400,
-                        color: shades.neutral[500],
-                        m: "auto auto",
-                    }}/>
+                <Box
+                    height="350px"
+                    margin="0 auto"
+                    display="grid"
+                    gridTemplateColumns="repeat(4, 250px)"
+                    justifyContent="space-around"
+                    columnGap="1.33%"
+                >
+                    {Array(4).fill(0).map((_, index) => (
+                        <Skeleton key={index} variant="rectangular" height="100%"/>
+                    ))}
+                </Box>
             )}
         </Box>
     )
