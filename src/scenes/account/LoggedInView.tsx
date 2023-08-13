@@ -34,7 +34,7 @@ const LoggedInView: FC<{category: string}> = (props) => {
 
     const fetchUser = async () => {
         try {
-            const response: User = (await axios.get(`http://localhost:8080/api/v1/client`, {headers})).data;
+            const response: User = (await axios.get(`${process.env.REACT_APP_API_URL}/client`, {headers})).data;
             setUser(response);
 
         } catch (error) {

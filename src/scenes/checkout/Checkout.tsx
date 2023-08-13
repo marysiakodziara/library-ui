@@ -104,7 +104,7 @@ const Checkout = () => {
             }
         try {
             const response: AxiosResponse = await axios.post(
-                `http://localhost:8080/api/v1/reservation`,
+                `${process.env.REACT_APP_API_URL}/reservation`,
                 reservationData, {
                     headers: headers
                 }
@@ -140,7 +140,7 @@ const Checkout = () => {
         }
         try {
             const response: AxiosResponse = await axios.post(
-                `http://localhost:8080/api/v1/reservation/borrow`,
+                `${process.env.REACT_APP_API_URL}/reservation/borrow`,
                 borrowRequest, {
                     headers: headers
                 }
@@ -177,7 +177,7 @@ const Checkout = () => {
             }
             try {
                 const response: AxiosResponse = await axios.post(
-                    `http://localhost:8080/api/v1/client`,
+                    `${process.env.REACT_APP_API_URL}/client`,
                     clientDto, {
                         headers: headers
                     }
@@ -197,7 +197,7 @@ const Checkout = () => {
     const handleFetchUser = async () => {
         axios({
             method: "get",
-            url: `http://localhost:8080/api/v1/client/byEmail?email=${userEmail}`,
+            url: `${process.env.REACT_APP_API_URL}/client/byEmail?email=${userEmail}`,
             headers: headers
         }).then((response: AxiosResponse) => {
             const user: User = response.data;

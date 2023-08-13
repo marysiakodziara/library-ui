@@ -115,7 +115,7 @@ const AddBook = () => {
 
     async function fetchBookByIsbn() {
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/book/isbn?isbn=${isbnSearch}`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/book/isbn?isbn=${isbnSearch}`);
             if (response.ok) {
                 const data = await response.json();
                 if (data) {
@@ -174,10 +174,10 @@ const AddBook = () => {
     }
 
     const sendBook = async () => {
-            const endpoint = checked ? "api/v1/book/updateBook" : "api/v1/book";
+            const endpoint = checked ? "/book/updateBook" : "/book";
         axios({
             method: checked ? "put" : "post",
-            url: `http://localhost:8080/${endpoint}`,
+            url: `${process.env.REACT_APP_API_URL}${endpoint}`,
             data: book,
             headers: headers
         }).then((response) => {

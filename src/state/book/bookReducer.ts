@@ -52,30 +52,32 @@ const initialState: BookState = {
 };
 
 export const fetchHomePageBooksAll = createAsyncThunk('books/fetchHomePageBooksAll', async () => {
-    return (await axios.get(`http://localhost:8080/api/v1/book/random?size=12`)).data;
+    return (await axios.get(`${process.env.REACT_APP_API_URL}/book/random?size=12`)).data;
 });
 
 export const fetchHomePageBooksNewArrivals = createAsyncThunk('books/fetchHomePageBooksNewArrivals', async () => {
-    return (await axios.get(`http://localhost:8080/api/v1/book/newArrivals`)).data;
+    const path = `${process.env.REACT_APP_API_URL}/book/newArrivals`;
+
+    return (await axios.get(path)).data;
 });
 
 export const fetchHomePageBooksBestsellers = createAsyncThunk('books/fetchHomePageBooksBestsellers', async () => {
-    return (await axios.get(`http://localhost:8080/api/v1/book/inCategory?categories=BEST_SELLER&size=12`)).data;
+    return (await axios.get(`${process.env.REACT_APP_API_URL}/book/inCategory?categories=BEST_SELLER&size=12`)).data;
 });
 
 export const fetchCategories = createAsyncThunk('books/fetchCategories', async () => {
-    return (await axios.get(`http://localhost:8080/api/v1/book/categories`)).data;
+    return (await axios.get(`${process.env.REACT_APP_API_URL}/book/categories`)).data;
 });
 
 export const fetchBooksByCategories = createAsyncThunk('books/fetchBooksByCategories', async ({ categories, page }: { categories: string[]; page: number }) => {
-    return (await axios.get(`http://localhost:8080/api/v1/book/inCategory?categories=${categories}&page=${page}`)).data;
+    return (await axios.get(`${process.env.REACT_APP_API_URL}/book/inCategory?categories=${categories}&page=${page}`)).data;
 });
 
 export const fetchBooksByPhrase = createAsyncThunk('books/fetchBooksByPhrase', async ({ phrase, page }: { phrase: string; page: number }) => {
-    return (await axios.get(`http://localhost:8080/api/v1/book/filter?phrase=${phrase}&page=${page}`)).data;
+    return (await axios.get(`${process.env.REACT_APP_API_URL}/book/filter?phrase=${phrase}&page=${page}`)).data;
 });
 export const fetchRandomBooks = createAsyncThunk('books/fetchRandomBooks', async () => {
-    return (await axios.get(`http://localhost:8080/api/v1/book/random`)).data;
+    return (await axios.get(`${process.env.REACT_APP_API_URL}/book/random`)).data;
 });
 
 

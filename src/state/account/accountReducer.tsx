@@ -67,8 +67,7 @@ export const fetchBorrowingHistory = createAsyncThunk('account/fetchBorrowingHis
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
     };
-    console.log("called BORROWING endpoint");
-    return (await axios.get(`http://localhost:8080/api/v1/reservation/borrowedItems/forClient`, {headers})).data;
+    return (await axios.get(`${process.env.REACT_APP_API_URL}/reservation/borrowedItems/forClient`, {headers})).data;
 });
 export const fetchReservationHistory = createAsyncThunk('account/fetchReservationHistory', async (arg, {getState}) => {
     const token = selectLoggedUser(getState() as RootState)
@@ -76,8 +75,7 @@ export const fetchReservationHistory = createAsyncThunk('account/fetchReservatio
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
     };
-    console.log("called RESERVATION endpoint");
-    return (await axios.get(`http://localhost:8080/api/v1/reservation/client?borrowed=false`, {headers} )).data;
+    return (await axios.get(`${process.env.REACT_APP_API_URL}/reservation/client?borrowed=false`, {headers} )).data;
 });
 
 export const accountSlice = createSlice({

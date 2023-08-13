@@ -118,7 +118,7 @@ const OrdersHistory = (props: {ordersType: OrdersType}) => {
         ]
 
     const handleCancelReservation = (item: OrderHistory) => {
-        axios.delete(`http://localhost:8080/api/v1/reservation/cancelReservation?reservationId=${item.id}`,
+        axios.delete(`${process.env.REACT_APP_API_URL}/reservation/cancelReservation?reservationId=${item.id}`,
             {
                 headers: {
                     'Content-Type': 'application/json',

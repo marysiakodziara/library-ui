@@ -41,7 +41,7 @@ const OrdersList = (props: {ordersType: OrdersType}) => {
     }
 
     const getReservations = async () => {
-        const response = await axios.get<OrdersPage>(`http://localhost:8080/api/v1/reservation/reservedItems`, {headers});
+        const response = await axios.get<OrdersPage>(`${process.env.REACT_APP_API_URL}/reservation/reservedItems`, {headers});
         setTotalElements(response.data.totalElements);
         setOrders(response.data.content);
         setLoading(false)
@@ -49,7 +49,7 @@ const OrdersList = (props: {ordersType: OrdersType}) => {
 
     const getOrders = async () => {
         const endpoint =  ordersType === OrdersType.OVERDUE ? `/borrowedItems/overdue` : `/borrowedItems?borrowed=true`;
-        const response = await axios.get<OrdersPage>(`http://localhost:8080/api/v1/reservation${endpoint}`, {headers});
+        const response = await axios.get<OrdersPage>(`${process.env.REACT_APP_API_URL}/reservation${endpoint}`, {headers});
         setTotalElements(response.data.totalElements);
         setOrders(response.data.content);
         setLoading(false)
@@ -100,7 +100,7 @@ const OrdersList = (props: {ordersType: OrdersType}) => {
 
     const handleOrderClick = (id: number) => {
         const endpoint = ordersType === OrdersType.RESERVED ? `/confirmReservation?reservationId=${id}` : `/return?reservationItemId=${id}`;
-        axios.delete(`http://localhost:8080/api/v1/reservation${endpoint}`, {headers})
+        axios.delete(`${process.env.REACT_APP_API_URL}/reservation${endpoint}`, {headers})
         .then(() => {
         ordersType === OrdersType.RESERVED ? getReservations() : getOrders();
         }).catch((error) => {

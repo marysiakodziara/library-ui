@@ -40,7 +40,7 @@ const BookDetails = () => {
 
     async function fetchBook() {
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/book/id?id=${id}`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/book/id?id=${id}`);
             const data = response.ok ? await response.json() : null;
             setBook(data);
             setIsBookReturned(data !== null)
