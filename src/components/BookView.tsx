@@ -8,7 +8,7 @@ import {addToCart, OrderItem} from "../state/cart/cartReducer";
 import {Book} from '../state/book/bookReducer';
 import {useNavigate} from 'react-router-dom';
 import {ROUTES} from "../routes/routes";
-import GenericCover from "./GenericCover";
+import GenericCover, {GenericCoverSize} from "./GenericCover";
 
 
 const BookView = ({book, width}: {book: Book, width: string}) => {
@@ -51,8 +51,9 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
         fetchData();
     }, []);
 
-    const handleAddToCart = (book: Book, quantity: number) => {
-        const newItem: OrderItem = {book, quantity};
+    const handleAddToCart = (book: Book, quantity: number, bookImage: string) => {
+        const image = bookImage ? bookImage : 'none';
+        const newItem: OrderItem = {book, quantity, image};
         dispatch(addToCart(newItem));
     }
 
@@ -70,7 +71,7 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
                     <Skeleton variant="rectangular" width="250px" height="350px" />
                 )}
                 { isImageLoaded && image === '' && !isLoading && (
-                    <GenericCover bookId={book.id}/>
+                    <GenericCover bookId={book.id} size={GenericCoverSize.LARGE} />
                 )}
                 { isImageLoaded && image !== '' && !isLoading && (
                     <img
@@ -117,7 +118,7 @@ const BookView = ({book, width}: {book: Book, width: string}) => {
                                     </IconButton>
                                 </Box>
                                 <Button
-                                    onClick={() => handleAddToCart(book, count)}
+                                    onClick={() => handleAddToCart(book, count, image)}
                                     sx={{ backgroundColor: shades.primary[300], color: "white" }}
                                 >
                                     Add to cart

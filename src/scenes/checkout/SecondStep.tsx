@@ -4,9 +4,10 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {fetchReservationHistory} from "../../state/account/accountReducer";
 import {ROUTES} from "../../routes/routes";
+import {selectRole} from "../../state/security/securityReducer";
 
 
 const SecondStep = () => {
@@ -16,6 +17,7 @@ const SecondStep = () => {
         dispatch(fetchReservationHistory())
         navigate(state ? `${location}?tab=${state}` : location);
     }
+    const userRole = useAppSelector(selectRole);
 
     return (
         <Box
@@ -40,9 +42,11 @@ const SecondStep = () => {
                 </Button>
                 <Button
                     sx={{fontWeight: 'bold', fontSize: '13px'}}
-                    onClick={() => handleNavigate(ROUTES.ACCOUNT, "reservationHistory")}
+                    onClick={() => {
+                        userRole === 'manager' ? handleNavigate(ROUTES.ADMIN) : handleNavigate(ROUTES.ACCOUNT, "reservationHistory");
+                    }}
                 >
-                    Your Reservations
+                    {userRole === 'manager' ? "See Dashboard" : "Your Reservations"}
                     <KeyboardArrowRightIcon sx={{fontSize: '20px'}}/>
                 </Button>
             </Box>

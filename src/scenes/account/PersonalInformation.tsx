@@ -30,8 +30,8 @@ const PersonalInformation = (user: User) => {
                         borderRadius: "20px",
                 }}>
                     <Box width="80%" height="80%" m="10% auto">
-                        <Typography variant="h6" fontWeight="bold">Name</Typography>
-                        <Typography mt="20px">{user?.firstName} {user?.lastName}</Typography>
+                        <Typography variant="h6" fontWeight="bold">First Name</Typography>
+                        <Typography mt="20px">{user?.firstName}</Typography>
                     </Box>
                 </Box>
                 <Box
@@ -54,8 +54,8 @@ const PersonalInformation = (user: User) => {
                         borderRadius: "20px",
                     }}>
                     <Box width="80%" height="80%" m="10% auto">
-                        <Typography variant="h6" fontWeight="bold">Date of Birth</Typography>
-                        <Typography mt="20px">07-11-2001</Typography>
+                        <Typography variant="h6" fontWeight="bold">Last Name</Typography>
+                        <Typography mt="20px">{user?.lastName}</Typography>
                     </Box>
                 </Box>
                 <Box

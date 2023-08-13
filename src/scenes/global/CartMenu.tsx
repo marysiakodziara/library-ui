@@ -14,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import {useAppSelector} from "../../app/hooks";
 import {ROUTES} from "../../routes/routes";
+import GenericCover, {GenericCoverSize} from "../../components/GenericCover";
 
 export const FlexBox = styled(Box)`
     display: flex;
@@ -63,12 +64,16 @@ const CartMenu = () => {
                             <Box key={`${item.book.title}-${item.book.id}`}>
                                 <FlexBox p="15px 0">
                                     <Box flex="1 1 40%">
-                                        <img
-                                            alt={item.book.title}
-                                            width="123px"
-                                            height="164px"
-                                            src={`https://covers.openlibrary.org/b/isbn/${item.book.isbn}-M.jpg`}
-                                        />
+                                        { item.image === 'none' ? (
+                                            <GenericCover bookId={item.book.id} size={GenericCoverSize.SMALL} />
+                                        ) : (
+                                            <img
+                                                alt={item.book.title}
+                                                width="123px"
+                                                height="164px"
+                                                src={item.image}
+                                            />
+                                        )}
                                     </Box>
                                     <Box flex="1 1 60%">
                                         <FlexBox mb="5px">

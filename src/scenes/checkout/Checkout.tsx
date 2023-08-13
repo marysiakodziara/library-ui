@@ -25,6 +25,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import {selectLoggedUser, selectRole} from "../../state/security/securityReducer";
 import SearchIcon from "@mui/icons-material/Search";
 import {User} from "../account/LoggedInView";
+import GenericCover, {GenericCoverSize} from "../../components/GenericCover";
 
 const Checkout = () => {
     const cart: OrderItem[] = useAppSelector(selectCart)
@@ -256,12 +257,16 @@ const Checkout = () => {
                                 <Box key={`${item.book.title}-${item.book.id}`}>
                                     <FlexBox p="15px 0">
                                         <Box flex="1 1 40%">
-                                            <img
-                                                alt={item?.book.title}
-                                                width="123px"
-                                                height="164px"
-                                                src={`https://covers.openlibrary.org/b/isbn/${item?.book.isbn}-M.jpg`}
-                                            />
+                                            { item.image === 'none' ? (
+                                                <GenericCover bookId={item.book.id} size={GenericCoverSize.SMALL} />
+                                            ) : (
+                                                <img
+                                                    alt={item.book.title}
+                                                    width="123px"
+                                                    height="164px"
+                                                    src={item.image}
+                                                />
+                                            )}
                                         </Box>
                                         <Box flex="1 1 60%">
                                             <FlexBox mb="5px">

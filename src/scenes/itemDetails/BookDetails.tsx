@@ -1,6 +1,5 @@
 import React, {SetStateAction, useEffect, useRef, useState} from 'react';
-import {Box, Button, CircularProgress, Divider, IconButton, Skeleton, Tab, Tabs, Typography} from '@mui/material';
-import FavouriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import {Box, Button, Divider, IconButton, Skeleton, Tab, Tabs, Typography} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {shades} from '../../theme';
@@ -11,7 +10,7 @@ import BookView from '../../components/BookView';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import ErrorPage from "../global/ErrorPage";
 import BookDetailsSkeleton from "./BookDetailsSkeleton";
-import GenericCover from "../../components/GenericCover";
+import GenericCover, {GenericCoverSize} from "../../components/GenericCover";
 
 interface ProductDetails {
     author: string;
@@ -115,8 +114,9 @@ const BookDetails = () => {
         }
     }
 
-    const handleAddToCart = (book: Book, quantity: number) => {
-        const newItem: OrderItem = {book, quantity};
+    const handleAddToCart = (book: Book, quantity: number, bookImage: string) => {
+        const image = bookImage ? bookImage : 'none';
+        const newItem: OrderItem = {book, quantity, image};
         dispatch(addToCart(newItem));
     }
 
@@ -138,7 +138,7 @@ const BookDetails = () => {
                                     />
                                 )}
                                 { isImageLoaded && image === '' && (
-                                    <GenericCover bookId={book?.id} />
+                                    <GenericCover bookId={book?.id} size={GenericCoverSize.LARGE}/>
                                 )}
                                 { !isImageLoaded && (
                                     <Skeleton variant="rectangular" width="90%" height="400px" />
@@ -201,7 +201,7 @@ const BookDetails = () => {
                                                     minWidth: "150px",
                                                     padding: "10px 40px"
                                                 }}
-                                                onClick={() => handleAddToCart(book, count)}
+                                                onClick={() => handleAddToCart(book, count, image)}
                                             >
                                                 ADD TO CART
                                             </Button>

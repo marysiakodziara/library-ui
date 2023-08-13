@@ -5,6 +5,7 @@ import {Book} from "../book/bookReducer";
 export interface OrderItem {
     quantity: number;
     book: Book;
+    image: string;
 }
 
 export interface Order {
@@ -43,7 +44,7 @@ export const cartSlice = createSlice({
                 sessionStorage.setItem('cart', JSON.stringify(newCart));
                 return { ...state, cart: newCart };
             } else {
-                const newItem: OrderItem = { book: action.payload.book, quantity: action.payload.quantity };
+                const newItem: OrderItem = { book: action.payload.book, quantity: action.payload.quantity, image: action.payload.image };
                 state.cart.push(newItem);
                 sessionStorage.setItem('cart', JSON.stringify(state.cart));
             }
