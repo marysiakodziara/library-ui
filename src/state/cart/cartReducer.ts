@@ -30,7 +30,7 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         setItems: (state) => {
-            const newCart = JSON.parse(sessionStorage.getItem('cart') || '[]');
+            const newCart = JSON.parse(localStorage.getItem('cart') || '[]');
             return { ...state, cart: newCart };
         },
         addToCart: (state, action) => {
@@ -41,19 +41,19 @@ export const cartSlice = createSlice({
                     }
                     return item;
                 });
-                sessionStorage.setItem('cart', JSON.stringify(newCart));
+                localStorage.setItem('cart', JSON.stringify(newCart));
                 return { ...state, cart: newCart };
             } else {
                 const newItem: OrderItem = { book: action.payload.book, quantity: action.payload.quantity, image: action.payload.image };
                 state.cart.push(newItem);
-                sessionStorage.setItem('cart', JSON.stringify(state.cart));
+                localStorage.setItem('cart', JSON.stringify(state.cart));
             }
 
         },
 
         removeFromCart: (state, action) => {
             state.cart = state.cart.filter((item) => item.book.id !== action.payload.id);
-            sessionStorage.setItem('cart', JSON.stringify(state.cart));
+            localStorage.setItem('cart', JSON.stringify(state.cart));
         },
 
         increaseCount: (state, action) => {
@@ -63,7 +63,7 @@ export const cartSlice = createSlice({
                 }
                 return item;
             });
-            sessionStorage.setItem('cart', JSON.stringify(newCart));
+            localStorage.setItem('cart', JSON.stringify(newCart));
             return { ...state, cart: newCart };
         },
 
@@ -74,7 +74,7 @@ export const cartSlice = createSlice({
                 }
                 return item;
             });
-            sessionStorage.setItem('cart', JSON.stringify(newCart));
+            localStorage.setItem('cart', JSON.stringify(newCart));
             return { ...state, cart: newCart };
         },
 
@@ -83,6 +83,7 @@ export const cartSlice = createSlice({
         },
         setCartEmpty: (state) => {
             state.cart = [];
+            localStorage.removeItem('cart');
         }
     }
 });

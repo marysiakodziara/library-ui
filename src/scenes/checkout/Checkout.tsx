@@ -29,7 +29,7 @@ import GenericCover, {GenericCoverSize} from "../../components/GenericCover";
 
 const Checkout = () => {
     const cart: OrderItem[] = useAppSelector(selectCart)
-    const isCartInMemory = sessionStorage.getItem('cart') !== null;
+    const isCartInMemory = localStorage.getItem('cart') !== null;
     const [activeStep, setActiveStep] = useState<number>(cart.length === 0 ? isCartInMemory ? 1 : 0 : 1);
     const [isReservationCreated, setIsReservationCreated] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -81,7 +81,6 @@ const Checkout = () => {
         } else {
             loginWithRedirect({ appState: { returnTo: window.location.pathname } });
         }
-        sessionStorage.removeItem('cart');
     }
 
     const headers = {
