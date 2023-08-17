@@ -185,8 +185,6 @@ const AddBook = () => {
                 setActiveStep(2)
             }
         }).catch((error) => {
-            console.log(error.response.status)
-            console.log(error.response.status === 400)
             if (error.response.status === 400) {
                 setBookError(true);
                 setBookErrorMessage("Book with this isbn already exists. Choose \"Update Book\" option to change its properties.");

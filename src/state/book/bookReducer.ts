@@ -22,15 +22,29 @@ export interface Category {
     [key: string]: string[];
 }
 
+export interface CategoryState {
+    categories: Category,
+    status: 'idle' | 'loading' | 'fulfilled' | 'failed',
+}
+
 export interface HomePageBooks {
-    all: Book[],
-    newArrivals: Book[],
-    bestsellers: Book[]
+    all: {
+        books: Book[],
+        status: 'idle' | 'loading' | 'fulfilled' | 'failed',
+    },
+    newArrivals: {
+        books: Book[],
+        status: 'idle' | 'loading' | 'fulfilled' | 'failed',
+    },
+    bestsellers: {
+        books: Book[],
+        status: 'idle' | 'loading' | 'fulfilled' | 'failed',
+    }
 }
 
 export interface BookState {
     bookPage: BookPage,
-    categories: Category,
+    categoriesState: CategoryState ,
     homePageBooks: HomePageBooks,
     status: 'idle' | 'loading' | 'fulfilled' | 'failed',
     error: string | undefined
@@ -41,11 +55,23 @@ const initialState: BookState = {
         content: [],
         totalPages: 0
     },
-    categories: {},
+    categoriesState: {
+        categories: {},
+        status: 'idle'
+    },
     homePageBooks: {
-        all: [],
-        newArrivals: [],
-        bestsellers: []
+        all: {
+            books: [],
+            status: 'idle'
+        },
+        newArrivals: {
+            books: [],
+            status: 'idle'
+        },
+        bestsellers: {
+            books: [],
+            status: 'idle'
+        }
     },
     status: 'idle',
     error: undefined
@@ -92,7 +118,8 @@ export const bookSlice = createSlice({
     extraReducers(builder) {
         builder
             .addCase(fetchCategories.fulfilled, (state, action) => {
-                state.categories = action.payload;
+                state.categoriesState.categories = action.payload;
+                state.categoriesState.status = 'fulfilled';
             })
             .addCase(fetchBooksByCategories.pending, (state) => {
                 state.status = 'loading';
@@ -128,13 +155,16 @@ export const bookSlice = createSlice({
                 state.error = action.error.message;
             })
             .addCase(fetchHomePageBooksAll.fulfilled, (state, action) => {
-                    state.homePageBooks.all = action.payload.content;
+                    state.homePageBooks.all.books = action.payload.content;
+                    state.homePageBooks.all.status = 'fulfilled';
             })
             .addCase(fetchHomePageBooksNewArrivals.fulfilled, (state, action) => {
-                state.homePageBooks.newArrivals = action.payload;
+                state.homePageBooks.newArrivals.books = action.payload;
+                state.homePageBooks.newArrivals.status = 'fulfilled';
             })
             .addCase(fetchHomePageBooksBestsellers.fulfilled, (state, action) => {
-                state.homePageBooks.bestsellers = action.payload.content;
+                state.homePageBooks.bestsellers.books = action.payload.content;
+                state.homePageBooks.bestsellers.status = 'fulfilled';
             });
     }
 });
@@ -142,6 +172,8 @@ export const bookSlice = createSlice({
 export const selectAllBooks = (state: RootState) => state.book.bookPage.content;
 export const selectAllBooksTotalPages = (state: RootState) => state.book.bookPage.totalPages;
 export const selectAllHomePageBooks = (state: RootState) => state.book.homePageBooks
-export const selectAllCategories = (state: RootState) => state.book.categories;
+export const selectAllHomePageStatus = (state: RootState) => state.book.homePageBooks.all.status;
+export const selectAllCategories = (state: RootState) => state.book.categoriesState.categories;
+export const selectAllCategoriesStatus = (state: RootState) => state.book.categoriesState.status;
 export const selectStatus = (state: RootState) => state.book.status;
 export default bookSlice.reducer;

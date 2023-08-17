@@ -7,7 +7,8 @@ import {
     fetchHomePageBooksBestsellers,
     fetchHomePageBooksNewArrivals,
     HomePageBooks,
-    selectAllHomePageBooks, selectStatus
+    selectAllHomePageBooks,
+    selectAllHomePageStatus
 } from '../../state/book/bookReducer';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 
@@ -19,8 +20,7 @@ const ShoppingList = () => {
     const allBooks = homePageBooks.all;
     const newArrivalsItems = homePageBooks.newArrivals;
     const bestSellersItems = homePageBooks.bestsellers;
-    const status = useAppSelector(selectStatus);
-    console.log(status)
+    const status = useAppSelector(selectAllHomePageStatus);
 
     useEffect(() => {
         dispatch(fetchHomePageBooksAll());
@@ -33,7 +33,7 @@ const ShoppingList = () => {
     };
 
     return (
-        <Box width="80%" margin="20px auto">
+        <Box width="80%" mt="20px" ml='auto' mr='auto' mb='70px' >
             <Typography variant="h3" textAlign="center">
                 Our Featured <b>Books</b>
             </Typography>
@@ -78,13 +78,13 @@ const ShoppingList = () => {
                     rowGap="20px"
                     columnGap="1.33%"
                 >
-                    {value === "all" && allBooks?.map((book: Book) => (
+                    {value === "all" && allBooks?.books.map((book: Book) => (
                         <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
                     ))}
-                    {value === "newArrivals" && newArrivalsItems?.map((book: Book) => (
+                    {value === "newArrivals" && newArrivalsItems?.books.map((book: Book) => (
                         <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
                         ))}
-                    {value === "bestSellers" && bestSellersItems?.map((book: Book) => (
+                    {value === "bestSellers" && bestSellersItems?.books.map((book: Book) => (
                         <BookView book={book} key={`${book.title}-${book.id}`} width={"250px"} />
                         ))}
                 </Box>

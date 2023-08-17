@@ -7,14 +7,14 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import {useNavigate} from "react-router-dom";
 import {useAppSelector} from "../../../app/hooks";
-import {Category, selectAllCategories, selectStatus} from "../../../state/book/bookReducer";
+import {Category, selectAllCategories, selectAllCategoriesStatus, selectStatus} from "../../../state/book/bookReducer";
 import {ROUTES} from "../../../routes/routes";
 
 const NavigationMenu = () => {
     const [open, setOpen] = useState<boolean[]>([false, false, false, false, false, false, false, false, false, false]);
     const navigate = useNavigate();
     const categories: Category = useAppSelector(selectAllCategories);
-    const status = useAppSelector(selectStatus);
+    const status = useAppSelector(selectAllCategoriesStatus);
 
     const handleClick = (index: number) => {
         setOpen((prevOpen) => {
