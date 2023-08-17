@@ -17,6 +17,7 @@ import PrivateRoutes from "./scenes/global/PrivateRoutes";
 import {setItems} from "./state/cart/cartReducer";
 import BookClub from "./scenes/bookClub/BookClub";
 import {ROUTES} from "./routes/routes";
+import {Box} from "@mui/material";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -52,8 +53,16 @@ function App() {
     fetchToken();
   }, [isAuthenticated, getAccessTokenSilently, dispatch]);
 
+  const styles = {
+    app: {
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column'
+    }
+  }
+
   return (
-    <div className="app">
+    <Box sx={styles.app} >
           <Navbar />
           <ScrollToTop />
           <Routes>
@@ -70,7 +79,7 @@ function App() {
           </Routes>
           <CartMenu/>
           <Footer/>
-    </div>
+    </Box >
   );
 }
 

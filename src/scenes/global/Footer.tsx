@@ -14,7 +14,9 @@ const Footer = () => {
                 <></>
             )}
             { path !== "/admin" && (
-                <Box p="40px 0" mt="70px" sx={{backgroundColor: info.light}}>
+                <Box
+                    mt='auto'
+                    p="40px 0" sx={{backgroundColor: info.light}}>
                     <Box
                         width="80%"
                         margin="auto"
@@ -46,7 +48,7 @@ const Footer = () => {
                             <Typography mb="30px">Careers</Typography>
                             <Typography mb="30px">Our Store</Typography>
                             <Typography mb="30px">Terms & Conditions</Typography>
-                            <Typography mb="30px">Privacy Policy</Typography>
+                            <Typography >Privacy Policy</Typography>
                         </Box>
                         <Box>
                             <Typography variant="h4" fontWeight="bold" mb="30px">
@@ -55,7 +57,7 @@ const Footer = () => {
                             <Typography mb="30px">Help Center</Typography>
                             <Typography mb="30px">Track Your Reservations</Typography>
                             <Typography mb="30px">Options for Schools</Typography>
-                            <Typography mb="30px">How to Make a Reservation</Typography>
+                            <Typography >How to Make a Reservation</Typography>
                         </Box>
                         <Box width="clamp(20%, 25%, 30%)">
                             <Typography variant="h4" fontWeight="bold" mb="30px">
@@ -63,7 +65,7 @@ const Footer = () => {
                             </Typography>
                             <Typography mb="30px">Konoha, North 50</Typography>
                             <Typography mb="30px">Email: bestLibraryEver@gmail.com</Typography>
-                            <Typography mb="30px">508-764-745</Typography>
+                            <Typography >508-764-745</Typography>
                         </Box>
                     </Box>
                 </Box>
