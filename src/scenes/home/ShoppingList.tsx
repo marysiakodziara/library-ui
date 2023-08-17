@@ -7,7 +7,7 @@ import {
     fetchHomePageBooksBestsellers,
     fetchHomePageBooksNewArrivals,
     HomePageBooks,
-    selectAllHomePageBooks
+    selectAllHomePageBooks, selectStatus
 } from '../../state/book/bookReducer';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 
@@ -15,17 +15,17 @@ const ShoppingList = () => {
     const dispatch = useAppDispatch();
     const [value, setValue] = useState("all");
     const isNonMobile = useMediaQuery('(min-width:600px)');
-    const [called, setCalled] = useState<boolean>(false);
     const homePageBooks: HomePageBooks = useAppSelector(selectAllHomePageBooks);
     const allBooks = homePageBooks.all;
     const newArrivalsItems = homePageBooks.newArrivals;
     const bestSellersItems = homePageBooks.bestsellers;
+    const status = useAppSelector(selectStatus);
+    console.log(status)
 
     useEffect(() => {
         dispatch(fetchHomePageBooksAll());
         dispatch(fetchHomePageBooksNewArrivals());
         dispatch(fetchHomePageBooksBestsellers());
-        setCalled(true);
     }, []);
 
     const handleChange = (event: any, newValue: React.SetStateAction<string>) => {
@@ -55,20 +55,21 @@ const ShoppingList = () => {
                 <Tab label="NEW ARRIVALS" value="newArrivals"/>
                 <Tab label="BEST SELLERS" value="bestSellers"/>
             </Tabs>
-            { (!called || allBooks.length == 0) && (
+            { status !== 'fulfilled' && (
                 <Box
-                    height="350px"
                     margin="0 auto"
                     display="grid"
+                    gridTemplateColumns="repeat(auto-fill, 250px)"
                     justifyContent="space-around"
+                    rowGap="20px"
                     columnGap="1.33%"
                 >
                     {Array(4).fill(0).map((_, index) => (
-                        <Skeleton key={index} variant="rectangular" height="100%"/>
+                        <Skeleton key={index} variant="rectangular" height="350px"/>
                     ))}
                 </Box>
                 )}
-            { called && (
+            { status === 'fulfilled' && (
                 <Box
                     margin="0 auto"
                     display="grid"
