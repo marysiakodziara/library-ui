@@ -25,14 +25,14 @@ const Account = () => {
     }
 
     return (
-        <>
+        <Box height='auto'>
         { isAuthenticated && (
            < LoggedInView category={subCategory}/>
         )}
         { !isAuthenticated && (
             <LoggedOutView />
         )}
-        </>
+        </Box>
     );
 }
 

@@ -68,7 +68,7 @@ const LoggedInView: FC<{category: string}> = (props) => {
     }
 
     return (
-        <Box mt="80px" width="80%" mr="auto" ml="auto">
+        <Box m="80px auto" width="80%">
             <Box
                 width="100%"
                 display="flex"
@@ -129,17 +129,15 @@ const LoggedInView: FC<{category: string}> = (props) => {
                     >
                         Reservations</Typography>
                 </Box>
-                <Box width="100%" height="500px">
-                    {subCategory === 'personalInformation' && (
-                        <PersonalInformation emailAddress={user.emailAddress} firstName={user.firstName} lastName={user.lastName} phoneNumber={user.phoneNumber}/>
-                    )}
-                    {subCategory === 'borrowingHistory' && (
-                        <OrdersHistory ordersType={OrdersType.BORROWED}/>
-                    )}
-                    {subCategory === 'reservationHistory' && (
-                        <OrdersHistory ordersType={OrdersType.RESERVED}/>
-                    )}
-                </Box>
+                {subCategory === 'personalInformation' && (
+                    <PersonalInformation emailAddress={user.emailAddress} firstName={user.firstName} lastName={user.lastName} phoneNumber={user.phoneNumber}/>
+                )}
+                {subCategory === 'borrowingHistory' && (
+                    <OrdersHistory ordersType={OrdersType.BORROWED}/>
+                )}
+                {subCategory === 'reservationHistory' && (
+                    <OrdersHistory ordersType={OrdersType.RESERVED}/>
+                )}
             </Box>
         </Box>
     );

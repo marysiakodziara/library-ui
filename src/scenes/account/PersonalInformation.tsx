@@ -4,9 +4,27 @@ import {User} from "./LoggedInView";
 
 const PersonalInformation = (user: User) => {
     const isNonMobile = useMediaQuery('(max-width: 600px)');
+    const userData = [
+        {
+            label: 'First Name',
+            value: user?.firstName,
+        },
+        {
+            label: 'Phone Number',
+            value: user?.phoneNumber,
+        },
+        {
+            label: 'Last Name',
+            value: user?.lastName,
+        },
+        {
+            label: 'Email',
+            value: user?.emailAddress,
+        },
+    ];
 
     return (
-        <Box width="100%" mb="10%" paddingLeft="3%">
+        <Box width="100%" paddingLeft="3%" >
             <Box>
                 <Typography variant="h3" fontWeight="bold">Personal Information</Typography>
                 <Box color={shades.neutral[700]} mt="20px" mb="50px">
@@ -14,62 +32,32 @@ const PersonalInformation = (user: User) => {
                 </Box>
             </Box>
             <Box
+                margin="0 auto"
                 display="grid"
                 gridTemplateColumns="repeat(auto-fill, 400px)"
+                gridTemplateRows="repeat(auto-fill, 170px)"
                 justifyContent="space-around"
-                rowGap="10%"
+                rowGap="20px"
                 columnGap="1.33%"
-                overflow={isNonMobile ? "scroll" : "visible"}
             >
-                <Box
-                    display="flex"
-                    width="100%"
-                    height="170px"
-                    sx={{
-                        backgroundColor: shades.neutral[300],
-                        borderRadius: "20px",
-                }}>
-                    <Box width="80%" height="80%" m="10% auto">
-                        <Typography variant="h6" fontWeight="bold">First Name</Typography>
-                        <Typography mt="20px">{user?.firstName}</Typography>
+                {userData.map((data, index) => (
+                    <Box
+                        key={index}
+                        display="flex"
+                        width="100%"
+                        sx={{
+                            backgroundColor: shades.neutral[300],
+                            borderRadius: "20px",
+                        }}
+                    >
+                        <Box width="80%" height="80%" m="10% auto">
+                            <Typography variant="h6" fontWeight="bold">
+                                {data.label}
+                            </Typography>
+                            <Typography mt="20px">{data.value}</Typography>
+                        </Box>
                     </Box>
-                </Box>
-                <Box
-                    width="100%"
-                    height="170px"
-                    sx={{
-                        backgroundColor: shades.neutral[300],
-                        borderRadius: "20px",
-                    }}>
-                    <Box width="80%" height="80%" m="10% auto">
-                        <Typography variant="h6" fontWeight="bold">Phone Number</Typography>
-                        <Typography mt="20px">{user?.phoneNumber}</Typography>
-                    </Box>
-                </Box>
-                <Box
-                    width="100%"
-                    height="170px"
-                    sx={{
-                        backgroundColor: shades.neutral[300],
-                        borderRadius: "20px",
-                    }}>
-                    <Box width="80%" height="80%" m="10% auto">
-                        <Typography variant="h6" fontWeight="bold">Last Name</Typography>
-                        <Typography mt="20px">{user?.lastName}</Typography>
-                    </Box>
-                </Box>
-                <Box
-                    width="100%"
-                    height="170px"
-                    sx={{
-                        backgroundColor: shades.neutral[300],
-                        borderRadius: "20px",
-                    }}>
-                    <Box width="80%" height="80%" m="10% auto">
-                        <Typography variant="h6" fontWeight="bold">Email</Typography>
-                        <Typography mt="20px">{user?.emailAddress}</Typography>
-                    </Box>
-                </Box>
+                ))}
             </Box>
         </Box>
     );

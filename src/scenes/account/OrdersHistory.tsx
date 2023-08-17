@@ -131,8 +131,9 @@ const OrdersHistory = (props: {ordersType: OrdersType}) => {
     }
 
     return (
-        <Box width="100%" height="100%">
+        <Box width="100%" paddingLeft="3%" minHeight='400px'>
             <StripedDataGrid
+                sx={{height: "100%"}}
                 rows={orders}
                 columns={columns}
                 initialState={{
