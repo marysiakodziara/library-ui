@@ -1,6 +1,7 @@
-# E-Library | [frontend](https://library-ui.onrender.com)
+# E-Library | frontend
 
 The E-Library frontend is a single-page application built with React and TypeScript. Crafted with a focus on user-friendliness and intuitive design, it empowers clients and staff to effortlessly navigate and interact with the digital library. Additionally, it aims to enhance the efficiency of standard library procedures for both administrators and users.
+> Feel free to use the app  <a href="https://library-ui.onrender.com">here</a> 
 
 ## Table of Contents
 - [User Interactions](#user-interactions)
