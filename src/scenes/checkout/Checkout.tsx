@@ -240,7 +240,9 @@ const Checkout = () => {
              {isFirstStep && (
                  <Box
                      width="80%"
-                     margin="auto"
+                     ml="auto"
+                     mr="auto"
+                     mb="70px"
                      display="flex"
                      justifyContent="space-around"
                      flexWrap="wrap"

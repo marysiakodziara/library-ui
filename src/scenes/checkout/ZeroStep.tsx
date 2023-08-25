@@ -10,7 +10,9 @@ const ZeroStep = () => {
         <Box
             width="80%"
             height="300px"
-            m="0 auto"
+            ml="auto"
+            mr="auto"
+            mb="70px"
             sx={{ backgroundColor: shades.neutral[200] }}
         >
             <Box display="flex">

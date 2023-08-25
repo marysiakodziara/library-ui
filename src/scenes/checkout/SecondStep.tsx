@@ -22,7 +22,9 @@ const SecondStep = () => {
     return (
         <Box
             width="60%"
-            margin="auto"
+            ml="auto"
+            mr="auto"
+            mb="70px"
             sx={{backgroundColor: shades.neutral[100]}}
             height="400px"
         >

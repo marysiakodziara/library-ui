@@ -53,7 +53,11 @@ export const cartSlice = createSlice({
 
         removeFromCart: (state, action) => {
             state.cart = state.cart.filter((item) => item.book.id !== action.payload.id);
-            localStorage.setItem('cart', JSON.stringify(state.cart));
+            if (state.cart.length === 0) {
+                localStorage.removeItem('cart');
+            } else {
+                localStorage.setItem('cart', JSON.stringify(state.cart));
+            }
         },
 
         increaseCount: (state, action) => {
