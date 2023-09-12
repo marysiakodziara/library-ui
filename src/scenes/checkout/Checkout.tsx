@@ -17,15 +17,15 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import {FlexBox} from "../global/CartMenu";
 import {useAppSelector} from "../../app/hooks";
-import ZeroStep from "./ZeroStep";
-import SecondStep from "./SecondStep";
+import ZeroStep from "./components/ZeroStep";
+import SecondStep from "./components/SecondStep";
 import dayjs from "dayjs";
 import axios, {AxiosResponse} from "axios";
 import {useAuth0} from "@auth0/auth0-react";
 import {selectLoggedUser, selectRole} from "../../state/security/securityReducer";
 import SearchIcon from "@mui/icons-material/Search";
-import {User} from "../account/LoggedInView";
-import GenericCover, {GenericCoverSize} from "../../components/GenericCover";
+import {User} from "../account/components/LoggedInView";
+import GenericCover, {GenericCoverSize} from "../global/GenericCover";
 
 const Checkout = () => {
     const cart: OrderItem[] = useAppSelector(selectCart)

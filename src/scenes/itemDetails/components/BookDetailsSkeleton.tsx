@@ -1,5 +1,5 @@
 import {Box, Divider, Skeleton, Tab, Tabs, Typography} from "@mui/material";
-import {shades} from "../../theme";
+import {shades} from "../../../theme";
 
 const BookDetailsSkeleton = () => (
     <Box width="100%" m="100px auto">

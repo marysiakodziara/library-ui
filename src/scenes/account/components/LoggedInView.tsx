@@ -1,13 +1,13 @@
 import {Avatar, Box, Button, Divider, Typography} from "@mui/material";
-import {shades} from "../../theme";
+import {shades} from "../../../theme";
 import PersonalInformation from "./PersonalInformation";
 import {FC, useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
-import {useAppSelector} from "../../app/hooks";
-import {selectLoggedUser} from "../../state/security/securityReducer";
+import {useAppSelector} from "../../../app/hooks";
+import {selectLoggedUser} from "../../../state/security/securityReducer";
 import axios from "axios";
 import OrdersHistory from "./OrdersHistory";
-import {OrdersType} from "../managerDashboard/ManagerDashboard";
+import {OrdersType} from "../../managerDashboard/ManagerDashboard";
 
 export interface User {
     firstName: string;

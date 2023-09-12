@@ -5,8 +5,8 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {shades} from "../../theme";
-import {ROUTES} from "../../routes/routes";
+import {shades} from "../../../theme";
+import {ROUTES} from "../../../routes/routes";
 
 const importAll = (r: __WebpackModuleApi.RequireContext) =>
     r.keys().reduce((acc: any, item: any) => {
@@ -15,7 +15,7 @@ const importAll = (r: __WebpackModuleApi.RequireContext) =>
     }, {});
 
 const heroTextureImports: string = importAll(
-    require.context("../../assets", false, /\.(png|jpe?g|svg)$/)
+    require.context("../../../assets", false, /\.(png|jpe?g|svg)$/)
 );
 
 const MainCarousel = () => {

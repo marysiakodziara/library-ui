@@ -15,16 +15,16 @@ import {
 } from '@mui/material';
 import {MenuOutlined, PersonOutline, ShoppingBagOutlined,} from '@mui/icons-material';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {shades} from '../../../theme';
-import {setIsCartOpen} from "../../../state/cart/cartReducer";
+import {shades} from '../../theme';
+import {setIsCartOpen} from "../../state/cart/cartReducer";
 import {useAuth0} from "@auth0/auth0-react";
 import {SyntheticEvent, useEffect, useRef, useState, KeyboardEvent} from "react";
-import NavigationMenu from "./NavigationMenu";
+import NavigationMenu from "./components/NavigationMenu";
 import SearchIcon from '@mui/icons-material/Search';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {selectRole, logoutUser} from "../../../state/security/securityReducer";
-import {ROUTES} from "../../../routes/routes";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {selectRole, logoutUser} from "../../state/security/securityReducer";
+import {ROUTES} from "../../routes/routes";
 
 
 const Navbar = () => {

@@ -10,19 +10,19 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import CustomizedSteppers from "../global/CustomizedSteppers";
+import CustomizedSteppers from "../../global/CustomizedSteppers";
 import {useEffect, useRef, useState} from "react";
-import {useAppSelector} from "../../app/hooks";
-import {Book, Category, selectAllCategories} from "../../state/book/bookReducer";
-import {shades} from "../../theme";
+import {useAppSelector} from "../../../app/hooks";
+import {Book, Category, selectAllCategories} from "../../../state/book/bookReducer";
+import {shades} from "../../../theme";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import {styled} from "@mui/material/styles";
-import {Item} from "./ManagerDashboard";
+import {Item} from "../ManagerDashboard";
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios, {AxiosResponse} from "axios";
-import {selectLoggedUser} from "../../state/security/securityReducer";
+import {selectLoggedUser} from "../../../state/security/securityReducer";
 
 const Label = styled('label')`
   padding: 0 0 4px;
@@ -110,7 +110,7 @@ const AddBook = () => {
     };
 
     const logoImport = importLogo(
-        require.context("../../assets/logo", false, /\.(png|jpe?g|svg)$/)
+        require.context("../../../assets/logo", false, /\.(png|jpe?g|svg)$/)
     );
 
     async function fetchBookByIsbn() {

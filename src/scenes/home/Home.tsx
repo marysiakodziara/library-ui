@@ -1,5 +1,5 @@
-import MainCarousel from "./MainCarousel";
-import ShoppingList from "./ShoppingList";
+import MainCarousel from "./components/MainCarousel";
+import ShoppingList from "./components/ShoppingList";
 import {useEffect} from "react";
 
 const Home = () => {

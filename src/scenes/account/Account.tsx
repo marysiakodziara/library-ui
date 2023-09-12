@@ -1,6 +1,6 @@
 import {useAuth0} from "@auth0/auth0-react";
-import LoggedInView from "./LoggedInView";
-import LoggedOutView from "./LoggedOutView";
+import LoggedInView from "./components/LoggedInView";
+import LoggedOutView from "./components/LoggedOutView";
 import {Box, CircularProgress} from "@mui/material";
 import {shades} from "../../theme";
 

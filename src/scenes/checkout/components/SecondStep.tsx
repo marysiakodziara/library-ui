@@ -1,13 +1,13 @@
 import {Box, Button, Divider, Typography} from "@mui/material";
-import {shades} from "../../theme";
+import {shades} from "../../../theme";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {fetchReservationHistory} from "../../state/account/accountReducer";
-import {ROUTES} from "../../routes/routes";
-import {selectRole} from "../../state/security/securityReducer";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {fetchReservationHistory} from "../../../state/account/accountReducer";
+import {ROUTES} from "../../../routes/routes";
+import {selectRole} from "../../../state/security/securityReducer";
 
 
 const SecondStep = () => {

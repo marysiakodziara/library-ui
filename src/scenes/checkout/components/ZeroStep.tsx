@@ -1,7 +1,7 @@
-import {shades} from "../../theme";
+import {shades} from "../../../theme";
 import {Box, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import {ROUTES} from "../../routes/routes";
+import {ROUTES} from "../../../routes/routes";
 
 const ZeroStep = () => {
     const navigate = useNavigate();

@@ -1,9 +1,9 @@
 import {Box, Paper, Tab, Tabs} from "@mui/material";
 import {shades} from "../../theme";
 import {SyntheticEvent, useState} from "react";
-import AddBook from "./AddBook";
+import AddBook from "./components/AddBook";
 import {styled} from "@mui/material/styles";
-import OrdersList from "./OrdersList";
+import OrdersList from "./components/OrdersList";
 
 export const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,

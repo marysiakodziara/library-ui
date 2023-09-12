@@ -14,7 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import {useAppSelector} from "../../app/hooks";
 import {ROUTES} from "../../routes/routes";
-import GenericCover, {GenericCoverSize} from "../../components/GenericCover";
+import GenericCover, {GenericCoverSize} from "./GenericCover";
 
 export const FlexBox = styled(Box)`
     display: flex;

@@ -3,11 +3,11 @@ import {useDispatch} from 'react-redux';
 import {Box, Button, IconButton, Skeleton, Typography, useTheme} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import {shades} from '../theme';
-import {addToCart, OrderItem} from "../state/cart/cartReducer";
-import {Book} from '../state/book/bookReducer';
+import {shades} from '../../theme';
+import {addToCart, OrderItem} from "../../state/cart/cartReducer";
+import {Book} from '../../state/book/bookReducer';
 import {useNavigate} from 'react-router-dom';
-import {ROUTES} from "../routes/routes";
+import {ROUTES} from "../../routes/routes";
 import GenericCover, {GenericCoverSize} from "./GenericCover";
 
 

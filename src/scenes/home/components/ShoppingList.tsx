@@ -1,6 +1,6 @@
 import React, {useEffect, useState,} from 'react';
 import {Box, Skeleton, Tab, Tabs, Typography, useMediaQuery} from '@mui/material';
-import BookView from '../../components/BookView';
+import BookView from '../../global/BookView';
 import {
     Book,
     fetchHomePageBooksAll,
@@ -9,8 +9,8 @@ import {
     HomePageBooks,
     selectAllHomePageBooks,
     selectAllHomePageStatus
-} from '../../state/book/bookReducer';
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
+} from '../../../state/book/bookReducer';
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 
 const ShoppingList = () => {
     const dispatch = useAppDispatch();

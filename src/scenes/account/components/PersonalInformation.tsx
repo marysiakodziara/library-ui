@@ -1,5 +1,5 @@
 import {Box, Typography, useMediaQuery} from "@mui/material";
-import {shades} from "../../theme";
+import {shades} from "../../../theme";
 import {User} from "./LoggedInView";
 
 const PersonalInformation = (user: User) => {

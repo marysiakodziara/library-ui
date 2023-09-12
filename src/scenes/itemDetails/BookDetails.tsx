@@ -6,11 +6,11 @@ import {shades} from '../../theme';
 import {addToCart, OrderItem} from "../../state/cart/cartReducer";
 import {Book, fetchRandomBooks, selectAllBooks} from '../../state/book/bookReducer';
 import {useLocation, useParams} from 'react-router-dom';
-import BookView from '../../components/BookView';
+import BookView from '../global/BookView';
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import ErrorPage from "../global/ErrorPage";
-import BookDetailsSkeleton from "./BookDetailsSkeleton";
-import GenericCover, {GenericCoverSize} from "../../components/GenericCover";
+import BookDetailsSkeleton from "./components/BookDetailsSkeleton";
+import GenericCover, {GenericCoverSize} from "../global/GenericCover";
 
 interface ProductDetails {
     author: string;

@@ -1,11 +1,11 @@
-import {OrderHistory, OrderHistoryItem} from "../../state/account/accountReducer";
-import {OrdersType} from "./ManagerDashboard";
+import {OrderHistory, OrderHistoryItem} from "../../../state/account/accountReducer";
+import {OrdersType} from "../ManagerDashboard";
 import {useEffect, useState} from "react";
-import {useAppSelector} from "../../app/hooks";
+import {useAppSelector} from "../../../app/hooks";
 import {Box, Button, LinearProgress, MenuItem, Select} from "@mui/material";
 import {DataGrid, getGridStringOperators, GridColDef} from '@mui/x-data-grid';
 import axios from "axios";
-import {selectLoggedUser} from "../../state/security/securityReducer";
+import {selectLoggedUser} from "../../../state/security/securityReducer";
 
 interface ExtendedOrderItem extends OrderHistoryItem {
     id: number;

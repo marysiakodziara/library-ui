@@ -1,5 +1,5 @@
 import {Box} from "@mui/material";
-import {ROUTES} from "../routes/routes";
+import {ROUTES} from "../../routes/routes";
 import {useNavigate} from "react-router-dom";
 
 export enum GenericCoverSize {
@@ -31,7 +31,7 @@ const GenericCover = (props: {bookId: number, size: GenericCoverSize}) => {
     }
 
     const logoImport = importLogo(
-        require.context("../assets/logo", false, /\.(png|jpe?g|svg)$/)
+        require.context("../../assets/logo", false, /\.(png|jpe?g|svg)$/)
     );
 
     return (

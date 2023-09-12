@@ -5,16 +5,16 @@ import {
     OrderHistoryItem, selectBorrowingHistory, selectBorrowingHistoryStatus,
     selectReservationHistory,
     selectReservationHistoryStatus
-} from "../../state/account/accountReducer";
+} from "../../../state/account/accountReducer";
 import {useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {alpha, Box, Button, LinearProgress, MenuItem, Select} from "@mui/material";
 import {DataGrid, gridClasses, GridColDef} from '@mui/x-data-grid';
-import {selectLoggedUser} from "../../state/security/securityReducer";
-import {OrdersType} from "../managerDashboard/ManagerDashboard";
+import {selectLoggedUser} from "../../../state/security/securityReducer";
+import {OrdersType} from "../../managerDashboard/ManagerDashboard";
 import axios from "axios";
 import {styled} from "@mui/material/styles";
-import {shades} from "../../theme";
+import {shades} from "../../../theme";
 
 const ODD_OPACITY = 0.2;
 

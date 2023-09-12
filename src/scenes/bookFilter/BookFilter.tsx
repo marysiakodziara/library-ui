@@ -12,7 +12,7 @@ import {
 } from "../../state/book/bookReducer";
 import React, {useEffect, useState} from "react";
 import {shades} from "../../theme";
-import BookView from "../../components/BookView";
+import BookView from "../global/BookView";
 import {ROUTES} from "../../routes/routes";
 
 const BookFilter = () => {
